@@ -1,0 +1,48 @@
+{"frames": {
+
+"1.png":
+{
+	"frame": {"x":2,"y":2,"w":308,"h":282},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":92,"w":308,"h":282},
+	"sourceSize": {"w":391,"h":438},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"2.png":
+{
+	"frame": {"x":616,"y":2,"w":301,"h":282},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":92,"w":301,"h":282},
+	"sourceSize": {"w":391,"h":438},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"3.png":
+{
+	"frame": {"x":919,"y":2,"w":300,"h":282},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":43,"y":92,"w":300,"h":282},
+	"sourceSize": {"w":391,"h":438},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"4.png":
+{
+	"frame": {"x":312,"y":2,"w":302,"h":282},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":92,"w":302,"h":282},
+	"sourceSize": {"w":391,"h":438},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "schoeni_animation.png",
+	"format": "RGBA8888",
+	"size": {"w":1225,"h":286},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9ab690b5403782ec7e5f1793d6f7f122:6c69f7ebfa1f93e8465cb27bb97ad701:d0552807aaa9211ecc0c135c6cf23cdd$"
+}
+}

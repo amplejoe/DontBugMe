@@ -7,7 +7,7 @@ class BugsAndFeatures
 {
     constructor()
     {
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', {create: this.create, preload: this.preload });
+        this.game = new Phaser.Game(1280, 700, Phaser.AUTO, 'content', {create: this.create, preload: this.preload });
     }
     game: Phaser.Game;
 
@@ -18,7 +18,10 @@ class BugsAndFeatures
         this.game.load.image('bg', 'assets/gfx/hg.jpg');
 
         // loading spritesheets
-        //this.game.load.atlasJSONHash("BIRD_FLYING", spritePath+"bird.png", spritePath+"bird_flying.json");
+        this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");
+        this.game.load.atlasJSONHash("BUG2_MOVING", "assets/gfx/final_bugs/hirschi.png", "assets/gfx/final_bugs/hirischi_moving.json");
+        this.game.load.atlasJSONHash("BUG3_MOVING", "assets/gfx/final_bugs/schoeni_animation.png", "assets/gfx/final_bugs/schoeni_animation.json");
+
     }
 
     create()
@@ -34,8 +37,8 @@ class BugsAndFeatures
         // game over screen
         this.game.state.add("GameOverScreenState", GameOverScreenState, false);
 
-        // game over screen
-        this.game.state.add("TestState", TestState, false);
+        // test state
+        this.game.state.add("TestState", TestState, true);
 
     }
 

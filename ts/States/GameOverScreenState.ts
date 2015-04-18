@@ -19,7 +19,7 @@ class GameOverScreenState extends Phaser.State
     {
         var line1 = "Game Over - Your Score:";
         var line2 = this.score;
-        var line3 = "Continue cycling to retry..."
+        var line3 = "Continue cycling to retry...";
         var style = { font: "48px Arial", fill: "#ff0000", textAlign: "center"};
         this.game.add.text(10, 10, line1, style);
         this.game.add.text(10, 150, line2, style);
