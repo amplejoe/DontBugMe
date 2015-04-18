@@ -16,6 +16,7 @@ class BugsAndFeatures {
 
         // background
         this.game.load.image('bg', 'assets/gfx/hg.jpg');
+        this.game.load.image('title', 'assets/gfx/screenie.JPG');
 
         // loading spritesheets
         this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");

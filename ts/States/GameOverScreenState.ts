@@ -1,4 +1,5 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
+/// <reference path="../GameObjects/Bug.ts"/>
 class GameOverScreenState extends Phaser.State
 {
     game: Phaser.Game;
@@ -6,9 +7,13 @@ class GameOverScreenState extends Phaser.State
 
     score: string = "00:00:00";
 
+    bg: Phaser.TileSprite;
+
     gameOverTime: number;
 
     waitTime: number = 5;
+
+    winnerbug: Bug;
 
     winner: string;
 
@@ -20,11 +25,26 @@ class GameOverScreenState extends Phaser.State
     create()
     {
 
-        var line1 = "Game Over - The Winner is:";
-        var line2 = this.winner;
+        this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
+
+        var line1 = "Game Over - The Winner:";
+
         var style = { font: "48px Arial", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(10, 10, line1, style);
-        this.game.add.text(10, 150, line2, style);
+        this.game.add.text(this.game.width/2- 300, 70, line1, style);
+
+        if (this.winner == "")
+        {
+            var line2 = "Nobody!";
+            this.game.add.text(this.game.width/2 - 100, 250, line2, style);
+
+        }
+        else
+        {
+            this.winnerbug = new Bug(this.game, this.winner, this.game.width/2, 350);
+
+            this.game.add.existing(this.winnerbug);
+            this.winnerbug.Animate();
+        }
 
         /*
         this.gameOverTime = this.game.time.time;
