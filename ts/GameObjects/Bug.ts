@@ -16,13 +16,21 @@ class Bug extends Phaser.Sprite
         this.movingSpeed = 10;
         this.animName = animName;
 
+        this.currentKey = null;
+
         super(game,x,y,this.animName, 0);
-        //this.anchor.set(0.0,0.5);
+        //this.anchor.set(0.5, 0.5);
     }
 
     setCurrentKey(key: Phaser.Key)
     {
+        console.log("key set");
         this.currentKey = key;
+    }
+
+    getCurrentKey()
+    {
+        return this.currentKey;
     }
 
 

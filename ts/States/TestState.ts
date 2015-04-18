@@ -50,6 +50,8 @@ class TestState extends Phaser.State {
         {
 
             // add bug
+            this.bugs[i].scale.x = 0.3;
+            this.bugs[i].scale.y = 0.3;
             this.game.add.existing(this.bugs[i]); // add bird to scene
 
             // physics
@@ -62,6 +64,7 @@ class TestState extends Phaser.State {
 
             // keys
             this.controlKeys[i] = this.game.input.keyboard.addKey(this.controlKeyNumbers[i]);
+            this.bugs[i].setCurrentKey(this.controlKeys[i]);
 
             //var index = this.bugs[i].getIndex();
             //this.controlKeys[i].onDown.add(this.bugs[i].boostBug, this);
@@ -82,9 +85,11 @@ class TestState extends Phaser.State {
         this.bgTile0.tilePosition.y += 1;
 
         // check key press
-        for (var i=0;i<this.controlKeys.length;i++)
+        for (var i=0;i<this.bugs.length;i++)
         {
-            if(this.controlKeys[i].isDown)
+            var key: Phaser.Key;
+            key = this.bugs[i].getCurrentKey();
+            if(key != null && key.isDown)
             {
                 this.boostBug(i);
             }

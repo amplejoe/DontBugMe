@@ -7,7 +7,7 @@ class BugsAndFeatures
 {
     constructor()
     {
-        this.game = new Phaser.Game(1280, 700, Phaser.AUTO, 'content', {create: this.create, preload: this.preload });
+        this.game = new Phaser.Game(1280, 600, Phaser.AUTO, 'content', {create: this.create, preload: this.preload });
     }
     game: Phaser.Game;
 
