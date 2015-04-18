@@ -40,7 +40,7 @@ class GameOverScreenState extends Phaser.State
         }
         else
         {
-            this.winnerbug = new Bug(this.game, this.winner, this.game.width/2, 350);
+            this.winnerbug = new Bug(this.game, this.winner, this.game.width/2-200, 150);
 
             this.game.add.existing(this.winnerbug);
             this.winnerbug.Animate();
