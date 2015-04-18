@@ -2,6 +2,7 @@
 /// <reference path="States/TitleScreenState.ts"/>
 /// <reference path="States/GameScreenState.ts"/>
 /// <reference path="States/GameOverScreenState.ts"/>
+/// <reference path="States/TestState.ts"/>
 class BugsAndFeatures
 {
     constructor()
@@ -32,6 +33,9 @@ class BugsAndFeatures
 
         // game over screen
         this.game.state.add("GameOverScreenState", GameOverScreenState, false);
+
+        // game over screen
+        this.game.state.add("TestState", TestState, false);
 
     }
 
