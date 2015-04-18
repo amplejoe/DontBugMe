@@ -38,7 +38,7 @@ class BugsAndFeatures
         this.game.state.add("GameOverScreenState", GameOverScreenState, false);
 
         // test state
-        this.game.state.add("TestState", TestState, true);
+        this.game.state.add("TestState", TestState, false);
 
     }
 
