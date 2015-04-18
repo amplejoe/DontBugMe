@@ -33,6 +33,11 @@ class Bug extends Phaser.Sprite
         return this.currentKey;
     }
 
+    getAnimName()
+    {
+        return this.animName;
+    }
+
 
     update()
     {
