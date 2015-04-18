@@ -6,30 +6,23 @@ class Bug extends Phaser.Sprite
     game: Phaser.Game;
     movingSpeed: number;
 
-    index: number;
+    currentKey: Phaser.Key;
 
     animName: string;
 
-    constructor(game:Phaser.Game, animName: string, x:number,y:number, index: number)
+    constructor(game:Phaser.Game, animName: string, x:number,y:number)
     {
         this.game = game;
         this.movingSpeed = 10;
-        this.index = index;
-        console.log("my number is "+this.index);
         this.animName = animName;
 
         super(game,x,y,this.animName, 0);
         //this.anchor.set(0.0,0.5);
     }
 
-    setIndex(index: number)
+    setCurrentKey(key: Phaser.Key)
     {
-        this.index = index;
-    }
-
-    getIndex()
-    {
-        return this.index;
+        this.currentKey = key;
     }
 
 

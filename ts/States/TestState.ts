@@ -27,9 +27,9 @@ class TestState extends Phaser.State {
         var numBugs = 3;
         this.bugs = [
 
-            new Bug(this.game,"BUG1_MOVING", 0, this.game.height - this.game.height/2, 0),
-            new Bug(this.game,"BUG2_MOVING", 400, this.game.height - this.game.height/2, 1),
-            new Bug(this.game,"BUG3_MOVING", 800, this.game.height - this.game.height/2, 2)
+            new Bug(this.game,"BUG1_MOVING", 0, this.game.height - this.game.height/2),
+            new Bug(this.game,"BUG2_MOVING", 400, this.game.height - this.game.height/2),
+            new Bug(this.game,"BUG3_MOVING", 800, this.game.height - this.game.height/2)
 
         ];
 
@@ -62,40 +62,32 @@ class TestState extends Phaser.State {
 
             // keys
             this.controlKeys[i] = this.game.input.keyboard.addKey(this.controlKeyNumbers[i]);
-            var index = this.bugs[i].getIndex();
-            console.log("index before" + index);
-            this.controlKeys[i].onDown.add(() =>  {
-                switch(index)
-                {
-                    case 0:
-                        this.boostBug(0);
-                    break;
-                    case 1:
-                        this.boostBug(1);
-                    break;
-                    case 2:
-                        this.boostBug(2);
-                    default:
-                    break;
-                }
 
-            });
+            //var index = this.bugs[i].getIndex();
+            //this.controlKeys[i].onDown.add(this.bugs[i].boostBug, this);
 
         }
 
 
     }
 
-    boostBug(bugIndex: number)
+    boostBug(index: number)
     {
-        console.log(bugIndex);
-        this.bugs[bugIndex].body.velocity.setTo(0, -70);
+        //console.log(bugIndex);
+        this.bugs[index].body.velocity.setTo(0, -120);
     }
-
-
 
     update()
     {
         this.bgTile0.tilePosition.y += 1;
+
+        // check key press
+        for (var i=0;i<this.controlKeys.length;i++)
+        {
+            if(this.controlKeys[i].isDown)
+            {
+                this.boostBug(i);
+            }
+        }
     }
 }
