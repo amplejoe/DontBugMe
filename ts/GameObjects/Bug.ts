@@ -6,8 +6,6 @@ class Bug extends Phaser.Sprite
     game: Phaser.Game;
 
     currentKey: Phaser.Key;
-    currentKeyVal: number;
-    currentKeyText: Phaser.Text;
 
     animName: string;
 
@@ -18,7 +16,6 @@ class Bug extends Phaser.Sprite
         this.animName = animName;
 
         this.currentKey = null;
-        this.currentKeyVal = -1;
 
         super(game,x,y,this.animName, 0);
         this.anchor.set(0.5, 0.5);
@@ -27,18 +24,7 @@ class Bug extends Phaser.Sprite
 
     setCurrentKey(key: Phaser.Key)
     {
-        console.log("key set");
         this.currentKey = key;
-    }
-
-    setCurrentKeyVal(key: number)
-    {
-        this.currentKeyVal = key;
-    }
-
-    getCurrentKeyVal()
-    {
-        return this.currentKeyVal;
     }
 
     getCurrentKey()

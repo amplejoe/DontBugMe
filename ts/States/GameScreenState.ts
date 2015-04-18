@@ -61,7 +61,7 @@ class GameScreenState extends Phaser.State {
             Phaser.Keyboard.N, Phaser.Keyboard.M
         ];
 
-        this.MaxTime= 5;
+        this.MaxTime= 1;
         this.LastTime = this.game.time.time;
         this.Time = Math.round(Math.random()*this.MaxTime)+5;
         //console.log("time :"+this.Time);
@@ -104,7 +104,7 @@ class GameScreenState extends Phaser.State {
             // animations
             this.bugs[i].Animate();
 
-            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x, 50,'5', { font: "80px Arial", fill: "#ff0000", align: "center"});
+            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x, 50,'', { font: "80px Arial", fill: "#ff0000", align: "center"});
 
             // keys
             //this.controlKeys[i] = this.game.input.keyboard.addKey(this.controlKeyNumbers[i]);
@@ -141,7 +141,7 @@ class GameScreenState extends Phaser.State {
 
             var key: Phaser.Key;
             key = this.bugs[i].getCurrentKey();
-            if (key != null) this.bugsTexts[i].setText(""+this.bugs[i].getCurrentKeyVal());
+            if (key != null) this.bugsTexts[i].setText(""+this.keyValToString(key.keyCode));
             if(key != null && key.isDown)
             {
                 this.boostBug(i);
@@ -187,21 +187,27 @@ class GameScreenState extends Phaser.State {
         if (temp<= 0){
             var keyVal = this.getRandomLetter();
 
-            if (this.bugs[bugNr].currentKeyVal != -1) this.game.input.keyboard.removeKey(this.bugs[bugNr].currentKeyVal);
+            if (this.bugs[bugNr].getCurrentKey() != null && this.bugs[bugNr].getCurrentKey().keyCode != -1) this.game.input.keyboard.removeKey(this.bugs[bugNr].getCurrentKey().keyCode);
             var key =  this.game.input.keyboard.addKey(keyVal);
             this.bugs[bugNr].setCurrentKey(key);
-            this.bugs[bugNr].setCurrentKeyVal(keyVal);
+            //this.bugs[bugNr].setCurrentKeyVal(keyVal);
             //this.bugs[bugNr].currentKeyText.setText(this.bugs[bugNr].currentKey.toString());
 
             this.Time = Math.round(Math.random()*this.MaxTime)+5;
             this.LastTime = this.game.time.time;
 
-            console.log("Added Key");
+            console.log("Added Key " + keyVal);
         }
     }
 
 
     toInt(value) { return ~~value; }
+
+    keyValToString(key: number)
+    {
+        var value = String.fromCharCode(key);
+        return value;
+    }
 
 
 }
