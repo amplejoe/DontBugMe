@@ -23,6 +23,7 @@ class BugsAndFeatures
         this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");
         this.game.load.atlasJSONHash("BUG2_MOVING", "assets/gfx/final_bugs/hirschi.png", "assets/gfx/final_bugs/hirischi_moving.json");
         this.game.load.atlasJSONHash("BUG3_MOVING", "assets/gfx/final_bugs/schoeni_animation.png", "assets/gfx/final_bugs/schoeni_animation.json");
+        this.game.load.atlasJSONHash("BUG4_MOVING", "assets/gfx/final_bugs/raini.png", "assets/gfx/final_bugs/raini.json");
 
     }
 

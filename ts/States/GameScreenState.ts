@@ -29,17 +29,16 @@ class GameScreenState extends Phaser.State {
     bugs: Array<Bug>;
     controlKeyNumbers: Array<number>;
     controlKeys: Array<Phaser.Key>;
+    bugsInited: boolean;
 
 
     create()
     {
-
+        this.bugsInited = false;
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
 
 
         this.initCountDown();
-
-        this.initBugs();
 
 
         this.initRndLetters();
@@ -64,12 +63,13 @@ class GameScreenState extends Phaser.State {
         this.game.physics.arcade.gravity.y = 200;
 
         // create bugs
-        var numBugs = 3;
+        var numBugs = 4;
         this.bugs = [
 
             new Bug(this.game,"BUG1_MOVING", 0, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG2_MOVING", 400, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG3_MOVING", 800, this.game.height - this.game.height/2)
+            new Bug(this.game,"BUG2_MOVING", 300, this.game.height - this.game.height/2),
+            new Bug(this.game,"BUG3_MOVING", 600, this.game.height - this.game.height/2),
+            new Bug(this.game,"BUG4_MOVING", 800, this.game.height - this.game.height/2)
 
         ];
 
@@ -78,7 +78,8 @@ class GameScreenState extends Phaser.State {
         this.controlKeyNumbers = [
             Phaser.Keyboard.Q,
             Phaser.Keyboard.W,
-            Phaser.Keyboard.E
+            Phaser.Keyboard.E,
+            Phaser.Keyboard.R
         ];
 
         this.controlKeys = Array(3);
@@ -110,6 +111,8 @@ class GameScreenState extends Phaser.State {
             //this.controlKeys[i].onDown.add(this.bugs[i].boostBug, this);
 
         }
+
+        this.bugsInited = true;
     }
 
     initRndLetters()
@@ -179,6 +182,7 @@ class GameScreenState extends Phaser.State {
         else if (this.countdown == 0){
             this.updateCounter();
             this.text.setText("GO!");
+            if (!this.bugsInited) this.initBugs();
             return false
         }
 
