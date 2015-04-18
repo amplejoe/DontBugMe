@@ -25,15 +25,18 @@ class GameScreenState extends Phaser.State {
     Time: number;
     LastTime: number;
 
+    bugsIngame: number;
+
+    bugNames: Array<string>;
 
     create()
     {
         this.bugsInited = false;
 
-        var numBugs = 4;
-        this.bugsTexts = Array(numBugs);
+        this.bugsIngame = 4;
+        this.bugsTexts = Array(this.bugsIngame);
 
-        this.currentlySetKeys = Array(numBugs);
+        this.currentlySetKeys = Array(this.bugsIngame);
 
 
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
@@ -78,15 +81,21 @@ class GameScreenState extends Phaser.State {
     {
         // start physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        this.game.physics.arcade.gravity.y = 200;
+        this.game.physics.arcade.gravity.y = 150;
 
         // create bugs
+        this.bugNames = [
+            "BUG1_MOVING",
+            "BUG2_MOVING",
+            "BUG3_MOVING",
+            "BUG4_MOVING"
+        ]
         this.bugs = [
 
-            new Bug(this.game,"BUG1_MOVING", 0, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG2_MOVING", 300, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG3_MOVING", 600, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG4_MOVING", 800, this.game.height - this.game.height/2)
+            new Bug(this.game,this.bugNames[0], this.game.width * 0.15, this.game.height - this.game.height/2),
+            new Bug(this.game,this.bugNames[1], this.game.width * 0.3, this.game.height - this.game.height/2),
+            new Bug(this.game,this.bugNames[2], this.game.width * 0.45, this.game.height - this.game.height/2),
+            new Bug(this.game,this.bugNames[3], this.game.width * 0.60, this.game.height - this.game.height/2)
 
         ];
 
@@ -100,9 +109,10 @@ class GameScreenState extends Phaser.State {
             this.bugs[i].scale.y = 0.3;
             this.game.add.existing(this.bugs[i]); // add bird to scene
 
+
             // physics
             this.game.physics.enable(this.bugs[i], Phaser.Physics.ARCADE);
-            this.bugs[i].body.collideWorldBounds = true;
+            this.bugs[i].body.collideWorldBounds = false;
             this.bugs[i].body.bounce.set(0.4);
 
             // animations
@@ -138,22 +148,83 @@ class GameScreenState extends Phaser.State {
 
 
         //console.log("check"+i);
-        this.UpdateRndBtns();
 
-        // check key press
+
+
+        // check key press and deaths
         for (var i=0;i<this.bugs.length;i++)
         {
 
-
-            var key: Phaser.Key;
-            key = this.bugs[i].getCurrentKey();
-            if (key != null) this.bugsTexts[i].setText(""+this.keyValToString(key.keyCode));
-            if(key != null && key.isDown)
+            if (this.bugs[i] != null)
             {
-                this.boostBug(i);
+                if (this.bugs[i].y >= this.game.height)
+                {
+                    // remove old key
+                    if (this.bugs[i].getCurrentKey() != null)
+                    {
+                        var keyCode = this.bugs[i].getCurrentKey().keyCode;
+                        this.game.input.keyboard.removeKey(keyCode);
+                    }
+                    this.bugs[i] = null;
+                    this.bugsIngame--;
+
+                }
+                else if (this.bugs[i].y <= 50)
+                {
+                    this.bugs[i].y = 50;
+                    this.bugs[i].body.velocity.setTo(0, +30);
+                }
             }
+
+            this.handleWin();
+
+            this.handleButtons(i);
         }
 
+        this.UpdateRndBtns();
+
+    }
+
+    handleButtons(bugindex: number)
+    {
+        if (this.bugs[bugindex] == null) {
+            this.bugsTexts[bugindex].setText(":(");
+            return;
+        }
+
+        var key: Phaser.Key;
+        key = this.bugs[bugindex].getCurrentKey();
+        if (key != null) this.bugsTexts[bugindex].setText(""+this.keyValToString(key.keyCode));
+        if(key != null && key.isDown)
+        {
+            this.boostBug(bugindex);
+        }
+
+    }
+
+
+    handleWin()
+    {
+
+        if (this.bugsIngame > 1) return;
+
+        var winnerString: string;
+
+        winnerString = "";
+        if (this.bugsIngame == 1)
+        {
+
+            for (var i=0;i<this.bugs.length;i++)
+            {
+                if (this.bugs[i] != null) {
+                    winnerString = this.bugNames[i];
+                    break;
+                }
+            }
+
+        }
+        this.game.state.states['GameOverScreenState'].setWinner(winnerString);
+        this.game.state.start("GameOverScreenState");
     }
 
     boostBug(index: number)
@@ -174,6 +245,7 @@ class GameScreenState extends Phaser.State {
             this.updateCounter();
             this.text.setText("GO!");
             if (!this.bugsInited) this.initBugs();
+            this.assignAndRemoveLetters();
             return true;
         }
 
@@ -192,8 +264,23 @@ class GameScreenState extends Phaser.State {
 
         if (temp <= 0){
 
-            var keyVal;
-            for(var i=0; i<this.bugs.length;i++)
+
+            this.assignAndRemoveLetters();
+
+            //console.log("set bug "+bugNr);
+            this.Time = Math.round(Math.random()*this.MaxTime)+2;
+            this.LastTime = this.game.time.time;
+
+        }
+    }
+
+    assignAndRemoveLetters()
+    {
+        var keyVal;
+        for(var i=0; i<this.bugs.length;i++)
+        {
+
+            if (this.bugs[i] != null)
             {
                 keyVal = this.getRandomLetter();
                 while (this.currentlySetKeys.indexOf(keyVal) > -1) keyVal = this.getRandomLetter();
@@ -210,24 +297,7 @@ class GameScreenState extends Phaser.State {
                 // add
                 var key =  this.game.input.keyboard.addKey(keyVal);
                 this.bugs[i].setCurrentKey(key);
-
             }
-
-            /*
-            if (this.bugs[bugNr].getCurrentKey() != null && this.bugs[bugNr].getCurrentKey().keyCode != -1)
-            {
-
-                var keyCode = this.bugs[bugNr].getCurrentKey().keyCode;
-                this.game.input.keyboard.removeKey(keyCode);
-                this.currentlySetKeys[bugNr] = -1;
-
-            }
-            */
-
-            //console.log("set bug "+bugNr);
-            this.Time = Math.round(Math.random()*this.MaxTime)+2;
-            this.LastTime = this.game.time.time;
-
         }
     }
 
