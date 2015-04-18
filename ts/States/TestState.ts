@@ -4,11 +4,11 @@
 class TestState extends Phaser.State {
     game:Phaser.Game;
 
-    bugs: Array<Bug>;
-    controlKeyNumbers: Array<number>;
-    controlKeys: Array<Phaser.Key>;
+    bugs:Array<Bug>;
+    controlKeyNumbers:Array<number>;
+    controlKeys:Array<Phaser.Key>;
 
-    bgTile0: Phaser.TileSprite;
+    bgTile0:Phaser.TileSprite;
 
 
     create() {
@@ -16,7 +16,7 @@ class TestState extends Phaser.State {
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
 
         var line1 = "Test State";
-        var style = { font: "48px Arial", fill: "#ff0000", textAlign: "center"};
+        var style = {font: "48px Arial", fill: "#ff0000", textAlign: "center"};
         this.game.add.text(10, 10, line1, style);
 
         // start physics
@@ -27,9 +27,9 @@ class TestState extends Phaser.State {
         var numBugs = 3;
         this.bugs = [
 
-            new Bug(this.game,"BUG1_MOVING", 0, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG2_MOVING", 400, this.game.height - this.game.height/2),
-            new Bug(this.game,"BUG3_MOVING", 800, this.game.height - this.game.height/2)
+            new Bug(this.game, "BUG1_MOVING", 0, this.game.height - this.game.height / 2),
+            new Bug(this.game, "BUG2_MOVING", 400, this.game.height - this.game.height / 2),
+            new Bug(this.game, "BUG3_MOVING", 800, this.game.height - this.game.height / 2)
 
         ];
 
@@ -46,8 +46,7 @@ class TestState extends Phaser.State {
         var button;
 
         // add bugs and physics and animations
-        for (var i=0;i<this.bugs.length;i++)
-        {
+        for (var i = 0; i < this.bugs.length; i++) {
 
             // add bug
             this.bugs[i].scale.x = 0.3;
@@ -74,23 +73,19 @@ class TestState extends Phaser.State {
 
     }
 
-    boostBug(index: number)
-    {
+    boostBug(index:number) {
         //console.log(bugIndex);
         this.bugs[index].body.velocity.setTo(0, -120);
     }
 
-    update()
-    {
+    update() {
         this.bgTile0.tilePosition.y += 1;
 
         // check key press
-        for (var i=0;i<this.bugs.length;i++)
-        {
-            var key: Phaser.Key;
+        for (var i = 0; i < this.bugs.length; i++) {
+            var key:Phaser.Key;
             key = this.bugs[i].getCurrentKey();
-            if(key != null && key.isDown)
-            {
+            if (key != null && key.isDown) {
                 this.boostBug(i);
             }
         }
