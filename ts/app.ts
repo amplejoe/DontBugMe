@@ -27,7 +27,7 @@ class BugsAndFeatures
     create()
     {
         // show title screen
-        this.game.state.add("TitleScreenState", TitleScreenState, true);
+        this.game.state.add("TitleScreenState", TitleScreenState, false);
 
 
         // game screen
@@ -38,7 +38,7 @@ class BugsAndFeatures
         this.game.state.add("GameOverScreenState", GameOverScreenState, false);
 
         // test state
-        this.game.state.add("TestState", TestState, false);
+        this.game.state.add("TestState", TestState, true);
 
     }
 
