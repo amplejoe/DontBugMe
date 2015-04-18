@@ -5,55 +5,66 @@ class GameScreenState extends Phaser.State {
 
     bgTile0: Phaser.TileSprite;
 
-    A_BTN: Phaser.Key;
-    B_BTN: Phaser.Key;
-    C_BTN: Phaser.Key;
-    D_BTN: Phaser.Key;
+    allKeys: Array<number>;
 
     countdown: number;
-    countdownMax: number;
     startTime: number;
-    text;
-    text2;
+    countdownMax: number;
     elapsedSeconds:number;
+    text;
 
     alphabet: Array<String>;
+
+    bugs: Array<Bug>;
+    bugsTexts: Array<Phaser.Text>;
+    controlKeyNumbers: Array<number>;
+    controlKeys: Array<Phaser.Key>;
+    bugsInited: boolean;
 
     // var  set new btn
     MaxTime:number;
     Time:number;
     LastTime:number;
-    playerBtn: String;
-
-
-    bugs: Array<Bug>;
-    controlKeyNumbers: Array<number>;
-    controlKeys: Array<Phaser.Key>;
-    bugsInited: boolean;
 
 
     create()
     {
         this.bugsInited = false;
-        this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
 
+        this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
 
         this.initCountDown();
 
-
         this.initRndLetters();
-
 
     }
 
     initCountDown()
     {
-        this.countdownMax =this.countdown = 5;
+        this.countdownMax = this.countdown = 5;
 
         this.startTime = this.game.time.time;
         //countdown format + position
         this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
         //this.text.anchor.setTo(0.5, 0.5);
+    }
+
+    initRndLetters()
+    {
+        this.allKeys = [Phaser.Keyboard.Q, Phaser.Keyboard.W, Phaser.Keyboard.E, Phaser.Keyboard.R,
+            Phaser.Keyboard.T, Phaser.Keyboard.Z, Phaser.Keyboard.U, Phaser.Keyboard.I,
+            Phaser.Keyboard.Q, Phaser.Keyboard.W, Phaser.Keyboard.E, Phaser.Keyboard.R,
+            Phaser.Keyboard.O, Phaser.Keyboard.P, Phaser.Keyboard.A, Phaser.Keyboard.S,
+            Phaser.Keyboard.D, Phaser.Keyboard.F, Phaser.Keyboard.G, Phaser.Keyboard.H,
+            Phaser.Keyboard.J, Phaser.Keyboard.K, Phaser.Keyboard.L, Phaser.Keyboard.Y,
+            Phaser.Keyboard.X, Phaser.Keyboard.C, Phaser.Keyboard.V, Phaser.Keyboard.B,
+            Phaser.Keyboard.N, Phaser.Keyboard.M
+        ];
+
+        this.MaxTime= 5;
+        this.LastTime = this.game.time.time;
+        this.Time = Math.round(Math.random()*this.MaxTime)+5;
+        //console.log("time :"+this.Time);
     }
 
     initBugs()
@@ -64,6 +75,7 @@ class GameScreenState extends Phaser.State {
 
         // create bugs
         var numBugs = 4;
+        this.bugsTexts = Array(numBugs);
         this.bugs = [
 
             new Bug(this.game,"BUG1_MOVING", 0, this.game.height - this.game.height/2),
@@ -73,18 +85,7 @@ class GameScreenState extends Phaser.State {
 
         ];
 
-        // create keys
-        var numControlKeys = numBugs;
-        this.controlKeyNumbers = [
-            Phaser.Keyboard.Q,
-            Phaser.Keyboard.W,
-            Phaser.Keyboard.E,
-            Phaser.Keyboard.R
-        ];
-
         this.controlKeys = Array(3);
-
-        var button;
 
         // add bugs and physics and animations
         for (var i=0;i<this.bugs.length;i++)
@@ -103,9 +104,11 @@ class GameScreenState extends Phaser.State {
             // animations
             this.bugs[i].Animate();
 
+            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x, 50,'5', { font: "80px Arial", fill: "#ff0000", align: "center"});
+
             // keys
-            this.controlKeys[i] = this.game.input.keyboard.addKey(this.controlKeyNumbers[i]);
-            this.bugs[i].setCurrentKey(this.controlKeys[i]);
+            //this.controlKeys[i] = this.game.input.keyboard.addKey(this.controlKeyNumbers[i]);
+            //this.bugs[i].setCurrentKey(this.controlKeys[i]);
 
             //var index = this.bugs[i].getIndex();
             //this.controlKeys[i].onDown.add(this.bugs[i].boostBug, this);
@@ -115,28 +118,7 @@ class GameScreenState extends Phaser.State {
         this.bugsInited = true;
     }
 
-    initRndLetters()
-    {
-        this.alphabet= ["A", "B", "C", "D"];
-        this.playerBtn = this.getRandomLetter();
 
-
-        this.MaxTime= 5;
-        this.LastTime = this.game.time.time;
-        this.Time = Math.round(Math.random()*this.MaxTime)+5;
-        console.log("time :"+this.Time);
-    }
-
-    UpdateRndBtn(){
-        this.elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(this.LastTime));
-        var temp = this.Time-this.elapsedSeconds;
-        if (temp<= 0){
-            this.playerBtn= this.getRandomLetter();
-            this.Time = Math.round(Math.random()*this.MaxTime)+5;
-            this.LastTime = this.game.time.time;
-            console.log("time :"+this.  Time +"  playerBnt " +this.playerBtn);
-        }
-    }
     updateCounter(){
        this.elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(this.startTime));
        this.countdown=this.countdownMax-this.elapsedSeconds;
@@ -144,19 +126,22 @@ class GameScreenState extends Phaser.State {
 
     update() {
 
-        if (!this.isCountingDown()) return;
+        if (this.isCountingDown()) return;
 
         this.text.setText("");
 
         this.bgTile0.tilePosition.y += 1;
-        this.UpdateRndBtn();
 
 
         // check key press
         for (var i=0;i<this.bugs.length;i++)
         {
+            //console.log("check"+i);
+            this.UpdateRndBtn(i);
+
             var key: Phaser.Key;
             key = this.bugs[i].getCurrentKey();
+            if (key != null) this.bugsTexts[i].setText(""+this.bugs[i].getCurrentKeyVal());
             if(key != null && key.isDown)
             {
                 this.boostBug(i);
@@ -175,26 +160,48 @@ class GameScreenState extends Phaser.State {
     {
         if (this.countdown > 0) {
             this.updateCounter();
-            console.log("Countdown: " + this.countdown);
+            //console.log("Countdown: " + this.countdown);
             this.text.setText(this.countdown);
-            return false;
+            return true;
         }
         else if (this.countdown == 0){
             this.updateCounter();
             this.text.setText("GO!");
             if (!this.bugsInited) this.initBugs();
-            return false
+            return true;
         }
 
-        return true;
+        return false;
+    }
+
+    getRandomLetter(){
+        var tempo = this.allKeys[Math.floor(Math.random()*this.allKeys.length)]; //this.alphabet.indexOf(,Math.round(Math.random()*this.alphabet.length));
+        //console.log("Random letter: "+ tempo);
+        return tempo;
+    }
+
+    UpdateRndBtn(bugNr){
+        this.elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(this.LastTime));
+        var temp = this.Time-this.elapsedSeconds;
+        //console.log("temp"+temp);
+        if (temp<= 0){
+            var keyVal = this.getRandomLetter();
+
+            if (this.bugs[bugNr].currentKeyVal != -1) this.game.input.keyboard.removeKey(this.bugs[bugNr].currentKeyVal);
+            var key =  this.game.input.keyboard.addKey(keyVal);
+            this.bugs[bugNr].setCurrentKey(key);
+            this.bugs[bugNr].setCurrentKeyVal(keyVal);
+            //this.bugs[bugNr].currentKeyText.setText(this.bugs[bugNr].currentKey.toString());
+
+            this.Time = Math.round(Math.random()*this.MaxTime)+5;
+            this.LastTime = this.game.time.time;
+
+            console.log("Added Key");
+        }
     }
 
 
     toInt(value) { return ~~value; }
 
-    getRandomLetter(){
-        var tempo = this.alphabet[Math.floor(Math.random()*this.alphabet.length)]; //this.alphabet.indexOf(,Math.round(Math.random()*this.alphabet.length));
-        console.log("Random letter: "+ tempo);
-        return tempo;
-    }
+
 }
