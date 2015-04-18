@@ -1,6 +1,7 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
 
+
 class MenuState extends Phaser.State {
     game:Phaser.Game;
 
@@ -10,6 +11,8 @@ class MenuState extends Phaser.State {
     bugs:Array<Bug>;
     choosenBugs:Array<String>;
     choosen:Array <boolean>;
+
+    s1:Phaser.Sound;
 
     create() {
         var line1 = "MENU";
@@ -29,42 +32,49 @@ class MenuState extends Phaser.State {
 
 
         ];
-        for (var i=0;i<this.bugs.length;i++) {
+        for (var i = 0; i < this.bugs.length; i++) {
 
             // add bug
             this.bugs[i].scale.x = 0.3;
             this.bugs[i].scale.y = 0.3;
             this.game.add.existing(this.bugs[i]); // add bird to scene
         }
-        for(var i = 0; i < this.bugs.length; i++) {
+        for (var i = 0; i < this.bugs.length; i++) {
             this.bugs[i].inputEnabled = true;
             this.bugs[i].input.start(1, true);
         }
 
-
+        this.s1 = this.game.add.audio('menunew');
+        //this.s1.play(null,null,100,true);
+        this.s1.play(null, null, 100, true);
+       // this.s1.loop = true;
     }
 
-    /*update()
-    {
-        for(var i = 0; i<this.bugs.length;i++)
-        {
-            if(this.choosen[i] == false)
-            {
-                console.log("enter!");
-                this.bugs[i].Animate();
-                this.choosen[i] = true;
-            }
-            else if( this.choosen[i] == true)
-            {
-                console.log("enter2!");
-                this.bugs[i].animations.stop();
-                this.choosen[i] = false;
-            }
+    update() {
+        /*for(var i = 0; i<this.bugs.length;i++)
+         {
+         if(this.choosen[i] == false)
+         {
+         console.log("enter!");
+         this.bugs[i].Animate();
+         this.choosen[i] = true;
+         }
+         else if( this.choosen[i] == true)
+         {
+         console.log("enter2!");
+         this.bugs[i].animations.stop();
+         this.choosen[i] = false;
+         }
 
+         }*/
+        if (this.s1.durationMS - this.s1.currentTime < 10) {
+            //ohne console funkts nicht
+            console.log("buh!");
+            this.s1.restart(null, null);
         }
     }
 
-    */
+
     buttonPressed() {
         this.game.state.start("GameScreenState");
     }
