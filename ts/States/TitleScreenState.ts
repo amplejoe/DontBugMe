@@ -18,7 +18,7 @@ class TitleScreenState extends Phaser.State
 
     buttonPressed()
     {
-        this.game.state.start("GameScreenState");
+        this.game.state.start("MenuState");
     }
 
 }

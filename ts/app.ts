@@ -3,6 +3,8 @@
 /// <reference path="States/GameScreenState.ts"/>
 /// <reference path="States/GameOverScreenState.ts"/>
 /// <reference path="States/TestState.ts"/>
+/// <reference path="States/MenuState.ts"/>
+
 class BugsAndFeatures
 {
     constructor()
@@ -39,6 +41,9 @@ class BugsAndFeatures
 
         // test state
         this.game.state.add("TestState", TestState, false);
+
+        // menu state
+        this.game.state.add("MenuState", MenuState, false);
 
     }
 
