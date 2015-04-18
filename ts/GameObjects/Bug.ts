@@ -17,8 +17,8 @@ class Bug extends Phaser.Sprite
 
         this.currentKey = null;
 
-        super(game,x,y,this.animName, 0);
-        this.anchor.set(0.5, 0.5);
+        super(game,x,y,animName, 0);
+        //this.anchor.set(0.5, 0.5);
 
     }
 
@@ -35,6 +35,11 @@ class Bug extends Phaser.Sprite
     getAnimName()
     {
         return this.animName;
+    }
+
+    setAnimName(name: string)
+    {
+        this.animName = name;
     }
 
 

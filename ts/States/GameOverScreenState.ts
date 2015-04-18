@@ -10,22 +10,25 @@ class GameOverScreenState extends Phaser.State
 
     waitTime: number = 5;
 
-   setScore(score:string)
+    winner: string;
+
+   setWinner(winner: string)
    {
-        this.score = score;
+        this.winner = winner;
    }
 
     create()
     {
-        var line1 = "Game Over - Your Score:";
-        var line2 = this.score;
-        var line3 = "Continue cycling to retry...";
+
+        var line1 = "Game Over - The Winner is:";
+        var line2 = this.winner;
         var style = { font: "48px Arial", fill: "#ff0000", textAlign: "center"};
         this.game.add.text(10, 10, line1, style);
         this.game.add.text(10, 150, line2, style);
-        this.game.add.text(10, 380, line3, style);
 
+        /*
         this.gameOverTime = this.game.time.time;
+        */
     }
 
     update()
