@@ -27,17 +27,18 @@ class GameOverScreenState extends Phaser.State
     create()
     {
 
-        this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
+        this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
         var line1 = "Game Over - The Winner:";
 
-        var style = { font: "48px Arial", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(this.game.width/2- 300, 70, line1, style);
+        var style = { font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        this.game.add.text(this.game.width/2- 450, 70, line1, style);
 
         if (this.winner == "")
         {
             var line2 = "Nobody!";
-            this.game.add.text(this.game.width/2 - 100, 250, line2, style);
+            var style2 = { font: "80px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+            this.game.add.text(this.game.width/2 - 100, 250, line2, style2);
 
         }
         else

@@ -17,27 +17,37 @@ class MenuState extends Phaser.State {
 
     create() {
 
-        this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
+        this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
         var line1 = "Pick at least 2 Bugs!";
-        var style = {font: "48px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(this.game.width / 2 - 200, 50, line1, style);
+        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        this.game.add.text(this.game.width / 2 - 300, 50, line1, style);
 
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);
 
         this.bugs = [
 
-            new Bug(this.game, "BUG1_MOVING", 150, this.game.height - this.game.height / 4 * 3),
-            new Bug(this.game, "BUG2_MOVING", 550, this.game.height - this.game.height / 4 * 3),
-            new Bug(this.game, "BUG3_MOVING", 950, this.game.height - this.game.height / 4 * 3),
-            new Bug(this.game, "BUG4_MOVING", 350, this.game.height - this.game.height / 2)
+            new Bug(this.game, "BUG1_MOVING", 170, this.game.height  *0.3),
+            new Bug(this.game, "BUG2_MOVING", 415, this.game.height *0.3),
+            new Bug(this.game, "BUG3_MOVING", 705, this.game.height *0.3),
+            new Bug(this.game, "BUG4_MOVING", 950, this.game.height *0.3)
         ];
 
+        var style2 = {font: "40px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        var nam1 = "Andi Goldi";
+        this.game.add.text(180, this.game.height  *0.5, nam1, style2);
+        var nam2= "Marcel Hirschi";
+        this.game.add.text(365, this.game.height  *0.5, nam2, style2);
+        var nam3 = "Raini Schoeni";
+        this.game.add.text(665, this.game.height  *0.5, nam3, style2);
+        var nam4 = "Marlies Schildi";
+        this.game.add.text(910, this.game.height  *0.5, nam4, style2);
+
+
         //first two bugs are choosen
-        this.choosen = [true, true, false, false];
-        this.bugs[0].Animate();
-        this.bugs[1].Animate();
+        this.choosen = [false, false, false, false];
+
 
         for (var i = 0; i < this.bugs.length; i++) {
 

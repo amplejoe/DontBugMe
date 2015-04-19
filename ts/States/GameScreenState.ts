@@ -64,7 +64,7 @@ class GameScreenState extends Phaser.State {
         this.isFirstBoost = true;
 
 
-        this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
+        this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
 
         this.initPreGameCountDown();
 
@@ -117,10 +117,10 @@ class GameScreenState extends Phaser.State {
             'leaves3'
         ];
 
-        this.shrubTimerMax = 3;
-        this.shrubTimerMin = 0.8;
+        this.shrubTimerMax = 1.5;
+        this.shrubTimerMin = 0.4;
         this.shrubTimerCreateTime = -1;
-        this.shrubSpawnTimer = 2.3;
+        this.shrubSpawnTimer = 1.2;
 
     }
 
