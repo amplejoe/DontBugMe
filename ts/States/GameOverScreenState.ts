@@ -3,24 +3,26 @@
 class GameOverScreenState extends Phaser.State
 {
     game: Phaser.Game;
-    START_BUTTON: Phaser.Key;
 
-    score: string = "00:00:00";
+    timePlayed: string = "00:00:00";
 
     bg: Phaser.TileSprite;
-
-    gameOverTime: number;
-
-    waitTime: number = 5;
 
     winnerbug: Bug;
 
     winner: string;
 
+    sEnd: Phaser.Sound;
+
    setWinner(winner: string)
    {
         this.winner = winner;
    }
+
+    setTimePlayed(time: string)
+    {
+        this.timePlayed = time;
+    }
 
     create()
     {
@@ -48,20 +50,17 @@ class GameOverScreenState extends Phaser.State
             this.winnerbug.Animate();
         }
 
-        /*
-        this.gameOverTime = this.game.time.time;
-        */
+        var line3 = "Time played: "+this.timePlayed;
+        this.game.add.text(this.game.width/2 - 100, this.game.height * 0.80, line3, style);
+
+        this.sEnd = this.game.add.audio('end_quiet');
+        //this.sEnd.play(null, 0.0, 1, true);
+        this.sEnd.fadeIn(6000, true); // fadein sound 6s
     }
 
     update()
     {
-        var elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(this.gameOverTime));
 
-        if (elapsedSeconds >= this.waitTime)
-        {
-            this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
-            this.START_BUTTON.onDown.add(GameOverScreenState.prototype.buttonPressed, this);
-        }
     }
 
     buttonPressed()

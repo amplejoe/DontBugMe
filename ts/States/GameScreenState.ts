@@ -1,38 +1,56 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
 class GameScreenState extends Phaser.State {
+
     game:Phaser.Game;
 
+    // background
     bgTile0: Phaser.TileSprite;
 
+    // rnd keys
     allKeys: Array<number>;
     currentlySetKeys: Array<number>;
 
-    countdown: number;
-    startTime: number;
-    countdownMax: number;
-    elapsedSeconds:number;
-    text;
+    // countdown
+    preGameCountDown: number;
+    preGameCountDownMax: number;
+    cdStartTime: number;
+    cdText: Phaser.Text;
 
-    alphabet: Array<String>;
-
+    // bug related vars
     bugs: Array<Bug>;
     bugsTexts: Array<Phaser.Text>;
     bugsInited: boolean;
-
-    // var  set new btn
-    MaxTime:number;
-    Time: number;
-    LastTime: number;
-
     bugsIngame: number;
-
     bugNames: Array<string>;
+
+    // game timing & difficulty
+    gameStartTime: number;
+    adjustInterval: number;
+    prevAdjustmentTime: number;
+
+    // button assignment
+    currentButtonDurationTime: number;
+    buttonDurationTimeMax: number;
+    buttonDurationTimeMin: number;
+    prevButtonAssigmentTime: number;
+
+    tileSpeed: number;
+    gravity: number;
+    boostVelocity: number;
 
     // audio
     music: Array<Phaser.Sound>;
+    currentMusicPlaying: Phaser.Sound;
     squeaks: Array<Phaser.Sound>;
     sEnd: Array<Phaser.Sound>;
+    sStart: Phaser.Sound;
+
+    // ambience sprites
+    shrubbery: Array<string>;
+    shrubTimerMax: number;
+    shrubTimerMin: number;
+    shrubTimerCreateTime: number;
 
     create()
     {
@@ -46,12 +64,51 @@ class GameScreenState extends Phaser.State {
 
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
 
-        this.initCountDown();
+        this.initPreGameCountDown();
 
         this.initRndLetters();
 
         this.initSounds();
 
+        this.initAmbientSprites();
+
+        // start game timing, tilespeed etc.
+        this.initGameTiming();
+
+        this.sStart.play(null, null, 1, false); // countdown sound
+
+    }
+
+    initAmbientSprites()
+    {
+        this.shrubbery = [
+            'leaves1',
+            'leaves2',
+            'leaves3'
+        ];
+
+        this.shrubTimerMax = 5;
+        this.shrubTimerMin = 2;
+        this.shrubTimerCreateTime = -1;
+
+    }
+
+    initGameTiming()
+    {
+        // overall game time
+        this.gameStartTime = this.game.time.time;
+        this.prevAdjustmentTime = this.gameStartTime;
+        this.adjustInterval = 10;
+
+        // bug speed and tiles
+        this.boostVelocity = -170;
+        this.gravity = 150;
+        this.tileSpeed = 1;
+
+        // buttonAssignment speed
+        this.buttonDurationTimeMax = 5;
+        this.buttonDurationTimeMin = 0.5;
+        this.currentButtonDurationTime = -1;
     }
 
     initSounds()
@@ -73,15 +130,18 @@ class GameScreenState extends Phaser.State {
             this.game.add.audio('end'),
             this.game.add.audio('end_combined')
         ]
+
+        this.sStart = this.game.add.audio('startrace');
+        this.currentMusicPlaying = null;
     }
 
-    initCountDown()
+    initPreGameCountDown()
     {
-        this.countdownMax = this.countdown = 5;
+        this.preGameCountDownMax = this.preGameCountDown = 3;
 
-        this.startTime = this.game.time.time;
+        this.cdStartTime = this.game.time.time;
         //countdown format + position
-        this.text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
+        this.cdText = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
         //this.text.anchor.setTo(0.5, 0.5);
     }
 
@@ -97,19 +157,13 @@ class GameScreenState extends Phaser.State {
                         Phaser.Keyboard.N, Phaser.Keyboard.M
         ];
 
-        this.MaxTime= 1;
-        this.LastTime = this.game.time.time;
-        this.Time = Math.round(Math.random()*this.MaxTime)+5;
-
-
-        //console.log("time :"+this.Time);
     }
 
     initBugs()
     {
         // start physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        this.game.physics.arcade.gravity.y = 150;
+        this.game.physics.arcade.gravity.y = this.gravity;
 
         // create bugs
         this.bugNames = [
@@ -119,7 +173,6 @@ class GameScreenState extends Phaser.State {
             "BUG4_MOVING"
         ]
         this.bugs = [
-
             new Bug(this.game,this.bugNames[0], this.game.width * 0.15, this.game.height - this.game.height/2),
             new Bug(this.game,this.bugNames[1], this.game.width * 0.3, this.game.height - this.game.height/2),
             new Bug(this.game,this.bugNames[2], this.game.width * 0.45, this.game.height - this.game.height/2),
@@ -146,38 +199,97 @@ class GameScreenState extends Phaser.State {
             // animations
             this.bugs[i].Animate();
 
-            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x, 50,'', { font: "80px Arial", fill: "#ff0000", align: "center"});
-
-            // keys
-            //this.controlKeys[i] = this.game.input.keyboard.addKey(this.controlKeyNumbers[i]);
-            //this.bugs[i].setCurrentKey(this.controlKeys[i]);
-
-            //var index = this.bugs[i].getIndex();
-            //this.controlKeys[i].onDown.add(this.bugs[i].boostBug, this);
+            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', { font: "80px Arial", fill: "#ff0000", align: "center"});
 
         }
 
+        this.assignAndRemoveLetters();
+
         this.bugsInited = true;
+
+        // fadeout go!
+        this.game.time.events.add(2000, function() {
+            //this.game.add.tween(this.cdText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+            //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
+            this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+        }, this);
+
+        // play initial music
+        this.playRndLoops();
+
+    }
+
+    playRndLoops()
+    {
+        var music = this.music[Math.floor(Math.random()* 2)];
+        this.switchMusic(music);
+    }
+
+    playRndFilters()
+    {
+        var music = this.music[Math.floor(Math.random()* 3-2+1)+2];
+        this.switchMusic(music);
+    }
+
+    switchMusic(music: Phaser.Sound)
+    {
+        for (var i=0;i<this.music.length;i++)
+        {
+            if (this.music[i].isPlaying)
+            {
+                if (music.name !== this.music[i].name)
+                {
+                    this.currentMusicPlaying = music;
+                }
+                return;
+            }
+        }
+
+        // no music playing -> just start music
+        music.play(null, null, 1, true);
+        this.currentMusicPlaying = music;
+    }
+
+    stopMusic()
+    {
+        var musicPlaying = this.getCurrentMusicPlaying();
+
+        if (musicPlaying == null) return;
+
+        musicPlaying.stop();
+    }
+
+    getCurrentMusicPlaying()
+    {
+        for (var i=0;i<this.music.length;i++) {
+            if (this.music[i].isPlaying) return this.music[i];
+        }
+
+        return null;
+
+    }
+
+    createShrubbery()
+    {
+        var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
+        var shrub = this.game.add.sprite(0, 0, shrubName);
+
+        this.game.add.tween(shrub).to({ y: this.game.height}, 20000, Phaser.Easing.Linear.None, true);
+
     }
 
 
     updateCounter(){
-       this.elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(this.startTime));
-       this.countdown=this.countdownMax-this.elapsedSeconds;
+       var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.cdStartTime));
+       this.preGameCountDown=this.preGameCountDownMax-elapsedSecs;
     }
 
     update() {
 
         if (this.isCountingDown()) return;
 
-        this.text.setText("");
 
-        this.bgTile0.tilePosition.y += 1;
-
-
-        //console.log("check"+i);
-
-
+        this.bgTile0.tilePosition.y += this.tileSpeed;
 
         // check key press and deaths
         for (var i=0;i<this.bugs.length;i++)
@@ -207,10 +319,72 @@ class GameScreenState extends Phaser.State {
 
             this.handleWin();
 
+            this.adjustGameDifficulty();
+
+            this.checkMusic();
+
             this.handleButtons(i);
         }
 
         this.UpdateRndBtns();
+
+    }
+
+    checkMusic()
+    {
+
+        if (this.currentMusicPlaying == null) return;
+
+        var musicPlaying = this.getCurrentMusicPlaying();
+
+        if (musicPlaying == null) return;
+
+        if (this.currentMusicPlaying.name != musicPlaying.name)
+        {
+            var duration = Math.floor(musicPlaying.durationMS);
+
+            //console.log("should switch - dur: "+duration+" pos: "+musicPlaying.currentTime);
+
+            if (musicPlaying.currentTime > (duration-100)) this.currentMusicPlaying.play(null, null, 1, true);
+            else return;
+
+            musicPlaying.stop();
+
+        }
+    }
+
+    adjustGameDifficulty()
+    {
+
+        // check elapses secs since game start
+        var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.prevAdjustmentTime));
+
+        // adjust difficulty every 10 secs
+        if (elapsedSecs >= this.adjustInterval)
+        {
+            // bug speed, tilespeed & gravity
+            if (this.boostVelocity > 40) this.boostVelocity -= 20;
+            if (this.tileSpeed < 20) this.tileSpeed++;
+            if (this.gravity < 400) this.gravity += 20;
+
+            // lower button time
+            if (this.buttonDurationTimeMax > this.buttonDurationTimeMin) this.buttonDurationTimeMax--;
+
+            // set prev adjustment time to now
+            this.prevAdjustmentTime = this.game.time.time;
+
+            // change music
+            var rnd = Math.floor(Math.random()* 2); // rnd number 0 or 1
+            if (rnd == 0)
+            {
+                this.playRndFilters();
+            }
+            else
+            {
+                this.playRndLoops();
+            }
+
+        }
 
     }
 
@@ -253,6 +427,9 @@ class GameScreenState extends Phaser.State {
 
         }
         this.sEnd[1].play(null, null, 1, false);
+        var timePlayed = this.getFormattedTimeSince(this.gameStartTime);
+        this.stopMusic();
+        this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
         this.game.state.states['GameOverScreenState'].setWinner(winnerString);
         this.game.state.start("GameOverScreenState");
     }
@@ -260,24 +437,23 @@ class GameScreenState extends Phaser.State {
     boostBug(index: number)
     {
         //console.log(bugIndex);
-        this.bugs[index].body.velocity.setTo(0, -120);
+        this.bugs[index].body.velocity.setTo(0, this.boostVelocity);
     }
 
     isCountingDown()
     {
-        if (this.countdown > 0) {
+        if (this.preGameCountDown > 0) {
             this.updateCounter();
-            //console.log("Countdown: " + this.countdown);
-            this.text.setText(this.countdown);
+            this.cdText.setText(""+this.preGameCountDown);
             return true;
         }
-        else if (this.countdown == 0){
-            this.updateCounter();
-            this.text.setText("GO!");
-            if (!this.bugsInited) this.initBugs();
-            this.assignAndRemoveLetters();
-            return true;
+
+
+        if (!this.bugsInited) {
+            this.cdText.setText("GO!");
+            this.initBugs();
         }
+
 
         return false;
     }
@@ -289,17 +465,16 @@ class GameScreenState extends Phaser.State {
     }
 
     UpdateRndBtns(){
-        this.elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(this.LastTime));
-        var temp = this.Time-this.elapsedSeconds;
+        var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.prevButtonAssigmentTime));
 
-        if (temp <= 0){
-
+        if (elapsedSecs >= this.currentButtonDurationTime){
 
             this.assignAndRemoveLetters();
 
             //console.log("set bug "+bugNr);
-            this.Time = Math.round(Math.random()*this.MaxTime)+2;
-            this.LastTime = this.game.time.time;
+            //this.Time = Math.round(Math.random()*this.MaxTime)+2;
+            this.currentButtonDurationTime = Math.round(Math.random()*(this.buttonDurationTimeMax-this.buttonDurationTimeMin)) + this.buttonDurationTimeMin;
+            this.prevButtonAssigmentTime = this.game.time.time;
 
         }
     }
@@ -338,6 +513,29 @@ class GameScreenState extends Phaser.State {
     {
         var value = String.fromCharCode(key);
         return value;
+    }
+
+    getFormattedTimeSince(time: number)
+    {
+        var elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(time));
+
+        var elapsedHours = this.toInt(elapsedSeconds / (60 * 60));
+        if (elapsedHours > 0)
+        {
+            elapsedSeconds -= elapsedHours * 60 * 60;
+        }
+        var elapsedMinutes =  this.toInt(elapsedSeconds / 60);
+        if (elapsedMinutes > 0)
+        {
+            elapsedSeconds -= elapsedMinutes * 60;
+        }
+
+        // add 0s for non double digit values
+        var retTime = (elapsedHours > 9? "" : "0") + elapsedHours + ":" +
+        (elapsedMinutes > 9? "" : "0") + elapsedMinutes + ":" +
+        (elapsedSeconds > 9? "" : "0") + elapsedSeconds;
+
+       return retTime;
     }
 
 

@@ -27,7 +27,7 @@ class TitleScreenState extends Phaser.State {
         this.START_BUTTON.onDown.add(TitleScreenState.prototype.buttonPressed, this);
 
         this.s1 = this.game.add.audio('title_loop');
-        this.s1.play(null, null, -1, true);
+        this.s1.play(null, null, 1, true);
 
         this.squeaks = [
             this.game.add.audio('squeak'),
@@ -38,7 +38,7 @@ class TitleScreenState extends Phaser.State {
 
     buttonPressed() {
         this.s1.stop();
-        this.squeaks[Math.floor(Math.random()* 2)].play(null, null, 1, false);
+        this.squeaks[Math.floor(Math.random()* 2)].play(null, null, 1 , false);
         this.game.state.start("MenuState");
     }
 

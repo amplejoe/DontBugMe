@@ -34,6 +34,8 @@ class BugsAndFeatures {
         this.game.load.audio("loopwdoing", "assets/sound/bugs_and_features_loop_with_doing.wav");
         this.game.load.audio("loopwdoingalowpass", "assets/sound/bugs_and_features_loop_with_doing_and_lowpass.wav");
         this.game.load.audio("loopwdoingaresonance", "assets/sound/bugs_and_features_loop_with_doing_and_resonance.wav");
+        this.game.load.audio("end_quiet", "assets/sound/end_quiet.wav");
+
 
         // sfx
         this.game.load.audio("end", "assets/sound/sfx/bugs-end-2.wav");
@@ -43,7 +45,6 @@ class BugsAndFeatures {
         this.game.load.audio("changeofkey", "assets/sound/sfx/change_of_key.wav");
         this.game.load.audio("startrace", "assets/sound/sfx/race_start.wav");
         this.game.load.audio("tusch", "assets/sound/sfx/tusch-bugs-end.wav");
-
 
     }
 
