@@ -176,7 +176,7 @@ class GameScreenState extends Phaser.State {
 
         this.cdStartTime = this.game.time.time;
         //countdown format + position
-        this.cdText = this.game.add.text(this.game.world.centerX-125, this.game.world.centerY-120, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
+        this.cdText = this.game.add.text(this.game.world.centerX-70, this.game.world.centerY-130, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
         //this.text.anchor.setTo(0.5, 0.5);
     }
 
@@ -203,9 +203,9 @@ class GameScreenState extends Phaser.State {
         // twig
         this.twig = this.game.add.sprite(this.game.width/2, this.game.height/2, "twig");
         this.twig.anchor.setTo(1, .5);
-        this.twig.scale.x = -0.6;
-        this.twig.scale.y = -0.6;
-        this.twig.x -= 525;
+        this.twig.scale.x = -0.4;
+        this.twig.scale.y = -0.4;
+        this.twig.x -= 350;
         this.twig.y -= 10;
 
         // create bugs
@@ -216,10 +216,10 @@ class GameScreenState extends Phaser.State {
             "BUG4_MOVING"
         ];
         this.bugs = [
-            new Bug(this.game,this.bugNames[0], this.game.width * 0.15, this.game.height * 0.52),
-            new Bug(this.game,this.bugNames[1], this.game.width * 0.3, this.game.height * 0.52),
-            new Bug(this.game,this.bugNames[2], this.game.width * 0.45, this.game.height * 0.52),
-            new Bug(this.game,this.bugNames[3], this.game.width * 0.60, this.game.height * 0.52)
+            new Bug(this.game,this.bugNames[0], this.game.width * 0.20, this.game.height * 0.52),
+            new Bug(this.game,this.bugNames[1], this.game.width * 0.35, this.game.height * 0.52),
+            new Bug(this.game,this.bugNames[2], this.game.width * 0.50, this.game.height * 0.52),
+            new Bug(this.game,this.bugNames[3], this.game.width * 0.65, this.game.height * 0.52)
 
         ];
 
@@ -383,7 +383,7 @@ class GameScreenState extends Phaser.State {
 
         if (!this.fadedGo) {
             this.game.time.events.add(2000, function() {
-                //this.game.add.tween(this.cdText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+                //this.game.add.tween(this.cdText).to({x: 4000}, 100, Phaser.Easing.Linear.None, true);
                 //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
                 this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
             }, this);
@@ -587,7 +587,12 @@ class GameScreenState extends Phaser.State {
         }
 
         if (!this.bugsAreRunning) {
-            this.cdText.setText("GO!");
+
+            if (this.cdText.x < this.game.width+500)
+            {
+                this.cdText.x += 15;
+                this.cdText.setText("GO!");
+            }
         }
 
 
