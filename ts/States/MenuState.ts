@@ -7,14 +7,14 @@ class MenuState extends Phaser.State {
 
     START_BUTTON:Phaser.Key;
 
-    bg: Phaser.TileSprite;
+    bg:Phaser.TileSprite;
 
     bugs:Array<Bug>;
-    choosenBugs:Array<String>;
     choosen:Array <boolean>;
+    choosenAnimName:Array <String>;
 
     s1:Phaser.Sound;
-    squeaks: Array<Phaser.Sound>;
+    squeaks:Array<Phaser.Sound>;
 
     create() {
 
@@ -22,10 +22,11 @@ class MenuState extends Phaser.State {
 
         var line1 = "Pick some Bugs";
         var style = {font: "48px Arial", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(this.game.width/2-100 , 10, line1, style);
+        this.game.add.text(this.game.width / 2 - 100, 10, line1, style);
 
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);
+        this.choosenAnimName = [];
 
         this.bugs = [
 
@@ -36,17 +37,27 @@ class MenuState extends Phaser.State {
             //new Bug(this.game,"BUG5_MOVING", 750, this.game.height - this.game.height/2)
 
         ];
+
+        //first two bugs are choosen
+        this.choosen = [true, true, false, false]
+        this.bugs[0].Animate();
+        this.bugs[1].Animate();
+
         for (var i = 0; i < this.bugs.length; i++) {
 
             // add bug
             this.bugs[i].scale.x = 0.3;
             this.bugs[i].scale.y = 0.3;
             this.game.add.existing(this.bugs[i]); // add bird to scene
-        }
-        for (var i = 0; i < this.bugs.length; i++) {
             this.bugs[i].inputEnabled = true;
-            this.bugs[i].input.start(1, true);
+
+
         }
+
+        this.bugs[0].events.onInputDown.add(this.Bug0Click, this);
+        this.bugs[1].events.onInputDown.add(this.Bug1Click, this);
+        this.bugs[2].events.onInputDown.add(this.Bug2Click, this);
+        this.bugs[3].events.onInputDown.add(this.Bug3Click, this);
 
         this.s1 = this.game.add.audio('menunew');
         this.s1.play(null, null, 1, true);
@@ -55,6 +66,47 @@ class MenuState extends Phaser.State {
             this.game.add.audio('squeak2')
         ];
 
+    }
+
+    Bug0Click() {
+        if (!this.choosen[0]) {
+            this.bugs[0].Animate();
+        }
+        else {
+            this.bugs[0].animations.stop(null, true);
+        }
+        this.choosen[0] = !this.choosen[0];
+    }
+
+
+    Bug1Click() {
+        if (!this.choosen[1]) {
+            this.bugs[1].Animate();
+        }
+        else {
+            this.bugs[1].animations.stop(null, true);
+        }
+        this.choosen[1] = !this.choosen[1];
+    }
+
+    Bug2Click() {
+        if (!this.choosen[2]) {
+            this.bugs[2].Animate();
+        }
+        else {
+            this.bugs[2].animations.stop(null, true);
+        }
+        this.choosen[2] = !this.choosen[2];
+    }
+
+    Bug3Click() {
+        if (!this.choosen[3]) {
+            this.bugs[3].Animate();
+        }
+        else {
+            this.bugs[3].animations.stop(null, true);
+        }
+        this.choosen[3] = !this.choosen[3];
     }
 
     update() {
@@ -84,7 +136,18 @@ class MenuState extends Phaser.State {
 
     buttonPressed() {
         this.s1.stop();
-        this.squeaks[Math.floor(Math.random()* 2)].play(null, null, 1, false);
+        this.squeaks[Math.floor(Math.random() * 2)].play(null, null, 1, false);
+        for (var i = 0; i < this.choosen.length; i++) {
+            if (this.choosen[i]) {
+                    this.choosenAnimName.push(this.bugs[i].getAnimName());
+            }
+        }
+        for (i = 0; i < this.choosen.length; i++) {
+            console.log("bug choosen: " + this.choosen[i]);
+        }
+        for (i = 0; i < this.choosenAnimName.length; i++) {
+            console.log("bug animname: " + this.choosenAnimName[i]);
+        }
         this.game.state.start("GameScreenState");
     }
 
