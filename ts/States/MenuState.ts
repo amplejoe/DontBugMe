@@ -53,7 +53,7 @@ class MenuState extends Phaser.State {
         this.squeaks = [
             this.game.add.audio('squeak'),
             this.game.add.audio('squeak2')
-        ]
+        ];
 
     }
 

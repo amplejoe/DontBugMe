@@ -126,13 +126,12 @@ class GameScreenState extends Phaser.State {
         this.squeaks = [
             this.game.add.audio('squeak'),
             this.game.add.audio('squeak2')
-        ]
+        ];
 
         this.sEnd = [
             this.game.add.audio('end'),
             this.game.add.audio('end_combined')
-        ]
-
+        ];
         this.sStart = this.game.add.audio('startrace');
         this.currentMusicPlaying = null;
     }
@@ -173,7 +172,7 @@ class GameScreenState extends Phaser.State {
             "BUG2_MOVING",
             "BUG3_MOVING",
             "BUG4_MOVING"
-        ]
+        ];
         this.bugs = [
             new Bug(this.game,this.bugNames[0], this.game.width * 0.15, this.game.height - this.game.height/2),
             new Bug(this.game,this.bugNames[1], this.game.width * 0.3, this.game.height - this.game.height/2),
