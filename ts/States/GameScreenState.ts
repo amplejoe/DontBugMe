@@ -16,6 +16,7 @@ class GameScreenState extends Phaser.State {
     preGameCountDownMax: number;
     cdStartTime: number;
     cdText: Phaser.Text;
+    fadedGo: boolean;
 
     // bug related vars
     bugs: Array<Bug>;
@@ -23,6 +24,7 @@ class GameScreenState extends Phaser.State {
     bugsInited: boolean;
     bugsIngame: number;
     bugNames: Array<string>;
+    bugsAreRunning: boolean;
 
     // game timing & difficulty
     gameStartTime: number;
@@ -38,6 +40,7 @@ class GameScreenState extends Phaser.State {
     tileSpeed: number;
     gravity: number;
     boostVelocity: number;
+    isFirstBoost: boolean;
 
     // audio
     music: Array<Phaser.Sound>;
@@ -52,10 +55,13 @@ class GameScreenState extends Phaser.State {
     shrubTimerMin: number;
     shrubTimerCreateTime: number;
     shrubSpawnTimer: number;
+    twig: Phaser.Sprite;
 
     create()
     {
         this.bugsInited = false;
+        this.fadedGo = false;
+        this.isFirstBoost = true;
 
         this.bugsIngame = 4;
         this.bugsTexts = Array(this.bugsIngame);
@@ -76,8 +82,36 @@ class GameScreenState extends Phaser.State {
         // start game timing, tilespeed etc.
         this.initGameTiming();
 
+        this.initBugs();
+
         this.sStart.play(null, null, 1, false); // countdown sound
 
+    }
+
+    startRunning()
+    {
+        if (!this.bugsAreRunning)
+        {
+
+            for (var i=0;i<this.bugs.length;i++)
+            {
+                // animations
+                this.bugs[i].Animate();
+            }
+
+            this.gravity = 150;
+
+            this.game.physics.arcade.gravity.y = this.gravity;
+            // play initial music
+            this.playRndLoops();
+
+            // fadeout go!
+            this.prevAdjustmentTime = this.game.time.time;
+
+            this.tweenSpriteDown(this.twig);
+
+            this.bugsAreRunning = true;
+        }
     }
 
     initAmbientSprites()
@@ -104,7 +138,7 @@ class GameScreenState extends Phaser.State {
 
         // bug speed and tiles
         this.boostVelocity = -170;
-        this.gravity = 150;
+        this.gravity = 0;
         this.tileSpeed = 1;
 
         // buttonAssignment speed
@@ -142,7 +176,7 @@ class GameScreenState extends Phaser.State {
 
         this.cdStartTime = this.game.time.time;
         //countdown format + position
-        this.cdText = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
+        this.cdText = this.game.add.text(this.game.world.centerX-125, this.game.world.centerY-120, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
         //this.text.anchor.setTo(0.5, 0.5);
     }
 
@@ -166,6 +200,14 @@ class GameScreenState extends Phaser.State {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.physics.arcade.gravity.y = this.gravity;
 
+        // twig
+        this.twig = this.game.add.sprite(this.game.width/2, this.game.height/2, "twig");
+        this.twig.anchor.setTo(1, .5);
+        this.twig.scale.x = -0.6;
+        this.twig.scale.y = -0.6;
+        this.twig.x -= 525;
+        this.twig.y -= 10;
+
         // create bugs
         this.bugNames = [
             "BUG1_MOVING",
@@ -174,13 +216,12 @@ class GameScreenState extends Phaser.State {
             "BUG4_MOVING"
         ];
         this.bugs = [
-            new Bug(this.game,this.bugNames[0], this.game.width * 0.15, this.game.height - this.game.height/2),
-            new Bug(this.game,this.bugNames[1], this.game.width * 0.3, this.game.height - this.game.height/2),
-            new Bug(this.game,this.bugNames[2], this.game.width * 0.45, this.game.height - this.game.height/2),
-            new Bug(this.game,this.bugNames[3], this.game.width * 0.60, this.game.height - this.game.height/2)
+            new Bug(this.game,this.bugNames[0], this.game.width * 0.15, this.game.height * 0.52),
+            new Bug(this.game,this.bugNames[1], this.game.width * 0.3, this.game.height * 0.52),
+            new Bug(this.game,this.bugNames[2], this.game.width * 0.45, this.game.height * 0.52),
+            new Bug(this.game,this.bugNames[3], this.game.width * 0.60, this.game.height * 0.52)
 
         ];
-
 
         // add bugs and physics and animations
         for (var i=0;i<this.bugs.length;i++)
@@ -197,26 +238,22 @@ class GameScreenState extends Phaser.State {
             this.bugs[i].body.collideWorldBounds = false;
             this.bugs[i].body.bounce.set(0.4);
 
-            // animations
-            this.bugs[i].Animate();
 
             this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', { font: "80px Arial", fill: "#ff0000", align: "center"});
 
         }
 
+
         this.assignAndRemoveLetters();
 
         this.bugsInited = true;
+        this.bugsAreRunning = false;
 
-        // fadeout go!
-        this.game.time.events.add(2000, function() {
-            //this.game.add.tween(this.cdText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
-            //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
-            this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
-        }, this);
+    }
 
-        // play initial music
-        this.playRndLoops();
+    tweenSpriteDown(sprite: Phaser.Sprite)
+    {
+        this.game.add.tween(sprite).to({ y: this.game.height+500}, 2300 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
 
     }
 
@@ -281,7 +318,8 @@ class GameScreenState extends Phaser.State {
             shrub.scale.x = 0.4;
             shrub.scale.y = 0.4;
 
-            this.game.add.tween(shrub).to({ y: this.game.height}, 2000 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
+            this.tweenSpriteDown(shrub);
+            //this.game.add.tween(shrub).to({ y: this.game.height}, 2000 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
 
             this.shrubTimerCreateTime = this.game.time.time;
 
@@ -314,16 +352,48 @@ class GameScreenState extends Phaser.State {
 
     }
 
-
     updateCounter(){
        var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.cdStartTime));
        this.preGameCountDown=this.preGameCountDownMax-elapsedSecs;
+    }
+
+    checkInitialKeysPressed()
+    {
+        var buttonsPressed = 0;
+        for (var i=0;i<this.bugs.length;i++)
+        {
+            var key: Phaser.Key;
+            key = this.bugs[i].getCurrentKey();
+            if (key != null) this.bugsTexts[i].setText(""+this.keyValToString(key.keyCode));
+            if(key != null && key.isDown)
+            {
+                buttonsPressed++;
+            }
+        }
+
+        //console.log("buttonpressed: "+buttonsPressed);
+
+        if (buttonsPressed == 4) this.startRunning();
+
     }
 
     update() {
 
         if (this.isCountingDown()) return;
 
+        if (!this.fadedGo) {
+            this.game.time.events.add(2000, function() {
+                //this.game.add.tween(this.cdText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+                //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
+                this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+            }, this);
+            this.fadedGo = true;
+        }
+
+        if (!this.bugsAreRunning) {
+            this.checkInitialKeysPressed();
+            return;
+        }
 
         this.bgTile0.tilePosition.y += this.tileSpeed;
 
@@ -362,6 +432,13 @@ class GameScreenState extends Phaser.State {
             this.checkMusic();
 
             this.handleButtons(i);
+
+        }
+
+        if (this.isFirstBoost)
+        {
+            this.isFirstBoost = false;
+
         }
 
         this.UpdateRndBtns();
@@ -418,7 +495,10 @@ class GameScreenState extends Phaser.State {
             // bug speed, tilespeed & gravity
             if (this.boostVelocity > 40) this.boostVelocity -= 20;
             if (this.tileSpeed < 20) this.tileSpeed++;
-            if (this.gravity < 400) this.gravity += 20;
+            if (this.gravity < 400) {
+                this.gravity += 20;
+                this.game.physics.arcade.gravity.y = this.gravity;
+            }
 
             // lower button time
             if (this.buttonDurationTimeMax > this.buttonDurationTimeMin) this.buttonDurationTimeMax--;
@@ -490,6 +570,11 @@ class GameScreenState extends Phaser.State {
     boostBug(index: number)
     {
         //console.log(bugIndex);
+        if (this.isFirstBoost)
+        {
+            this.bugs[index].body.velocity.setTo(0, -270);
+            return;
+        }
         this.bugs[index].body.velocity.setTo(0, this.boostVelocity);
     }
 
@@ -501,10 +586,8 @@ class GameScreenState extends Phaser.State {
             return true;
         }
 
-
-        if (!this.bugsInited) {
+        if (!this.bugsAreRunning) {
             this.cdText.setText("GO!");
-            this.initBugs();
         }
 
 
