@@ -63,11 +63,6 @@ class GameScreenState extends Phaser.State {
         this.fadedGo = false;
         this.isFirstBoost = true;
 
-        this.bugsIngame = 4;
-        this.bugsTexts = Array(this.bugsIngame);
-
-        this.currentlySetKeys = Array(this.bugsIngame);
-
 
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg').height, 'bg');
 
@@ -209,12 +204,26 @@ class GameScreenState extends Phaser.State {
         this.twig.y -= 10;
 
         // create bugs
+        if (this.bugNames.length < 2) return;
+        /*
         this.bugNames = [
             "BUG1_MOVING",
             "BUG2_MOVING",
             "BUG3_MOVING",
             "BUG4_MOVING"
         ];
+        */
+
+        this.bugsIngame = this.bugNames.length;
+        this.bugs = Array(this.bugNames.length);
+
+
+        console.log("bugs in game"+this.bugsIngame);
+
+        this.bugsTexts = Array(this.bugsIngame);
+        this.currentlySetKeys = Array(this.bugsIngame);
+
+        /*
         this.bugs = [
             new Bug(this.game,this.bugNames[0], this.game.width * 0.20, this.game.height * 0.52),
             new Bug(this.game,this.bugNames[1], this.game.width * 0.35, this.game.height * 0.52),
@@ -222,10 +231,14 @@ class GameScreenState extends Phaser.State {
             new Bug(this.game,this.bugNames[3], this.game.width * 0.65, this.game.height * 0.52)
 
         ];
+        */
 
         // add bugs and physics and animations
+        var startX = 0.2;
         for (var i=0;i<this.bugs.length;i++)
         {
+            this.bugs[i] = new Bug(this.game,this.bugNames[i], this.game.width * startX, this.game.height * 0.52);
+            startX += 0.15;
 
             // add bug
             this.bugs[i].scale.x = 0.3;
@@ -373,7 +386,7 @@ class GameScreenState extends Phaser.State {
 
         //console.log("buttonpressed: "+buttonsPressed);
 
-        if (buttonsPressed == 4) this.startRunning();
+        if (buttonsPressed == this.bugs.length) this.startRunning();
 
     }
 
@@ -597,6 +610,11 @@ class GameScreenState extends Phaser.State {
 
 
         return false;
+    }
+
+    setBugs(bugNames: Array<string>)
+    {
+        this.bugNames = bugNames;
     }
 
     getRandomLetter(){

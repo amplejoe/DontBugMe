@@ -11,22 +11,26 @@ class MenuState extends Phaser.State {
 
     bugs:Array<Bug>;
     choosen:Array <boolean>;
-    choosenAnimName:Array <String>;
 
     s1:Phaser.Sound;
     squeaks:Array<Phaser.Sound>;
+
+    userInfo: Phaser.Text;
 
     create() {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
 
-        var line1 = "Pick some Bugs";
+        var line1 = "Pick at least 2 Bugs!";
         var style = {font: "48px Arial", fill: "#ff0000", textAlign: "center"};
         this.game.add.text(this.game.width / 2 - 100, 10, line1, style);
 
+        this.userInfo = this.game.add.text(this.game.width / 2 - 100, 10, "", style);
+
+
+
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);
-        this.choosenAnimName = [];
 
         this.bugs = [
 
@@ -39,7 +43,7 @@ class MenuState extends Phaser.State {
         ];
 
         //first two bugs are choosen
-        this.choosen = [true, true, false, false]
+        this.choosen = [true, true, false, false];
         this.bugs[0].Animate();
         this.bugs[1].Animate();
 
@@ -65,6 +69,13 @@ class MenuState extends Phaser.State {
             this.game.add.audio('squeak'),
             this.game.add.audio('squeak2')
         ];
+
+    }
+
+    fadeFadeText(text: string)
+    {
+        this.userInfo.setText(text);
+        this.game.add.tween(this.userInfo).to({ alpha: this.game.height+500}, 2300, Phaser.Easing.Linear.None, true);
 
     }
 
@@ -136,19 +147,26 @@ class MenuState extends Phaser.State {
 
     buttonPressed() {
         this.s1.stop();
+        var bugsSelected =0 ;
+        var chosenAnimName = Array();
         this.squeaks[Math.floor(Math.random() * 2)].play(null, null, 1, false);
         for (var i = 0; i < this.choosen.length; i++) {
             if (this.choosen[i]) {
-                    this.choosenAnimName.push(this.bugs[i].getAnimName());
+                    chosenAnimName.push(this.bugs[i].getAnimName());
+                bugsSelected++;
             }
         }
-        for (i = 0; i < this.choosen.length; i++) {
-            console.log("bug choosen: " + this.choosen[i]);
+
+        if (bugsSelected < 2) {
+            //this.fadeFadeText("Choose at least 2 bugs.");
+            return;
         }
-        for (i = 0; i < this.choosenAnimName.length; i++) {
-            console.log("bug animname: " + this.choosenAnimName[i]);
-        }
+
+        this.game.state.states['GameScreenState'].setBugs(chosenAnimName);
+
         this.game.state.start("GameScreenState");
+
+
     }
 
 }
