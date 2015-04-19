@@ -10,17 +10,26 @@ body {
 {
     pointer-events: none;
     background-image: url("box-bg.png");
+
     margin: 0 auto;
     position: relative;
+
     top: -650px;
-    left: 111px;
+    left: 312px;
     height: 650px;
+
+
     background-repeat: no-repeat;
 }
 
 #top
 {
     height: 75px;
+}
+
+#content
+{
+    margin: 0 auto;
 }
 
 

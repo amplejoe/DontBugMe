@@ -19,9 +19,8 @@ class MenuState extends Phaser.State {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
-        var line1 = "Pick at least 2 Bugs!";
-        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(this.game.width / 2 - 300, 50, line1, style);
+        var line1 = "Pick at least 2 Bugs & press Enter!";
+        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};        this.game.add.text(this.game.width * 0.18, 60, line1, style);
 
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);
