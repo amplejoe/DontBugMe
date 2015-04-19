@@ -14,27 +14,35 @@ class BugsAndFeatures {
 
     preload() {
 
-        // background
+        // background & ambience sprites
         this.game.load.image('bg', 'assets/gfx/hg.jpg');
         this.game.load.image('title', 'assets/gfx/screenie.JPG');
+        this.game.load.image('leaves1', 'assets/gfx/leave1.png');
+        this.game.load.image('leaves2', 'assets/gfx/leave2.png');
+        this.game.load.image('leaves3', 'assets/gfx/leave3.png');
 
         // loading spritesheets
         this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");
         this.game.load.atlasJSONHash("BUG2_MOVING", "assets/gfx/final_bugs/hirschi.png", "assets/gfx/final_bugs/hirischi_moving.json");
         this.game.load.atlasJSONHash("BUG3_MOVING", "assets/gfx/final_bugs/schoeni_animation.png", "assets/gfx/final_bugs/schoeni_animation.json");
         this.game.load.atlasJSONHash("BUG4_MOVING", "assets/gfx/final_bugs/raini.png", "assets/gfx/final_bugs/raini.json");
-        //sounds
+
+        //music
+        this.game.load.audio("title_loop", "assets/sound/bugs_menu_loop.wav");
         this.game.load.audio("menunew", "assets/sound/bug_menu_loop_new.wav");
         this.game.load.audio("loopwbeat", "assets/sound/bugs_and_features_loop_with_beat.wav");
         this.game.load.audio("loopwdoing", "assets/sound/bugs_and_features_loop_with_doing.wav");
         this.game.load.audio("loopwdoingalowpass", "assets/sound/bugs_and_features_loop_with_doing_and_lowpass.wav");
         this.game.load.audio("loopwdoingaresonance", "assets/sound/bugs_and_features_loop_with_doing_and_resonance.wav");
-        this.game.load.audio("end", "assets/sound/bugs-end-2.wav");
-        this.game.load.audio("squeak", "assets/sound/bugs-squeak.wav");
-        this.game.load.audio("squeak2", "assets/sound/bugs-squeak-2.wav");
-        this.game.load.audio("changeofkey", "assets/sound/change_of_key.wav");
-        this.game.load.audio("startrace", "assets/sound/race_start.wav");
-        this.game.load.audio("tusch", "assets/sound/tusch-bugs-end.wav");
+
+        // sfx
+        this.game.load.audio("end", "assets/sound/sfx/bugs-end-2.wav");
+        this.game.load.audio("end_combined", "assets/sound/sfx/bugs-end-combined.wav");
+        this.game.load.audio("squeak", "assets/sound/sfx/bugs-squeak.wav");
+        this.game.load.audio("squeak2", "assets/sound/sfx/bugs-squeak-2.wav");
+        this.game.load.audio("changeofkey", "assets/sound/sfx/change_of_key.wav");
+        this.game.load.audio("startrace", "assets/sound/sfx/race_start.wav");
+        this.game.load.audio("tusch", "assets/sound/sfx/tusch-bugs-end.wav");
 
 
     }

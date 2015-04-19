@@ -29,6 +29,11 @@ class GameScreenState extends Phaser.State {
 
     bugNames: Array<string>;
 
+    // audio
+    music: Array<Phaser.Sound>;
+    squeaks: Array<Phaser.Sound>;
+    sEnd: Array<Phaser.Sound>;
+
     create()
     {
         this.bugsInited = false;
@@ -45,6 +50,29 @@ class GameScreenState extends Phaser.State {
 
         this.initRndLetters();
 
+        this.initSounds();
+
+    }
+
+    initSounds()
+    {
+
+        this.music = [
+            this.game.add.audio('loopwbeat'),
+            this.game.add.audio('loopwdoing'),
+            this.game.add.audio('loopwdoingalowpass'),
+            this.game.add.audio('loopwdoingaresonance')
+        ];
+
+        this.squeaks = [
+            this.game.add.audio('squeak'),
+            this.game.add.audio('squeak2')
+        ]
+
+        this.sEnd = [
+            this.game.add.audio('end'),
+            this.game.add.audio('end_combined')
+        ]
     }
 
     initCountDown()
@@ -165,6 +193,7 @@ class GameScreenState extends Phaser.State {
                         var keyCode = this.bugs[i].getCurrentKey().keyCode;
                         this.game.input.keyboard.removeKey(keyCode);
                     }
+                    this.sEnd[0].play(null, null, 1, false);
                     this.bugs[i] = null;
                     this.bugsIngame--;
 
@@ -223,6 +252,7 @@ class GameScreenState extends Phaser.State {
             }
 
         }
+        this.sEnd[1].play(null, null, 1, false);
         this.game.state.states['GameOverScreenState'].setWinner(winnerString);
         this.game.state.start("GameOverScreenState");
     }

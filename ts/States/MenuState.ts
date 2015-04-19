@@ -13,6 +13,7 @@ class MenuState extends Phaser.State {
     choosen:Array <boolean>;
 
     s1:Phaser.Sound;
+    squeaks: Array<Phaser.Sound>;
 
     create() {
         var line1 = "MENU";
@@ -30,7 +31,6 @@ class MenuState extends Phaser.State {
             new Bug(this.game, "BUG4_MOVING", 350, this.game.height - this.game.height / 2)
             //new Bug(this.game,"BUG5_MOVING", 750, this.game.height - this.game.height/2)
 
-
         ];
         for (var i = 0; i < this.bugs.length; i++) {
 
@@ -45,9 +45,12 @@ class MenuState extends Phaser.State {
         }
 
         this.s1 = this.game.add.audio('menunew');
-        //this.s1.play(null,null,100,true);
-        this.s1.play(null, null, 100, true);
-       // this.s1.loop = true;
+        this.s1.play(null, null, -1, true);
+        this.squeaks = [
+            this.game.add.audio('squeak'),
+            this.game.add.audio('squeak2')
+        ]
+
     }
 
     update() {
@@ -76,6 +79,8 @@ class MenuState extends Phaser.State {
 
 
     buttonPressed() {
+        this.s1.stop();
+        this.squeaks[Math.floor(Math.random()* 2)].play(null, null, 1, false);
         this.game.state.start("GameScreenState");
     }
 
