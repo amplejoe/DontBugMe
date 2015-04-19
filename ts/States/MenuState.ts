@@ -7,6 +7,7 @@ class MenuState extends Phaser.State {
 
     START_BUTTON:Phaser.Key;
 
+    bg: Phaser.TileSprite;
 
     bugs:Array<Bug>;
     choosenBugs:Array<String>;
@@ -16,9 +17,12 @@ class MenuState extends Phaser.State {
     squeaks: Array<Phaser.Sound>;
 
     create() {
-        var line1 = "MENU";
+
+        this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
+
+        var line1 = "Pick some Bugs";
         var style = {font: "48px Arial", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(10, 10, line1, style);
+        this.game.add.text(this.game.width/2-100 , 10, line1, style);
 
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);

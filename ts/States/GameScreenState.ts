@@ -51,6 +51,7 @@ class GameScreenState extends Phaser.State {
     shrubTimerMax: number;
     shrubTimerMin: number;
     shrubTimerCreateTime: number;
+    shrubSpawnTimer: number;
 
     create()
     {
@@ -87,9 +88,10 @@ class GameScreenState extends Phaser.State {
             'leaves3'
         ];
 
-        this.shrubTimerMax = 5;
-        this.shrubTimerMin = 2;
+        this.shrubTimerMax = 3;
+        this.shrubTimerMin = 0.8;
         this.shrubTimerCreateTime = -1;
+        this.shrubSpawnTimer = 2.3;
 
     }
 
@@ -269,12 +271,47 @@ class GameScreenState extends Phaser.State {
 
     }
 
-    createShrubbery()
+    createShrubberyLeft()
     {
-        var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
-        var shrub = this.game.add.sprite(0, 0, shrubName);
+        var elapsedSecs = this.game.time.elapsedSecondsSince(this.shrubTimerCreateTime);
 
-        this.game.add.tween(shrub).to({ y: this.game.height}, 20000, Phaser.Easing.Linear.None, true);
+        if (elapsedSecs >= this.shrubSpawnTimer)
+        {
+            var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
+            var shrub = this.game.add.sprite(0, -100, shrubName);
+            shrub.scale.x = 0.4;
+            shrub.scale.y = 0.4;
+
+            this.game.add.tween(shrub).to({ y: this.game.height}, 2000 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
+
+            this.shrubTimerCreateTime = this.game.time.time;
+
+            this.shrubSpawnTimer = Math.round(Math.random()*(this.shrubTimerMax-this.shrubTimerMin)) + this.shrubTimerMin;
+        }
+
+
+    }
+
+    createShrubberyRight()
+    {
+        var elapsedSecs = this.game.time.elapsedSecondsSince(this.shrubTimerCreateTime);
+
+        if (elapsedSecs >= this.shrubSpawnTimer)
+        {
+            var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
+            var shrub = this.game.add.sprite(this.game.width, -100, shrubName);
+            shrub.anchor.setTo(.5, 1); //so it flips around its middle
+            shrub.scale.x = -0.4;
+            shrub.scale.y = -0.4;
+            shrub.x += shrub.width/2;
+
+            this.game.add.tween(shrub).to({ y: this.game.height}, 2000 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
+
+            this.shrubTimerCreateTime = this.game.time.time;
+
+            this.shrubSpawnTimer = Math.round(Math.random()*(this.shrubTimerMax-this.shrubTimerMin)) + this.shrubTimerMin;
+        }
+
 
     }
 
@@ -319,6 +356,8 @@ class GameScreenState extends Phaser.State {
 
             this.handleWin();
 
+            this.createRndShrubbery();
+
             this.adjustGameDifficulty();
 
             this.checkMusic();
@@ -329,6 +368,21 @@ class GameScreenState extends Phaser.State {
         this.UpdateRndBtns();
 
     }
+
+    createRndShrubbery()
+    {
+        var coin = Math.floor(Math.random()* 2);
+
+        if (coin > 0)
+        {
+            this.createShrubberyLeft();
+        }
+        else
+        {
+            this.createShrubberyRight();
+        }
+    }
+
 
     checkMusic()
     {
