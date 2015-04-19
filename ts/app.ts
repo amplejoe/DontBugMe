@@ -37,6 +37,7 @@ class BugsAndFeatures {
         this.game.load.audio("loopwdoingalowpass", "assets/sound/bugs_and_features_loop_with_doing_and_lowpass.wav");
         this.game.load.audio("loopwdoingaresonance", "assets/sound/bugs_and_features_loop_with_doing_and_resonance.wav");
         this.game.load.audio("end_quiet", "assets/sound/end_quiet.mp3");
+        this.game.load.audio("bg_old", "assets/sound/background_old.mp3");
 
 
         // sfx

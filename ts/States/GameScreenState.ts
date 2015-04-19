@@ -171,7 +171,7 @@ class GameScreenState extends Phaser.State {
 
         this.cdStartTime = this.game.time.time;
         //countdown format + position
-        this.cdText = this.game.add.text(this.game.world.centerX-70, this.game.world.centerY-130, '5', { font: "80px Arial", fill: "#ff0000", align: "center" });
+        this.cdText = this.game.add.text(this.game.world.centerX-70, this.game.world.centerY-130, '5', { font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center" });
         //this.text.anchor.setTo(0.5, 0.5);
     }
 
@@ -205,33 +205,15 @@ class GameScreenState extends Phaser.State {
 
         // create bugs
         if (this.bugNames.length < 2) return;
-        /*
-        this.bugNames = [
-            "BUG1_MOVING",
-            "BUG2_MOVING",
-            "BUG3_MOVING",
-            "BUG4_MOVING"
-        ];
-        */
 
         this.bugsIngame = this.bugNames.length;
         this.bugs = Array(this.bugNames.length);
 
 
-        console.log("bugs in game"+this.bugsIngame);
+        //console.log("bugs in game"+this.bugsIngame);
 
         this.bugsTexts = Array(this.bugsIngame);
         this.currentlySetKeys = Array(this.bugsIngame);
-
-        /*
-        this.bugs = [
-            new Bug(this.game,this.bugNames[0], this.game.width * 0.20, this.game.height * 0.52),
-            new Bug(this.game,this.bugNames[1], this.game.width * 0.35, this.game.height * 0.52),
-            new Bug(this.game,this.bugNames[2], this.game.width * 0.50, this.game.height * 0.52),
-            new Bug(this.game,this.bugNames[3], this.game.width * 0.65, this.game.height * 0.52)
-
-        ];
-        */
 
         // add bugs and physics and animations
         var startX = 0.2;
@@ -252,7 +234,7 @@ class GameScreenState extends Phaser.State {
             this.bugs[i].body.bounce.set(0.4);
 
 
-            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', { font: "80px Arial", fill: "#ff0000", align: "center"});
+            this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', { font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
 
         }
 
@@ -266,7 +248,7 @@ class GameScreenState extends Phaser.State {
 
     tweenSpriteDown(sprite: Phaser.Sprite)
     {
-        this.game.add.tween(sprite).to({ y: this.game.height+500}, 2300 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
+        this.game.add.tween(sprite).to({ y: this.game.height+700}, 5800 - this.tileSpeed*100 , Phaser.Easing.Linear.None, true);
 
     }
 
@@ -327,7 +309,7 @@ class GameScreenState extends Phaser.State {
         if (elapsedSecs >= this.shrubSpawnTimer)
         {
             var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
-            var shrub = this.game.add.sprite(0, -100, shrubName);
+            var shrub = this.game.add.sprite(0, 0-700, shrubName);
             shrub.scale.x = 0.4;
             shrub.scale.y = 0.4;
 
@@ -349,13 +331,14 @@ class GameScreenState extends Phaser.State {
         if (elapsedSecs >= this.shrubSpawnTimer)
         {
             var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
-            var shrub = this.game.add.sprite(this.game.width, -100, shrubName);
+            var shrub = this.game.add.sprite(this.game.width, 0-700, shrubName);
             shrub.anchor.setTo(.5, 1); //so it flips around its middle
             shrub.scale.x = -0.4;
             shrub.scale.y = -0.4;
             shrub.x += shrub.width/2;
 
-            this.game.add.tween(shrub).to({ y: this.game.height}, 2000 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
+            this.tweenSpriteDown(shrub);
+            //this.game.add.tween(shrub).to({ y: this.game.height}, 5800 - (this.tileSpeed*100), Phaser.Easing.Linear.None, true);
 
             this.shrubTimerCreateTime = this.game.time.time;
 
@@ -460,16 +443,12 @@ class GameScreenState extends Phaser.State {
 
     createRndShrubbery()
     {
+
         var coin = Math.floor(Math.random()* 2);
 
-        if (coin > 0)
-        {
-            this.createShrubberyLeft();
-        }
-        else
-        {
-            this.createShrubberyRight();
-        }
+        if (coin > 0)  this.createShrubberyLeft();
+        else this.createShrubberyRight();
+
     }
 
 

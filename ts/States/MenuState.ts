@@ -15,19 +15,13 @@ class MenuState extends Phaser.State {
     s1:Phaser.Sound;
     squeaks:Array<Phaser.Sound>;
 
-    userInfo: Phaser.Text;
-
     create() {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
 
         var line1 = "Pick at least 2 Bugs!";
-        var style = {font: "48px Arial", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(this.game.width / 2 - 100, 10, line1, style);
-
-        this.userInfo = this.game.add.text(this.game.width / 2 - 100, 10, "", style);
-
-
+        var style = {font: "48px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        this.game.add.text(this.game.width / 2 - 200, 50, line1, style);
 
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);
@@ -38,8 +32,6 @@ class MenuState extends Phaser.State {
             new Bug(this.game, "BUG2_MOVING", 550, this.game.height - this.game.height / 4 * 3),
             new Bug(this.game, "BUG3_MOVING", 950, this.game.height - this.game.height / 4 * 3),
             new Bug(this.game, "BUG4_MOVING", 350, this.game.height - this.game.height / 2)
-            //new Bug(this.game,"BUG5_MOVING", 750, this.game.height - this.game.height/2)
-
         ];
 
         //first two bugs are choosen
@@ -72,12 +64,6 @@ class MenuState extends Phaser.State {
 
     }
 
-    fadeFadeText(text: string)
-    {
-        this.userInfo.setText(text);
-        this.game.add.tween(this.userInfo).to({ alpha: this.game.height+500}, 2300, Phaser.Easing.Linear.None, true);
-
-    }
 
     Bug0Click() {
         if (!this.choosen[0]) {

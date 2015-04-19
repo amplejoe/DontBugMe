@@ -12,12 +12,6 @@ class TitleScreenState extends Phaser.State {
     squeaks: Array<Phaser.Sound>;
 
     create() {
-        /*
-        var line1 = "Bugs and Features";
-        var style = {font: "48px Arial", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(10, 10, line1, style);
-        */
-
 
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg");
@@ -26,7 +20,7 @@ class TitleScreenState extends Phaser.State {
         this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON.onDown.add(TitleScreenState.prototype.buttonPressed, this);
 
-        this.s1 = this.game.add.audio('title_loop');
+        this.s1 = this.game.add.audio('bg_old');
         this.s1.play(null, null, 1, true);
 
         this.squeaks = [

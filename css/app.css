@@ -1,11 +1,13 @@
 body {
     font-family: 'Swanky and Moo Moo', cursive;
     background-image: url("bg.png");
+
     background-repeat: repeat;
 }
 
 #bottom
 {
+    pointer-events: none;
     background-image: url("box-bg.png");
     margin: 0 auto;
     position: relative;
@@ -15,6 +17,7 @@ body {
     background-repeat: no-repeat;
     background-size: 1280px, 650px;
 }
+
 
 
 
