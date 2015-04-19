@@ -1,0 +1,20 @@
+body {
+    font-family: 'Swanky and Moo Moo', cursive;
+    background-image: url("bg.png");
+    background-repeat: repeat;
+}
+
+#bottom
+{
+    background-image: url("box-bg.png");
+    margin: 0 auto;
+    position: relative;
+    top: -650px;
+    left: 27px;
+    height: 650px;
+    background-repeat: no-repeat;
+    background-size: 1280px, 650px;
+}
+
+
+
