@@ -19,6 +19,14 @@ class TitleScreenState extends Phaser.State {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
+        this.s1 = this.game.add.audio('bg_old');
+        this.s1.play(null, null, 1, true);
+
+        this.squeaks = [
+            this.game.add.audio('squeak'),
+            this.game.add.audio('squeak2')
+        ];
+
         this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON1.onDown.add(TitleScreenState.prototype.buttonPressed, this);
         this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -30,15 +38,6 @@ class TitleScreenState extends Phaser.State {
         this.titleAni.scale.y = 0.3;
         this.titleAni.animations.add("TITLE_ANIM"); // whole sheet = move animation
         this.titleAni.animations.play("TITLE_ANIM", 8, true); // true -> loop forever
-
-
-        this.s1 = this.game.add.audio('bg_old');
-        this.s1.play(null, null, 1, true);
-
-        this.squeaks = [
-            this.game.add.audio('squeak'),
-            this.game.add.audio('squeak2')
-        ];
 
     }
 

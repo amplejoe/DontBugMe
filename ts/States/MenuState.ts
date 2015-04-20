@@ -20,6 +20,13 @@ class MenuState extends Phaser.State {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
+        this.s1 = this.game.add.audio('menunew');
+        this.s1.play(null, null, 1, true);
+        this.squeaks = [
+            this.game.add.audio('squeak'),
+            this.game.add.audio('squeak2')
+        ];
+
         var line1 = "Pick at least 2 Bugs!";
         var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
         this.game.add.text(this.game.width * 0.3, 60, line1, style);
@@ -68,12 +75,7 @@ class MenuState extends Phaser.State {
         this.bugs[2].events.onInputDown.add(this.Bug2Click, this);
         this.bugs[3].events.onInputDown.add(this.Bug3Click, this);
 
-        this.s1 = this.game.add.audio('menunew');
-        this.s1.play(null, null, 1, true);
-        this.squeaks = [
-            this.game.add.audio('squeak'),
-            this.game.add.audio('squeak2')
-        ];
+
 
     }
 
