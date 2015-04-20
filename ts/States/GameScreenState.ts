@@ -63,7 +63,6 @@ class GameScreenState extends Phaser.State {
         this.fadedGo = false;
         this.isFirstBoost = true;
 
-
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
 
         this.initPreGameCountDown();
@@ -355,10 +354,13 @@ class GameScreenState extends Phaser.State {
     checkInitialKeysPressed()
     {
         var buttonsPressed = 0;
+        //TODO: Issue with keypressed -> sometimes phaser doesn recognize keys being pressed simultaneously
+        //console.log("Buttons to press:");
         for (var i=0;i<this.bugs.length;i++)
         {
             var key: Phaser.Key;
             key = this.bugs[i].getCurrentKey();
+            //console.log(""+this.keyValToString(key.keyCode)+" ")
             if (key != null) this.bugsTexts[i].setText(""+this.keyValToString(key.keyCode));
             if(key != null && key.isDown)
             {

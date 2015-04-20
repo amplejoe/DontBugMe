@@ -14,8 +14,8 @@ class BugsAndFeatures {
     preload() {
 
         var line1 = "Loading...";
-        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
-        this.game.add.text(this.game.width * 0.45, this.game.height *0.5, line1, style);
+        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000"};
+        this.game.add.text(this.game.width * 0.40, this.game.height *0.43, line1, style);
 
         // background & ambience sprites
         this.game.load.image('bg', 'assets/gfx/hg.jpg');

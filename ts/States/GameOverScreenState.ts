@@ -12,6 +12,9 @@ class GameOverScreenState extends Phaser.State
 
     winner: string;
 
+    START_BUTTON1:Phaser.Key;
+    START_BUTTON2:Phaser.Key;
+
     sEnd: Phaser.Sound;
 
    setWinner(winner: string)
@@ -26,6 +29,10 @@ class GameOverScreenState extends Phaser.State
 
     create()
     {
+        this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.START_BUTTON1.onDown.add(GameOverScreenState.prototype.buttonPressed, this);
+        this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.START_BUTTON2.onDown.add(GameOverScreenState.prototype.buttonPressed, this);
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
@@ -66,7 +73,7 @@ class GameOverScreenState extends Phaser.State
 
     buttonPressed()
     {
-        this.game.state.start("GameScreenState");
+        this.game.state.start("TitleScreenState");
     }
 
     toInt(value) { return ~~value; }
