@@ -1,0 +1,48 @@
+{"frames": {
+
+"1.png":
+{
+	"frame": {"x":300,"y":2,"w":329,"h":297},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":109,"w":329,"h":297},
+	"sourceSize": {"w":524,"h":500},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"2.png":
+{
+	"frame": {"x":2,"y":2,"w":330,"h":296},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":102,"y":110,"w":330,"h":296},
+	"sourceSize": {"w":524,"h":500},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"3.png":
+{
+	"frame": {"x":300,"y":2,"w":329,"h":297},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":96,"y":109,"w":329,"h":297},
+	"sourceSize": {"w":524,"h":500},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"4.png":
+{
+	"frame": {"x":599,"y":2,"w":329,"h":296},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":110,"w":329,"h":296},
+	"sourceSize": {"w":524,"h":500},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "flachi.png",
+	"format": "RGBA8888",
+	"size": {"w":897,"h":334},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3f45a6962ee184dcc759a4f203d042f5:134358e0096ea857880114fe16438f72:071cf2e3e1b2d356d34cba76e00b7d3b$"
+}
+}
