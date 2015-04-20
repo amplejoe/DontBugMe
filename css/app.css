@@ -34,6 +34,46 @@ body {
     margin-left: -640px; /* Half of the width */
 }
 
+#infolink
+{
+    background-color: antiquewhite;
+    /*font-family: 'Arial';*/
+    font-size: 40px;
+    /*position: fixed;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+
+    border-radius: 25px;
+    border: 1px solid;
+    width: 120px;
+
+}
+
+/* unvisited link */
+a:link {
+    color: #003a00;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    color: #003a00;
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    color: #003a00;
+    text-decoration: none;
+}
+
+/* selected link */
+a:active {
+    color: #003a00;
+    text-decoration: none;
+}
+
 
 
 

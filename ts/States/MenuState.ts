@@ -49,7 +49,7 @@ class MenuState extends Phaser.State {
         this.game.add.text(180, this.game.height  *0.5, nam1, style2);
         var nam2= "Marcel Hirschi";
         this.game.add.text(365, this.game.height  *0.5, nam2, style2);
-        var nam3 = "Raini Schoeni";
+        var nam3 = "Raini Schöni";
         this.game.add.text(665, this.game.height  *0.5, nam3, style2);
         var nam4 = "Marlies Schildi";
         this.game.add.text(910, this.game.height  *0.5, nam4, style2);
@@ -147,7 +147,7 @@ class MenuState extends Phaser.State {
 
 
     buttonPressed() {
-        this.s1.stop();
+
         var bugsSelected =0 ;
         var chosenAnimName = Array();
         this.squeaks[Math.floor(Math.random() * 2)].play(null, null, 1, false);
@@ -162,6 +162,8 @@ class MenuState extends Phaser.State {
             //this.fadeFadeText("Choose at least 2 bugs.");
             return;
         }
+
+        this.sound.stopAll();
 
         this.game.state.states['GameScreenState'].setBugs(chosenAnimName);
 

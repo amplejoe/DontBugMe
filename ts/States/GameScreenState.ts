@@ -48,6 +48,7 @@ class GameScreenState extends Phaser.State {
     squeaks: Array<Phaser.Sound>;
     sEnd: Array<Phaser.Sound>;
     sStart: Phaser.Sound;
+    sBeep: Phaser.Sound;
 
     // ambience sprites
     shrubbery: Array<string>;
@@ -143,7 +144,6 @@ class GameScreenState extends Phaser.State {
 
     initSounds()
     {
-
         this.music = [
             this.game.add.audio('loopwbeat'),
             this.game.add.audio('loopwdoing'),
@@ -161,6 +161,7 @@ class GameScreenState extends Phaser.State {
             this.game.add.audio('end_combined')
         ];
         this.sStart = this.game.add.audio('startrace');
+        this.sBeep = this.game.add.audio('beep');
         this.currentMusicPlaying = null;
     }
 
@@ -178,7 +179,6 @@ class GameScreenState extends Phaser.State {
     {
         this.allKeys = [Phaser.Keyboard.Q, Phaser.Keyboard.W, Phaser.Keyboard.E, Phaser.Keyboard.R,
                         Phaser.Keyboard.T, Phaser.Keyboard.Z, Phaser.Keyboard.U, Phaser.Keyboard.I,
-                        Phaser.Keyboard.Q, Phaser.Keyboard.W, Phaser.Keyboard.E, Phaser.Keyboard.R,
                         Phaser.Keyboard.O, Phaser.Keyboard.P, Phaser.Keyboard.A, Phaser.Keyboard.S,
                         Phaser.Keyboard.D, Phaser.Keyboard.F, Phaser.Keyboard.G, Phaser.Keyboard.H,
                         Phaser.Keyboard.J, Phaser.Keyboard.K, Phaser.Keyboard.L, Phaser.Keyboard.Y,
@@ -236,7 +236,6 @@ class GameScreenState extends Phaser.State {
 
         }
 
-
         this.assignAndRemoveLetters();
 
         this.bugsInited = true;
@@ -279,15 +278,6 @@ class GameScreenState extends Phaser.State {
         // no music playing -> just start music
         music.play(null, null, 1, true);
         this.currentMusicPlaying = music;
-    }
-
-    stopMusic()
-    {
-        var musicPlaying = this.getCurrentMusicPlaying();
-
-        if (musicPlaying == null) return;
-
-        musicPlaying.stop();
     }
 
     getCurrentMusicPlaying()
@@ -468,11 +458,11 @@ class GameScreenState extends Phaser.State {
 
             //console.log("should switch - dur: "+duration+" pos: "+musicPlaying.currentTime);
 
-            if (musicPlaying.currentTime > (duration-100)) this.currentMusicPlaying.play(null, null, 1, true);
-            else return;
-
-            musicPlaying.stop();
-
+            if (musicPlaying.currentTime > (duration-100))
+            {
+                this.currentMusicPlaying.play(null, null, 1, true);
+                musicPlaying.stop();
+            }
         }
     }
 
@@ -554,7 +544,7 @@ class GameScreenState extends Phaser.State {
         }
         this.sEnd[1].play(null, null, 1, false);
         var timePlayed = this.getFormattedTimeSince(this.gameStartTime);
-        this.stopMusic();
+        this.game.sound.stopAll();
         this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
         this.game.state.states['GameOverScreenState'].setWinner(winnerString);
         this.game.state.start("GameOverScreenState");
@@ -621,6 +611,7 @@ class GameScreenState extends Phaser.State {
     assignAndRemoveLetters()
     {
         var keyVal;
+        var wereKeysAssigned = false;
         for(var i=0; i<this.bugs.length;i++)
         {
 
@@ -641,8 +632,11 @@ class GameScreenState extends Phaser.State {
                 // add
                 var key =  this.game.input.keyboard.addKey(keyVal);
                 this.bugs[i].setCurrentKey(key);
+                wereKeysAssigned = true;
             }
         }
+        // play sound if keys were assigned
+        if (wereKeysAssigned && this.bugsAreRunning) this.sBeep.play(null,null,1,false);
     }
 
 

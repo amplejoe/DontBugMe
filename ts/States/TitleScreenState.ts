@@ -42,7 +42,7 @@ class TitleScreenState extends Phaser.State {
     }
 
     buttonPressed() {
-        this.s1.stop();
+        this.sound.stopAll();
         this.squeaks[Math.floor(Math.random()* 2)].play(null, null, 1 , false);
         this.game.state.start("MenuState");
     }

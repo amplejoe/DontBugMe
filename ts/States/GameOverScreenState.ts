@@ -8,7 +8,7 @@ class GameOverScreenState extends Phaser.State
 
     bg: Phaser.TileSprite;
 
-    winnerbug: Bug;
+    winnerBug: Bug;
 
     winner: string;
 
@@ -29,6 +29,11 @@ class GameOverScreenState extends Phaser.State
 
     create()
     {
+
+        this.sEnd = this.game.add.audio('end_quiet');
+        //this.sEnd.play(null, 0.0, 1, true);
+        this.sEnd.fadeIn(6000, true); // fadein sound 6s
+
         this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON1.onDown.add(GameOverScreenState.prototype.buttonPressed, this);
         this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -50,20 +55,16 @@ class GameOverScreenState extends Phaser.State
         }
         else
         {
-            this.winnerbug = new Bug(this.game, this.winner, this.game.width * 0.5, this.game.height * 0.5);
+            this.winnerBug = new Bug(this.game, this.winner, this.game.width * 0.5, this.game.height * 0.5);
 
-            this.winnerbug.x -= this.winnerbug.width/2;
-            this.winnerbug.y -= this.winnerbug.height/2;
-            this.game.add.existing(this.winnerbug);
-            this.winnerbug.Animate();
+            this.winnerBug.x -= this.winnerBug.width/2;
+            this.winnerBug.y -= this.winnerBug.height/2;
+            this.game.add.existing(this.winnerBug);
+            this.winnerBug.Animate();
         }
 
         var line3 = "Time played: "+this.timePlayed;
         this.game.add.text(this.game.width/2 - 100, this.game.height * 0.80, line3, style);
-
-        this.sEnd = this.game.add.audio('end_quiet');
-        //this.sEnd.play(null, 0.0, 1, true);
-        this.sEnd.fadeIn(6000, true); // fadein sound 6s
     }
 
     update()
@@ -73,6 +74,7 @@ class GameOverScreenState extends Phaser.State
 
     buttonPressed()
     {
+        this.sound.stopAll();
         this.game.state.start("TitleScreenState");
     }
 
