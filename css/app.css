@@ -24,7 +24,7 @@ body {
 
 #top
 {
-    height: 125px;
+    height: 75px;
 }
 
 #content
@@ -36,25 +36,27 @@ body {
 
 #infolink
 {
+    display: none;
     /*background-color: antiquewhite;
     /*font-family: 'Arial';*/
     font-size: 40px;
-    /*position: fixed;*/
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
+    position: fixed;
+    left: 68%;
+    top: 51%;
+    /*margin-left: -640px; /* Half of the width */
 
     /*
     border-radius: 25px;
     border: 1px solid;
     */
-    width: 150px;
-    height: 120px;
+    width: 248px;
+    height: 198px;
 
 }
 
 #infolink img
 {
+
     max-width:100%;
     max-height:100%;
 }

@@ -4,8 +4,6 @@ class TitleScreenState extends Phaser.State {
 
     START_BUTTON1:Phaser.Key;
     START_BUTTON2:Phaser.Key;
-
-    title: Phaser.TileSprite;
     bg: Phaser.TileSprite;
 
     s1:Phaser.Sound;
@@ -27,6 +25,8 @@ class TitleScreenState extends Phaser.State {
             this.game.add.audio('squeak2',1,false)
         ];
 
+        this.showInfo();
+
         this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.START_BUTTON1.onDown.add(TitleScreenState.prototype.buttonPressed, this);
         this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -41,8 +41,19 @@ class TitleScreenState extends Phaser.State {
 
     }
 
+    showInfo()
+    {
+        document.getElementById('infolink').style.display = 'block';
+    }
+
+    hideInfo()
+    {
+        document.getElementById('infolink').style.display = 'none';
+    }
+
     buttonPressed() {
         this.sound.stopAll();
+        this.hideInfo();
         this.squeaks[Math.floor(Math.random()* 2)].play();
         this.game.state.start("MenuState");
     }

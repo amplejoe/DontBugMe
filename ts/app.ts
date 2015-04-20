@@ -67,8 +67,6 @@ class BugsAndFeatures {
         // menu state
         this.game.state.add("MenuState", MenuState, false);
 
-
-
     }
 
 }
