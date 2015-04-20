@@ -19,12 +19,12 @@ class TitleScreenState extends Phaser.State {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
-        this.s1 = this.game.add.audio('bg_old');
-        this.s1.play(null, null, 1, true);
+        this.s1 = this.game.add.audio('bg_old', 1, true);
+        this.s1.play();
 
         this.squeaks = [
-            this.game.add.audio('squeak'),
-            this.game.add.audio('squeak2')
+            this.game.add.audio('squeak', 1,false),
+            this.game.add.audio('squeak2',1,false)
         ];
 
         this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -43,7 +43,7 @@ class TitleScreenState extends Phaser.State {
 
     buttonPressed() {
         this.sound.stopAll();
-        this.squeaks[Math.floor(Math.random()* 2)].play(null, null, 1 , false);
+        this.squeaks[Math.floor(Math.random()* 2)].play();
         this.game.state.start("MenuState");
     }
 

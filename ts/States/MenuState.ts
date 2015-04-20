@@ -20,11 +20,11 @@ class MenuState extends Phaser.State {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
-        this.s1 = this.game.add.audio('menunew');
-        this.s1.play(null, null, 1, true);
+        this.s1 = this.game.add.audio('menunew', 1, true);
+        this.s1.play();
         this.squeaks = [
-            this.game.add.audio('squeak'),
-            this.game.add.audio('squeak2')
+            this.game.add.audio('squeak', 1 ,false),
+            this.game.add.audio('squeak2', 1, false)
         ];
 
         var line1 = "Pick at least 2 Bugs!";
@@ -67,16 +67,12 @@ class MenuState extends Phaser.State {
             this.game.add.existing(this.bugs[i]); // add bird to scene
             this.bugs[i].inputEnabled = true;
 
-
         }
 
         this.bugs[0].events.onInputDown.add(this.Bug0Click, this);
         this.bugs[1].events.onInputDown.add(this.Bug1Click, this);
         this.bugs[2].events.onInputDown.add(this.Bug2Click, this);
         this.bugs[3].events.onInputDown.add(this.Bug3Click, this);
-
-
-
     }
 
 
@@ -121,28 +117,9 @@ class MenuState extends Phaser.State {
         this.choosen[3] = !this.choosen[3];
     }
 
-    update() {
-        /*for(var i = 0; i<this.bugs.length;i++)
-         {
-         if(this.choosen[i] == false)
-         {
-         console.log("enter!");
-         this.bugs[i].Animate();
-         this.choosen[i] = true;
-         }
-         else if( this.choosen[i] == true)
-         {
-         console.log("enter2!");
-         this.bugs[i].animations.stop();
-         this.choosen[i] = false;
-         }
+    update()
+    {
 
-         }*/
-        if (this.s1.durationMS - this.s1.currentTime < 10) {
-            //ohne console funkts nicht
-            console.log("buh!");
-            this.s1.restart(null, null);
-        }
     }
 
 
@@ -150,7 +127,7 @@ class MenuState extends Phaser.State {
 
         var bugsSelected =0 ;
         var chosenAnimName = Array();
-        this.squeaks[Math.floor(Math.random() * 2)].play(null, null, 1, false);
+        this.squeaks[Math.floor(Math.random() * 2)].play();
         for (var i = 0; i < this.choosen.length; i++) {
             if (this.choosen[i]) {
                     chosenAnimName.push(this.bugs[i].getAnimName());
@@ -168,7 +145,6 @@ class MenuState extends Phaser.State {
         this.game.state.states['GameScreenState'].setBugs(chosenAnimName);
 
         this.game.state.start("GameScreenState");
-
 
     }
 

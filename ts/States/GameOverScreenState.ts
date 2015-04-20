@@ -30,8 +30,8 @@ class GameOverScreenState extends Phaser.State
     create()
     {
 
-        this.sEnd = this.game.add.audio('end_quiet');
-        //this.sEnd.play(null, 0.0, 1, true);
+        this.sEnd = this.game.add.audio('end_quiet', 1, true);
+        //this.sEnd.play();
         this.sEnd.fadeIn(6000, true); // fadein sound 6s
 
         this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
