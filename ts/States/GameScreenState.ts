@@ -191,8 +191,7 @@ class GameScreenState extends Phaser.State {
 
     initBugs()
     {
-        // start physics
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        // physics
         this.game.physics.arcade.gravity.y = this.gravity;
 
         // twig

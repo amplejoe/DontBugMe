@@ -1,5 +1,5 @@
 body {
-    overflow:hidden;
+    /*overflow:hidden;*/
     font-family: 'Swanky and Moo Moo', cursive;
     background-image: url("bg.png");
 
@@ -11,12 +11,12 @@ body {
     pointer-events: none;
     background-image: url("box-bg.png");
 
-    margin: 0 auto;
-    position: relative;
-
-    top: -650px;
-    left: 312px;
+    position: fixed;
     height: 650px;
+    width: 1280px;
+
+    left: 50%;
+    margin-left: -640px; /* Half of the width */
 
 
     background-repeat: no-repeat;
@@ -29,7 +29,9 @@ body {
 
 #content
 {
-    margin: 0 auto;
+    position: fixed;
+    left: 50%;
+    margin-left: -640px; /* Half of the width */
 }
 
 

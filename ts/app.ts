@@ -2,7 +2,6 @@
 /// <reference path="States/TitleScreenState.ts"/>
 /// <reference path="States/GameScreenState.ts"/>
 /// <reference path="States/GameOverScreenState.ts"/>
-/// <reference path="States/TestState.ts"/>
 /// <reference path="States/MenuState.ts"/>
 
 class BugsAndFeatures {
@@ -13,6 +12,10 @@ class BugsAndFeatures {
     game:Phaser.Game;
 
     preload() {
+
+        var line1 = "Loading...";
+        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        this.game.add.text(this.game.width * 0.45, this.game.height *0.5, line1, style);
 
         // background & ambience sprites
         this.game.load.image('bg', 'assets/gfx/hg.jpg');
@@ -53,22 +56,21 @@ class BugsAndFeatures {
         this.game.load.audio("startrace", "assets/sound/sfx/race_start.wav");
         this.game.load.audio("tusch", "assets/sound/sfx/tusch-bugs-end.wav");
 
+        // start physics
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
     }
 
     create() {
-        // show title screen
-        this.game.state.add("TitleScreenState", TitleScreenState, true);
 
+        // title screen
+        this.game.state.add("TitleScreenState", TitleScreenState, true);
 
         // game screen
         this.game.state.add("GameScreenState", GameScreenState, false);
 
-
         // game over screen
         this.game.state.add("GameOverScreenState", GameOverScreenState, false);
-
-        // test state
-        this.game.state.add("TestState", TestState, false);
 
         // menu state
         this.game.state.add("MenuState", MenuState, false);

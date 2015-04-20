@@ -5,7 +5,8 @@
 class MenuState extends Phaser.State {
     game:Phaser.Game;
 
-    START_BUTTON:Phaser.Key;
+    START_BUTTON1:Phaser.Key;
+    START_BUTTON2:Phaser.Key;
 
     bg:Phaser.TileSprite;
 
@@ -19,11 +20,14 @@ class MenuState extends Phaser.State {
 
         this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
-        var line1 = "Pick at least 2 Bugs & press Enter!";
-        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};        this.game.add.text(this.game.width * 0.18, 60, line1, style);
+        var line1 = "Pick at least 2 Bugs!";
+        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        this.game.add.text(this.game.width * 0.3, 60, line1, style);
 
-        this.START_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        this.START_BUTTON.onDown.add(MenuState.prototype.buttonPressed, this);
+        this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.START_BUTTON1.onDown.add(MenuState.prototype.buttonPressed, this);
+        this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.START_BUTTON2.onDown.add(MenuState.prototype.buttonPressed, this);
 
         this.bugs = [
 
