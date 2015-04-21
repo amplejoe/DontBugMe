@@ -44,10 +44,14 @@
     more object-oriented.
     </p>
 
-    <h1>Known bugs</h1>
+    <h1>Known Issues</h1>
     <ul>
         <li>
             Before the race sometimes not all keys pressed are recognized simultaneously (only individually).
+            This is due to the fact that apparently, as pointed out in the
+            <a target="_blank" href="http://phaser.io/docs/Phaser.Keyboard.html/Phaser.Keyboard.html">
+            Phaser documentation</a>, many keyboards are unable to process certain combinations of keys
+            due to hardware limitations known as ghosting.
             Please restart the game in this case (Refresh Browser with F5).
         </li>
         <li>
