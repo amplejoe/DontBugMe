@@ -37,11 +37,11 @@ class MenuState extends Phaser.State {
         this.START_BUTTON2.onDown.add(MenuState.prototype.buttonPressed, this);
 
         this.bugs = [
-
             new Bug(this.game, "BUG1_MOVING", 170, this.game.height  *0.3),
             new Bug(this.game, "BUG2_MOVING", 415, this.game.height *0.3),
             new Bug(this.game, "BUG3_MOVING", 705, this.game.height *0.3),
-            new Bug(this.game, "BUG4_MOVING", 950, this.game.height *0.3)
+            new Bug(this.game, "BUG4_MOVING", 950, this.game.height *0.3),
+            new Bug(this.game, "BUG5_MOVING", 510, this.game.height *0.6)
         ];
 
         var style2 = {font: "40px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
@@ -64,29 +64,32 @@ class MenuState extends Phaser.State {
             // add bug
             this.bugs[i].scale.x = 0.3;
             this.bugs[i].scale.y = 0.3;
-            this.game.add.existing(this.bugs[i]); // add bird to scene
+            this.game.add.existing(this.bugs[i]); // add bug to scene
             this.bugs[i].inputEnabled = true;
 
         }
 
-        this.bugs[0].events.onInputDown.add(this.Bug0Click, this);
-        this.bugs[1].events.onInputDown.add(this.Bug1Click, this);
-        this.bugs[2].events.onInputDown.add(this.Bug2Click, this);
-        this.bugs[3].events.onInputDown.add(this.Bug3Click, this);
+
+        this.bugs[0].events.onInputDown.add(function () {this.BugClick(0)},this);
+        this.bugs[1].events.onInputDown.add(function () {this.BugClick(1)},this);
+        this.bugs[2].events.onInputDown.add(function () {this.BugClick(2)},this);
+        this.bugs[3].events.onInputDown.add(function () {this.BugClick(3)},this);
+        this.bugs[4].events.onInputDown.add(function () {this.BugClick(4)},this);
+
     }
 
 
-    Bug0Click() {
-        if (!this.choosen[0]) {
-            this.bugs[0].Animate();
+    BugClick(index) {
+        if (!this.choosen[index]) {
+            this.bugs[index].Animate();
         }
         else {
-            this.bugs[0].animations.stop(null, true);
+            this.bugs[index].animations.stop(null, true);
         }
-        this.choosen[0] = !this.choosen[0];
+        this.choosen[index] = !this.choosen[index];
     }
 
-
+/*
     Bug1Click() {
         if (!this.choosen[1]) {
             this.bugs[1].Animate();
@@ -116,6 +119,7 @@ class MenuState extends Phaser.State {
         }
         this.choosen[3] = !this.choosen[3];
     }
+    */
 
     update()
     {

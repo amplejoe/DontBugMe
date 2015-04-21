@@ -29,6 +29,7 @@ class BugsAndFeatures {
         this.game.load.atlasJSONHash("BUG2_MOVING", "assets/gfx/final_bugs/hirschi.png", "assets/gfx/final_bugs/hirischi_moving.json");
         this.game.load.atlasJSONHash("BUG3_MOVING", "assets/gfx/final_bugs/schoeni_animation.png", "assets/gfx/final_bugs/schoeni_animation.json");
         this.game.load.atlasJSONHash("BUG4_MOVING", "assets/gfx/final_bugs/raini.png", "assets/gfx/final_bugs/raini.json");
+        this.game.load.atlasJSONHash("BUG5_MOVING", "assets/gfx/final_bugs/flachi.png", "assets/gfx/final_bugs/flachi.json");
         this.game.load.atlasJSONHash("TITLE_ANIM", "assets/gfx/title_animation.png", "assets/gfx/title_animation.json");
 
         //music
