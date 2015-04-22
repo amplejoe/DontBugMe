@@ -194,10 +194,10 @@ class GameScreenState extends Phaser.State {
         this.game.physics.arcade.gravity.y = this.gravity;
 
         // twig
-        this.twig = this.game.add.sprite(this.game.width*.08, this.game.height*.45, "twig");
-        this.twig.anchor.setTo(1, 1 );
-        this.twig.scale.x = -0.7;
-        this.twig.scale.y = -0.5;
+        this.twig = this.game.add.sprite(this.game.width*.09, this.game.height*.43, "twig");
+        this.twig.anchor.setTo(0,0);
+        this.twig.scale.x = 0.5;
+        this.twig.scale.y = 0.5;
 
         // create bugs
         if (this.bugNames.length < 2) return;
