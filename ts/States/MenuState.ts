@@ -37,22 +37,24 @@ class MenuState extends Phaser.State {
         this.START_BUTTON2.onDown.add(MenuState.prototype.buttonPressed, this);
 
         this.bugs = [
-            new Bug(this.game, "BUG1_MOVING", 170, this.game.height  *0.3),
-            new Bug(this.game, "BUG2_MOVING", 415, this.game.height *0.3),
-            new Bug(this.game, "BUG3_MOVING", 705, this.game.height *0.3),
-            new Bug(this.game, "BUG4_MOVING", 950, this.game.height *0.3),
-            new Bug(this.game, "BUG5_MOVING", 510, this.game.height *0.6)
+            new Bug(this.game, "BUG1_MOVING", this.game.width*.2, this.game.height  *0.4),
+            new Bug(this.game, "BUG2_MOVING", this.game.width*.5, this.game.height *0.4),
+            new Bug(this.game, "BUG3_MOVING", this.game.width*.8, this.game.height *0.4),
+            new Bug(this.game, "BUG4_MOVING", this.game.width*.35, this.game.height *0.65),
+            new Bug(this.game, "BUG5_MOVING", this.game.width*.65, this.game.height *0.65)
         ];
 
-        var style2 = {font: "40px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+        var style2 = {font: "40px Swanky and Moo Moo", fill: "#ff0000", textAlign: "left"};
         var nam1 = "Andi Goldi";
-        this.game.add.text(180, this.game.height  *0.5, nam1, style2);
+        this.game.add.text(this.game.width*.15, this.game.height  *0.50, nam1, style2);
         var nam2= "Marcel Hirschi";
-        this.game.add.text(365, this.game.height  *0.5, nam2, style2);
+        this.game.add.text(this.game.width*.41, this.game.height  *0.50, nam2, style2);
         var nam3 = "Raini Schöni";
-        this.game.add.text(665, this.game.height  *0.5, nam3, style2);
+        this.game.add.text(this.game.width*.72, this.game.height  *0.50, nam3, style2);
         var nam4 = "Marlies Schildi";
-        this.game.add.text(910, this.game.height  *0.5, nam4, style2);
+        this.game.add.text(this.game.width*.25, this.game.height  *0.75, nam4, style2);
+        var nam5 = "Flashi ???";
+        this.game.add.text(this.game.width*.58, this.game.height  *0.75, nam5, style2);
 
 
         //first two bugs are choosen
@@ -64,7 +66,7 @@ class MenuState extends Phaser.State {
             // add bug
             this.bugs[i].scale.x = 0.3;
             this.bugs[i].scale.y = 0.3;
-            this.game.add.existing(this.bugs[i]); // add bug to scene
+            this.bugs[i].anchor.setTo(.5,.5);          this.game.add.existing(this.bugs[i]); // add bug to scene
             this.bugs[i].inputEnabled = true;
 
         }

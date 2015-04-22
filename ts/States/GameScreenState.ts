@@ -194,12 +194,10 @@ class GameScreenState extends Phaser.State {
         this.game.physics.arcade.gravity.y = this.gravity;
 
         // twig
-        this.twig = this.game.add.sprite(this.game.width/2, this.game.height/2, "twig");
-        this.twig.anchor.setTo(1, .5);
-        this.twig.scale.x = -0.4;
-        this.twig.scale.y = -0.4;
-        this.twig.x -= 350;
-        this.twig.y -= 10;
+        this.twig = this.game.add.sprite(this.game.width*.08, this.game.height*.45, "twig");
+        this.twig.anchor.setTo(1, 1 );
+        this.twig.scale.x = -0.7;
+        this.twig.scale.y = -0.5;
 
         // create bugs
         if (this.bugNames.length < 2) return;
@@ -214,11 +212,11 @@ class GameScreenState extends Phaser.State {
         this.currentlySetKeys = Array(this.bugsIngame);
 
         // add bugs and physics and animations
-        var startX = 0.2;
+        var startX = 0.08;
         for (var i=0;i<this.bugs.length;i++)
         {
             this.bugs[i] = new Bug(this.game,this.bugNames[i], this.game.width * startX, this.game.height * 0.52);
-            startX += 0.15;
+            startX += 0.18;
 
             // add bug
             this.bugs[i].scale.x = 0.3;
