@@ -1,5 +1,6 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
+/// <reference path="../Utils/GameSettings.ts"/>
 /// <reference path="../Utils/Timer.ts"/>
 /// <reference path="../Utils/IntervalTimer.ts"/>
 /// <reference path="../Utils/RandomIntervalTimer.ts"/>
@@ -20,7 +21,7 @@ class GameScreenState extends Phaser.State {
     preGameCountDownMax: number;
     cdStartTime: number;
     cdText: Phaser.Text;
-    fadedGo: boolean;
+    //fadedGo: boolean;
 
     // bug related vars
     bugs: Array<Bug>;
@@ -28,7 +29,7 @@ class GameScreenState extends Phaser.State {
     bugsInited: boolean;
     bugsIngame: number;
     bugNames: Array<string>;
-    bugsAreRunning: boolean;
+    //bugsAreRunning: boolean;
 
     // game timing & difficulty
     gameStartTime: number;
@@ -36,7 +37,7 @@ class GameScreenState extends Phaser.State {
     prevAdjustmentTime: number;
 
     // timers
-    buttonReassignTimer: Timer;
+    buttonReassignTimer: IntervalTimer;
 
     // button assignment
     currentButtonDurationTime: number;
@@ -65,10 +66,19 @@ class GameScreenState extends Phaser.State {
     shrubSpawnTimer: number;
     twig: Phaser.Sprite;
 
+    // game settings
+    gameStage: GameSettings.GameStages = GameSettings.GameStages.STAGE_NONE;
+    gameMode: GameSettings.GameModes = GameSettings.GameModes.MODE_NONE;
+
     create()
     {
+
+        // game settings
+        this.setGameStage(GameSettings.GameStages.STAGE_INIT);
+        this.setGameMode(GameSettings.GameModes.MODE_LAST_BUG_CRAWLING); //TODO: implement other modes
+
         this.bugsInited = false;
-        this.fadedGo = false;
+        //this.fadedGo = false;
         this.isFirstBoost = true;
 
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
@@ -86,13 +96,14 @@ class GameScreenState extends Phaser.State {
 
         this.initBugs();
 
-        this.sStart.play(); // countdown sound
+        this.setGameStage(GameSettings.GameStages.STAGE_READY);
+
 
     }
 
     startRunning()
     {
-        if (!this.bugsAreRunning)
+        if (this.gameStage == GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT)
         {
 
             for (var i=0;i<this.bugs.length;i++)
@@ -112,7 +123,7 @@ class GameScreenState extends Phaser.State {
 
             this.tweenSpriteDown(this.twig);
 
-            this.bugsAreRunning = true;
+            this.setGameStage(GameSettings.GameStages.STAGE_PLAYING);
         }
     }
 
@@ -149,7 +160,7 @@ class GameScreenState extends Phaser.State {
         this.currentButtonDurationTime = -1;
 
         // button reassign timer
-        //this.buttonReassignTimer = new IntervalTimer(this.game.time.time, 10);
+        this.buttonReassignTimer = new IntervalTimer(this.game, 10);
 
     }
 
@@ -178,7 +189,7 @@ class GameScreenState extends Phaser.State {
 
     initPreGameCountDown()
     {
-        this.preGameCountDownMax = this.preGameCountDown = 3;
+        this.preGameCountDownMax = this.preGameCountDown = 2.5;
 
         this.cdStartTime = this.game.time.time;
         //countdown format + position
@@ -248,7 +259,7 @@ class GameScreenState extends Phaser.State {
         this.assignAndRemoveLetters();
 
         this.bugsInited = true;
-        this.bugsAreRunning = false;
+        //this.bugsAreRunning = false;
 
     }
 
@@ -356,15 +367,10 @@ class GameScreenState extends Phaser.State {
 
     }
 
-    updateCounter(){
-       var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.cdStartTime));
-       this.preGameCountDown=this.preGameCountDownMax-elapsedSecs;
-    }
-
     checkInitialKeysPressed()
     {
         var buttonsPressed = 0;
-        //TODO: Issue with keypressed -> sometimes phaser doesn recognize keys being pressed simultaneously
+        //TODO: Issue with keypressed -> not fixable: ghosting (see info)
         //console.log("Buttons to press:");
         for (var i=0;i<this.bugs.length;i++)
         {
@@ -386,8 +392,25 @@ class GameScreenState extends Phaser.State {
 
     update() {
 
-        if (this.isCountingDown()) return;
+        switch (this.gameStage)
+        {
+            case GameSettings.GameStages.STAGE_READY:
+                this.sStart.play(); // countdown sound
+                this.setGameStage(GameSettings.GameStages.STAGE_COUNTDOWN); // move immediately to next stage (no break;!!)
+            case GameSettings.GameStages.STAGE_COUNTDOWN:
+                this.doCountDown();
+                return;
+            case GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT:
+                this.checkInitialKeysPressed();
+                return;
+            case GameSettings.GameStages.STAGE_PLAYING:
+                break; // move on with rest of update method;
+            case GameSettings.GameStages.STAGE_INIT:
+            case GameSettings.GameStages.STAGE_NONE:
+            default: return;
+        }
 
+        /*
         if (!this.fadedGo) {
             this.game.time.events.add(2000, function() {
                 //this.game.add.tween(this.cdText).to({x: 4000}, 100, Phaser.Easing.Linear.None, true);
@@ -397,69 +420,76 @@ class GameScreenState extends Phaser.State {
             this.fadedGo = true;
         }
 
-        if (!this.bugsAreRunning) {
-            this.checkInitialKeysPressed();
+
+        if (this.gameStage == GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT) {
+
             return;
         }
+        */
 
         this.bgTile0.tilePosition.y += this.tileSpeed;
 
-        // check key press and deaths
+        // check deaths and key presses
         for (var i=0;i<this.bugs.length;i++)
         {
-
-            if (this.bugs[i] != null)
-            {
-                if (this.bugs[i].y >= this.game.height)
-                {
-                    // remove old key
-                    if (this.bugs[i].getCurrentKey() != null)
-                    {
-                        var keyCode = this.bugs[i].getCurrentKey().keyCode;
-                        this.game.input.keyboard.removeKey(keyCode);
-                    }
-                    if (this.bugsIngame > 2) this.sEnd[0].play();
-                    this.bugs[i] = null;
-                    this.bugsIngame--;
-
-                }
-                else if (this.bugs[i].y <= 50)
-                {
-                    this.bugs[i].y = 50;
-                    this.bugs[i].body.velocity.setTo(0, +30);
-                }
-            }
-
-            this.handleWin();
-
-            this.createRndShrubbery();
-
-            this.adjustGameDifficulty();
-
-            this.checkMusic();
+            this.handleBugDeath(i);
 
             this.handleButtons(i);
-
         }
 
-        if (this.isFirstBoost)
-        {
-            this.isFirstBoost = false;
+        // checks game finish conditions
+        this.handleWin();
 
-        }
+        // creates shrubbery at rnd interval
+        this.createRndShrubbery();
 
+        // difficulty adjust and set flags (e.g. music change)
+        this.adjustGameDifficulty();
+
+        // checks whether flag is set for music change and handles transition
+        this.checkMusic();
+
+        // first boost for bugs is higher, reset this here
+        if (this.isFirstBoost) this.isFirstBoost = false;
+
+        // rnd button change
         this.UpdateRndBtns();
 
     }
 
+    handleBugDeath(bugNr: number)
+    {
+        if (this.bugs[bugNr] != null)
+        {
+            // bug lost (top of bug is below screen)
+            if (this.bugs[bugNr].y >= this.game.height)
+            {
+                // remove old key
+                if (this.bugs[bugNr].getCurrentKey() != null)
+                {
+                    var keyCode = this.bugs[bugNr].getCurrentKey().keyCode;
+                    this.game.input.keyboard.removeKey(keyCode);
+                }
+                if (this.bugsIngame > 2) this.sEnd[0].play();
+                this.bugs[bugNr] = null;
+                this.bugsIngame--;
+
+            }
+            // bug almost touches ceiling (0) give push into other dir
+            else if (this.bugs[bugNr].y <= 50)
+            {
+                this.bugs[bugNr].y = 50;
+                this.bugs[bugNr].body.velocity.setTo(0, +30);
+            }
+        }
+    }
+
     createRndShrubbery()
     {
-
         var coin = Math.floor(Math.random()* 2);
 
         if (coin > 0)  this.createShrubberyLeft();
         else this.createShrubberyRight();
-
     }
 
 
@@ -581,25 +611,39 @@ class GameScreenState extends Phaser.State {
         this.bugs[index].body.velocity.setTo(0, this.boostVelocity);
     }
 
-    isCountingDown()
+    doCountDown()
     {
+        // update counter
+        var elapsed:number = this.game.time.elapsedSecondsSince(this.cdStartTime);
+        this.preGameCountDown=this.preGameCountDownMax-elapsed;
+
+        // countdown still running
         if (this.preGameCountDown > 0) {
-            this.updateCounter();
-            this.cdText.setText(""+this.preGameCountDown);
-            return true;
+            // set current secs
+            this.cdText.setText(""+(this.toInt(this.preGameCountDown)+1));
+        }
+        else
+        {
+            // adding tweens MUST only happen once
+            this.cdText.setText("GO!");
+            this.game.add.tween(this.cdText).to({x: 4000}, 2500, Phaser.Easing.Linear.None, true);
+            //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
+            this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+
+            this.setGameStage(GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT);
+
         }
 
-        if (!this.bugsAreRunning) {
+    }
 
-            if (this.cdText.x < this.game.width+500)
-            {
-                this.cdText.x += 15;
-                this.cdText.setText("GO!");
-            }
-        }
+    setGameStage(gameStage:GameSettings.GameStages)
+    {
+        if (this.gameStage != gameStage) this.gameStage = gameStage;
+    }
 
-
-        return false;
+    setGameMode(gameMode:GameSettings.GameModes)
+    {
+        if (this.gameMode != gameMode) this.gameMode = gameMode;
     }
 
     setBugs(bugNames: Array<string>)
@@ -656,7 +700,9 @@ class GameScreenState extends Phaser.State {
             }
         }
         // play sound if keys were assigned
-        if (wereKeysAssigned && this.bugsAreRunning) this.sBeep.play();
+        if (wereKeysAssigned && (this.gameStage >= GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT)) {
+            this.sBeep.play();
+        }
     }
 
 

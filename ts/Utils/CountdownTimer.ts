@@ -3,7 +3,7 @@ class CountdownTimer extends Timer
 {
     countdown: number;
 
-    constructor(startTime, countdown) { super(startTime); this.setCountdown(countdown);}
+    constructor(game: Phaser.Game, countdown) { super(game); this.setCountdown(countdown);}
 
     setCountdown(countdown) {this.countdown = countdown;}
 

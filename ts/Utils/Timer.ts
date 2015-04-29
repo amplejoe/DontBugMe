@@ -5,28 +5,30 @@ class Timer
 
     startTime: number;
 
-    constructor(time) {this.setStartTime(time);}
+    constructor(game) {this.game = game; this.setStartTime(this.game.time.time);}
 
     setStartTime(time: number) {this.startTime = time;}
 
-    getStartTime() {return this.startTime;}
+    getStartTime(): number {return this.startTime;}
 
-    getCurrentTimeIntSeconds()
+    restart() {this.setStartTime(this.game.time.time)}
+
+    getCurrentTimeIntSeconds(): number
     {
         return this.toInt(this.game.time.elapsedSecondsSince(this.startTime));
     }
 
-    getCurrentTimeSeconds()
+    getCurrentTimeSeconds(): number
     {
         return this.game.time.elapsedSecondsSince(this.startTime);
     }
 
-    getCurrentTimeMS()
+    getCurrentTimeMS():number
     {
         return this.game.time.elapsedSince(this.startTime);
     }
 
-    getFormattedTime()
+    getFormattedTime():string
     {
         var elapsedSeconds = this.getCurrentTimeIntSeconds();
 

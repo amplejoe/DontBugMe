@@ -11,6 +11,7 @@ class Bug extends Phaser.Sprite
 
     constructor(game:Phaser.Game, animName: string, x:number,y:number)
     {
+
         this.game = game;
 
         this.animName = animName;
