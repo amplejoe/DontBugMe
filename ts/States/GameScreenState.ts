@@ -1,5 +1,9 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
+/// <reference path="../Utils/Timer.ts"/>
+/// <reference path="../Utils/IntervalTimer.ts"/>
+/// <reference path="../Utils/RandomIntervalTimer.ts"/>
+/// <reference path="../Utils/CountdownTimer.ts"/>
 class GameScreenState extends Phaser.State {
 
     game:Phaser.Game;
@@ -30,6 +34,9 @@ class GameScreenState extends Phaser.State {
     gameStartTime: number;
     adjustInterval: number;
     prevAdjustmentTime: number;
+
+    // timers
+    buttonReassignTimer: Timer;
 
     // button assignment
     currentButtonDurationTime: number;
@@ -140,6 +147,10 @@ class GameScreenState extends Phaser.State {
         this.buttonDurationTimeMax = 5;
         this.buttonDurationTimeMin = 0.5;
         this.currentButtonDurationTime = -1;
+
+        // button reassign timer
+        //this.buttonReassignTimer = new IntervalTimer(this.game.time.time, 10);
+
     }
 
     initSounds()
@@ -196,8 +207,8 @@ class GameScreenState extends Phaser.State {
         // twig
         this.twig = this.game.add.sprite(this.game.width*.09, this.game.height*.43, "twig");
         this.twig.anchor.setTo(0,0);
-        this.twig.scale.x = 0.5;
-        this.twig.scale.y = 0.5;
+        this.twig.scale.x = 0.50;
+        this.twig.scale.y = 0.50;
 
         // create bugs
         if (this.bugNames.length < 2) return;
