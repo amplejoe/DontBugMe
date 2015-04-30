@@ -3,7 +3,6 @@
 /// <reference path="States/GameScreenState.ts"/>
 /// <reference path="States/GameOverScreenState.ts"/>
 /// <reference path="States/MenuState.ts"/>
-
 class BugsAndFeatures {
     constructor() {
         this.game = new Phaser.Game(1280, 650, Phaser.AUTO, 'content', {create: this.create, preload: this.preload});

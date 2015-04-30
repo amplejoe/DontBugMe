@@ -1,0 +1,39 @@
+{"frames": {
+
+"1.png":
+{
+	"frame": {"x":2,"y":2,"w":338,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":338,"h":300},
+	"sourceSize": {"w":338,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"2.png":
+{
+	"frame": {"x":342,"y":2,"w":339,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":339,"h":300},
+	"sourceSize": {"w":339,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"3.png":
+{
+	"frame": {"x":683,"y":2,"w":339,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":339,"h":300},
+	"sourceSize": {"w":339,"h":300},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "flachi.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":304},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e29c7d5938973c6bfd30a21506a06d2a:f790459a5fb8f0b8e254c7c36f51333b:071cf2e3e1b2d356d34cba76e00b7d3b$"
+}
+}
