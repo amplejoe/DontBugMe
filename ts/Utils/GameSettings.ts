@@ -18,6 +18,26 @@ module GameSettings
         MODE_LAST_BUG_CRAWLING = 1,
         MODE_TIME_TRIAL = 2
     };
+
+    export enum TextStyles
+    {
+        STYLE_NONE = 0,
+        STYLE_RED = 1,
+        STYLE_GREEN = 2
+    };
+
+    export function getTextStyle(style: TextStyles, size:number): Object
+    {
+        switch(style)
+        {
+            case TextStyles.STYLE_RED:
+                return {font: size+"px Swanky and Moo Moo", fill: "#ff0000", align: "center" };
+                case TextStyles.STYLE_GREEN:
+                return {font: size+"px Swanky and Moo Moo", fill: "#00ee00", align: "center" };
+            case TextStyles.STYLE_NONE:
+            default: return null;
+        }
+    }
 }
 
 

@@ -1,5 +1,6 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
+/// <reference path="../Utils/GameSettings.ts"/>
 module States
 {
     export class MenuState extends Phaser.State {
@@ -28,7 +29,7 @@ module States
             ];
 
             var line1 = "Pick at least 2 Bugs!";
-            var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
             this.game.add.text(this.game.width * 0.3, 60, line1, style);
 
             this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -44,7 +45,7 @@ module States
                 new Sprites.Bug(this.game, "BUG5_MOVING", this.game.width*.65, this.game.height *0.65)
             ];
 
-            var style2 = {font: "40px Swanky and Moo Moo", fill: "#ff0000", textAlign: "left"};
+            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,40);
             var nam1 = "Andi Goldi";
             this.game.add.text(this.game.width*.15, this.game.height  *0.50, nam1, style2);
             var nam2= "Marcel Hirschi";

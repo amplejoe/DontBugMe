@@ -19,9 +19,10 @@ module States
         allKeys: Array<number>;
         currentlySetKeys: Array<number>;
 
-        // texts
+        // texts, styles
         cdText: Phaser.Text;
         bugsTexts: Array<Phaser.Text>;
+        userInfo: Phaser.Text;
 
         // bug related vars
         bugs: Array<Sprites.Bug>;
@@ -67,11 +68,12 @@ module States
             this.setGameStage(GameSettings.GameStages.STAGE_INIT);
             this.setGameMode(GameSettings.GameModes.MODE_LAST_BUG_CRAWLING); //TODO: implement other modes
 
+            // scrolling background
             this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
 
-            this.initPreGameCountDown();
-
             this.initRndLetters();
+
+            this.initTexts();
 
             this.initSounds();
 
@@ -114,7 +116,12 @@ module States
                 this.gameTimer.reInit();
                 this.rndButtonAssignTimer.reInit();
 
+                // hide user info and stop infinite tween
+                this.userInfo.setText('');
+                this.game.tweens.removeFrom(this.userInfo);
+
                 this.setGameStage(GameSettings.GameStages.STAGE_PLAYING);
+
             }
         }
 
@@ -133,10 +140,22 @@ module States
 
         }
 
+        initTexts()
+        {
+            //countdown text
+            this.cdText = this.game.add.text(this.game.world.centerX-20, this.game.world.centerY-130, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
+            this.userInfo = this.game.add.text(this.game.world.centerX-260, this.game.world.centerY-200, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
+
+        }
+
+
         initGameTiming()
         {
             // overall game time
             this.gameTimer = new Utils.IntervalTimer(this.game, 10);
+
+            // pre game countdown
+            this.preGameCountDownTimer = new Utils.CountdownTimer(this.game, 2.5);
 
             // bug speed and tiles
             this.boostVelocity = -170;
@@ -174,13 +193,6 @@ module States
             this.currentMusicPlaying = null;
         }
 
-        initPreGameCountDown()
-        {
-            this.preGameCountDownTimer = new Utils.CountdownTimer(this.game, 2.5);
-            //countdown text
-            this.cdText = this.game.add.text(this.game.world.centerX-70, this.game.world.centerY-130, '5', { font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center" });
-            //this.text.anchor.setTo(0.5, 0.5);
-        }
 
         initRndLetters()
         {
@@ -238,7 +250,7 @@ module States
                 this.bugs[i].body.bounce.set(0.4);
 
 
-                this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', { font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
+                this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80));
                 this.initKeysPressed[i] = false;
             }
 
@@ -383,8 +395,12 @@ module States
             if (buttonsPressed == this.bugs.length) this.startRunning();
 
             // switch keys after predefined interval (prevents game from hanging)
-            if (this.initPhaseButtonReassignTimer.checkInterval()) this.assignAndRemoveLetters();
-
+            if (this.initPhaseButtonReassignTimer.checkInterval())
+            {
+                this.assignAndRemoveLetters();
+                // reset already pressed keys
+                for (var i=0; i< this.initKeysPressed.length; i++) this.initKeysPressed[i] = false;
+            }
 
         }
 
@@ -396,14 +412,14 @@ module States
             // color text according to keypress
             if (key.isDown)
             {
-                this.bugsTexts[index].setStyle({ font: "80px Swanky and Moo Moo", fill: "#00ee00", align: "center"});
+                this.bugsTexts[index].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN, 80));
             }
             else
             {
                 // in initial phase let buttons remain green when pressed once
-                if (this.gameStage > GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT)
+                if ((this.gameStage > GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT) || !this.initKeysPressed[index])
                 {
-                    this.bugsTexts[index].setStyle({ font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
+                    this.bugsTexts[index].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
                 }
 
             }
@@ -556,7 +572,7 @@ module States
         handleButtons(bugindex: number)
         {
             if (this.bugs[bugindex] == null) {
-                this.bugsTexts[bugindex].setStyle({ font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
+                this.bugsTexts[bugindex].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80));
                 this.bugsTexts[bugindex].setText(":(");
                 return;
             }
@@ -614,6 +630,9 @@ module States
             {
                 // adding tweens MUST only happen once
                 this.cdText.setText("GO!");
+                // user info
+                this.userInfo.setText("Touch all keys!");
+                this.game.add.tween(this.userInfo).to({alpha: 0}, 800, Phaser.Easing.Linear.None, true).loop(true);
                 this.game.add.tween(this.cdText).to({x: 4000}, 2500, Phaser.Easing.Linear.None, true);
                 //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
                 this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);

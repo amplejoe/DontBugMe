@@ -1,5 +1,6 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
+/// <reference path="../Utils/GameSettings.ts"/>
 module States
 {
     export class GameOverScreenState extends Phaser.State
@@ -45,13 +46,13 @@ module States
 
             var line1 = "Game Over - The Winner:";
 
-            var style = { font: "60px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
             this.game.add.text(this.game.width/2- 450, 70, line1, style);
 
             if (this.winner == "")
             {
                 var line2 = "Nobody!";
-                var style2 = { font: "80px Swanky and Moo Moo", fill: "#ff0000", textAlign: "center"};
+                var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80);
                 this.game.add.text(this.game.width/2 - 100, 250, line2, style2);
 
             }
