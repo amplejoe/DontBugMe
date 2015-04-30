@@ -5,6 +5,7 @@
 /// <reference path="../Utils/IntervalTimer.ts"/>
 /// <reference path="../Utils/RandomIntervalTimer.ts"/>
 /// <reference path="../Utils/CountdownTimer.ts"/>
+/// <reference path="../Utils/UtilFunctions.ts"/>
 module States
 {
     export class GameScreenState extends Phaser.State {
@@ -18,34 +19,23 @@ module States
         allKeys: Array<number>;
         currentlySetKeys: Array<number>;
 
-        // countdown
-        preGameCountDown: number;
-        preGameCountDownMax: number;
-        cdStartTime: number;
+        // texts
         cdText: Phaser.Text;
+        bugsTexts: Array<Phaser.Text>;
 
         // bug related vars
         bugs: Array<Sprites.Bug>;
-        bugsTexts: Array<Phaser.Text>;
         initKeysPressed: Array<boolean>;
         bugsIngame: number;
         bugNames: Array<string>;
 
-
-        // game timing & difficulty
-        gameStartTime: number;
-        adjustInterval: number;
-        prevAdjustmentTime: number;
-
         // timers
-        buttonReassignTimer: Utils.IntervalTimer;
+        gameTimer: Utils.IntervalTimer;
+        preGameCountDownTimer: Utils.CountdownTimer;
+        initPhaseButtonReassignTimer: Utils.IntervalTimer;
+        rndButtonAssignTimer: Utils.RandomIntervalTimer;
 
-        // button assignment
-        currentButtonDurationTime: number;
-        buttonDurationTimeMax: number;
-        buttonDurationTimeMin: number;
-        prevButtonAssigmentTime: number;
-
+        // game difficulty attributes
         tileSpeed: number;
         gravity: number;
         boostVelocity: number;
@@ -115,9 +105,14 @@ module States
                 this.playRndLoops();
 
                 // fadeout go!
-                this.prevAdjustmentTime = this.game.time.time;
+                //this.prevAdjustmentTime = this.game.time.time;
 
                 this.tweenSpriteDown(this.twig);
+
+                // init interval timers used in game
+                this.assignAndRemoveLetters();
+                this.gameTimer.reInit();
+                this.rndButtonAssignTimer.reInit();
 
                 this.setGameStage(GameSettings.GameStages.STAGE_PLAYING);
             }
@@ -141,9 +136,7 @@ module States
         initGameTiming()
         {
             // overall game time
-            this.gameStartTime = this.game.time.time;
-            this.prevAdjustmentTime = this.gameStartTime;
-            this.adjustInterval = 10;
+            this.gameTimer = new Utils.IntervalTimer(this.game, 10);
 
             // bug speed and tiles
             this.boostVelocity = -170;
@@ -151,12 +144,10 @@ module States
             this.tileSpeed = 1;
 
             // buttonAssignment speed
-            this.buttonDurationTimeMax = 5;
-            this.buttonDurationTimeMin = 0.5;
-            this.currentButtonDurationTime = -1;
+            this.rndButtonAssignTimer = new Utils.RandomIntervalTimer(this.game,7,0.5);
 
             // button reassign timer
-            this.buttonReassignTimer = new Utils.IntervalTimer(this.game, 10);
+            this.initPhaseButtonReassignTimer = new Utils.IntervalTimer(this.game, 10);
 
         }
 
@@ -185,10 +176,8 @@ module States
 
         initPreGameCountDown()
         {
-            this.preGameCountDownMax = this.preGameCountDown = 2.5;
-
-            this.cdStartTime = this.game.time.time;
-            //countdown format + position
+            this.preGameCountDownTimer = new Utils.CountdownTimer(this.game, 2.5);
+            //countdown text
             this.cdText = this.game.add.text(this.game.world.centerX-70, this.game.world.centerY-130, '5', { font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center" });
             //this.text.anchor.setTo(0.5, 0.5);
         }
@@ -394,7 +383,7 @@ module States
             if (buttonsPressed == this.bugs.length) this.startRunning();
 
             // switch keys after predefined interval (prevents game from hanging)
-            if (this.buttonReassignTimer.checkInterval()) this.assignAndRemoveLetters();
+            if (this.initPhaseButtonReassignTimer.checkInterval()) this.assignAndRemoveLetters();
 
 
         }
@@ -531,10 +520,10 @@ module States
         {
 
             // check elapses secs since game start
-            var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.prevAdjustmentTime));
+            //var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.prevAdjustmentTime));
 
             // adjust difficulty every 10 secs
-            if (elapsedSecs >= this.adjustInterval)
+            if (this.gameTimer.checkInterval())
             {
                 // bug speed, tilespeed & gravity
                 if (this.boostVelocity > 40) this.boostVelocity -= 20;
@@ -545,10 +534,9 @@ module States
                 }
 
                 // lower button time
-                if (this.buttonDurationTimeMax > this.buttonDurationTimeMin) this.buttonDurationTimeMax--;
-
-                // set prev adjustment time to now
-                this.prevAdjustmentTime = this.game.time.time;
+                var rndAssignmentMax: number  = this.rndButtonAssignTimer.getMax();
+                if (rndAssignmentMax > this.rndButtonAssignTimer.getMin()) this.rndButtonAssignTimer.setMax(rndAssignmentMax-1);
+                //if (this.buttonDurationTimeMax > this.buttonDurationTimeMin) this.buttonDurationTimeMax--;
 
                 // change music
                 var rnd = Math.floor(Math.random()* 2); // rnd number 0 or 1
@@ -607,7 +595,7 @@ module States
 
             }
             this.sEnd[1].play();
-            var timePlayed = this.getFormattedTimeSince(this.gameStartTime);
+            var timePlayed: string = this.gameTimer.getFormattedTime();
             this.stopMusic();
             this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
             this.game.state.states['GameOverScreenState'].setWinner(winnerString);
@@ -616,14 +604,11 @@ module States
 
         doCountDown()
         {
-            // update counter
-            var elapsed:number = this.game.time.elapsedSecondsSince(this.cdStartTime);
-            this.preGameCountDown=this.preGameCountDownMax-elapsed;
-
             // countdown still running
-            if (this.preGameCountDown > 0) {
+            if (this.preGameCountDownTimer.isRunning())
+            {
                 // set current secs
-                this.cdText.setText(""+(this.toInt(this.preGameCountDown)+1));
+                this.cdText.setText(""+(this.preGameCountDownTimer.getCountdownIntValue()+1));
             }
             else
             {
@@ -660,18 +645,11 @@ module States
             return tempo;
         }
 
-        UpdateRndBtns(){
-            var elapsedSecs = this.toInt(this.game.time.elapsedSecondsSince(this.prevButtonAssigmentTime));
-
-            if (elapsedSecs >= this.currentButtonDurationTime){
-
+        UpdateRndBtns()
+        {
+            if (this.rndButtonAssignTimer.checkInterval())
+            {
                 this.assignAndRemoveLetters();
-
-                //console.log("set bug "+bugNr);
-                //this.Time = Math.round(Math.random()*this.MaxTime)+2;
-                this.currentButtonDurationTime = Math.round(Math.random()*(this.buttonDurationTimeMax-this.buttonDurationTimeMin)) + this.buttonDurationTimeMin;
-                this.prevButtonAssigmentTime = this.game.time.time;
-
             }
         }
 

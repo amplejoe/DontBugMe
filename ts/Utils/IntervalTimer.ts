@@ -13,6 +13,12 @@ module Utils
             this.setIntervalCheckPoint(this.startTime);
         }
 
+        reInit()
+        {
+            this.restart();
+            this.setIntervalCheckPoint(this.startTime);
+        }
+
         setInterval(interval: number){this.interval = interval;}
 
         getInterval(): number {return this.interval;}
