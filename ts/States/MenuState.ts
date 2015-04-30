@@ -53,7 +53,7 @@ module States
             this.game.add.text(this.game.width*.72, this.game.height  *0.50, nam3, style2);
             var nam4 = "Marlies Schildi";
             this.game.add.text(this.game.width*.25, this.game.height  *0.75, nam4, style2);
-            var nam5 = "Flashi ???";
+            var nam5 = "Mario Scheibi";
             this.game.add.text(this.game.width*.58, this.game.height  *0.75, nam5, style2);
 
 
