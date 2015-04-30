@@ -23,6 +23,7 @@ class BugsAndFeatures {
         this.game.load.image('leaves2', 'assets/gfx/leave2.png');
         this.game.load.image('leaves3', 'assets/gfx/leave3.png');
         this.game.load.image('twig', 'assets/gfx/twig.png');
+        this.game.load.image('enter', 'assets/gfx/enter_green.png');
 
         // loading spritesheets
         this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");

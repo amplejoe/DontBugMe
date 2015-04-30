@@ -145,7 +145,7 @@ module States
             //countdown text
             this.cdText = this.game.add.text(this.game.world.centerX-20, this.game.world.centerY-130, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
             this.userInfo = this.game.add.text(this.game.world.centerX-260, this.game.world.centerY-200, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
-
+            this.userInfo.alpha = 0;
         }
 
 
@@ -632,7 +632,9 @@ module States
                 this.cdText.setText("GO!");
                 // user info
                 this.userInfo.setText("Touch all keys!");
-                this.game.add.tween(this.userInfo).to({alpha: 0}, 800, Phaser.Easing.Linear.None, true).loop(true);
+
+                this.game.add.tween(this.userInfo).to({alpha: 1}, 600, Phaser.Easing.Linear.None, true, 0, 300, true);
+                //this.game.add.tween(this.userInfo).to({alpha: 0}, 800, Phaser.Easing.Linear.None, true).loop(true);
                 this.game.add.tween(this.cdText).to({x: 4000}, 2500, Phaser.Easing.Linear.None, true);
                 //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
                 this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
