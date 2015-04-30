@@ -1,56 +1,59 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
-class Timer
+module Utils
 {
-    game:Phaser.Game;
-
-    startTime: number;
-
-    constructor(game) {this.game = game; this.setStartTime(this.game.time.time);}
-
-    setStartTime(time: number) {this.startTime = time;}
-
-    getStartTime(): number {return this.startTime;}
-
-    restart() {this.setStartTime(this.game.time.time)}
-
-    getCurrentTimeIntSeconds(): number
+    export class Timer
     {
-        return this.toInt(this.game.time.elapsedSecondsSince(this.startTime));
-    }
+        game:Phaser.Game;
 
-    getCurrentTimeSeconds(): number
-    {
-        return this.game.time.elapsedSecondsSince(this.startTime);
-    }
+        startTime: number;
 
-    getCurrentTimeMS():number
-    {
-        return this.game.time.elapsedSince(this.startTime);
-    }
+        constructor(game) {this.game = game; this.setStartTime(this.game.time.time);}
 
-    getFormattedTime():string
-    {
-        var elapsedSeconds = this.getCurrentTimeIntSeconds();
+        setStartTime(time: number) {this.startTime = time;}
 
-        var elapsedHours = this.toInt(elapsedSeconds / (60 * 60));
-        if (elapsedHours > 0)
+        getStartTime(): number {return this.startTime;}
+
+        restart() {this.setStartTime(this.game.time.time)}
+
+        getCurrentTimeIntSeconds(): number
         {
-            elapsedSeconds -= elapsedHours * 60 * 60;
-        }
-        var elapsedMinutes =  this.toInt(elapsedSeconds / 60);
-        if (elapsedMinutes > 0)
-        {
-            elapsedSeconds -= elapsedMinutes * 60;
+            return this.toInt(this.game.time.elapsedSecondsSince(this.startTime));
         }
 
-        // add 0s for non double digit values
-        var retTime = (elapsedHours > 9? "" : "0") + elapsedHours + ":" +
-            (elapsedMinutes > 9? "" : "0") + elapsedMinutes + ":" +
-            (elapsedSeconds > 9? "" : "0") + elapsedSeconds;
+        getCurrentTimeSeconds(): number
+        {
+            return this.game.time.elapsedSecondsSince(this.startTime);
+        }
 
-        return retTime;
+        getCurrentTimeMS():number
+        {
+            return this.game.time.elapsedSince(this.startTime);
+        }
+
+        getFormattedTime():string
+        {
+            var elapsedSeconds = this.getCurrentTimeIntSeconds();
+
+            var elapsedHours = this.toInt(elapsedSeconds / (60 * 60));
+            if (elapsedHours > 0)
+            {
+                elapsedSeconds -= elapsedHours * 60 * 60;
+            }
+            var elapsedMinutes =  this.toInt(elapsedSeconds / 60);
+            if (elapsedMinutes > 0)
+            {
+                elapsedSeconds -= elapsedMinutes * 60;
+            }
+
+            // add 0s for non double digit values
+            var retTime = (elapsedHours > 9? "" : "0") + elapsedHours + ":" +
+                (elapsedMinutes > 9? "" : "0") + elapsedMinutes + ":" +
+                (elapsedSeconds > 9? "" : "0") + elapsedSeconds;
+
+            return retTime;
+        }
+
+        toInt(value) { return ~~value; }
+
     }
-
-    toInt(value) { return ~~value; }
-
 }

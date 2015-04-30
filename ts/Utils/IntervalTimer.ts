@@ -1,38 +1,42 @@
 /// <reference path="Timer.ts"/>
-class IntervalTimer extends Timer
+module Utils
 {
-    intervalCheckPoint: number; // last checkpoint for interval
-    interval: number; // secs
-
-    constructor(game: Phaser.Game, interval: number)
+    export class IntervalTimer extends Timer
     {
-        super(game);
-        this.setInterval(interval);
-        this.setIntervalCheckPoint(this.game.time.time);
-    }
+        intervalCheckPoint: number; // last checkpoint for interval
+        interval: number; // secs
 
-    setInterval(interval: number){this.interval = interval;}
-
-    getInterval(): number {return this.interval;}
-
-    setIntervalCheckPoint(checkPoint: number)
-    {
-        this.intervalCheckPoint = checkPoint;
-    }
-
-    checkInterval(): boolean
-    {
-        var elapsed: number =  this.getCurrentTimeSeconds();
-
-        if (elapsed >= this.interval)
+        constructor(game: Phaser.Game, interval: number)
         {
+            super(game);
+            this.setInterval(interval);
             this.setIntervalCheckPoint(this.game.time.time);
-
-            return true;
         }
 
-        return false;
+        setInterval(interval: number){this.interval = interval;}
+
+        getInterval(): number {return this.interval;}
+
+        setIntervalCheckPoint(checkPoint: number)
+        {
+            this.intervalCheckPoint = checkPoint;
+        }
+
+        checkInterval(): boolean
+        {
+            var elapsed: number =  this.getCurrentTimeSeconds();
+
+            if (elapsed >= this.interval)
+            {
+                this.setIntervalCheckPoint(this.game.time.time);
+
+                return true;
+            }
+
+            return false;
+
+        }
 
     }
-
 }
+

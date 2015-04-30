@@ -54,6 +54,18 @@ module Sprites // very important - not even constructor gets called without this
             return this.animName;
         }
 
+        boost(velocity: number)
+        {
+            // initial boost
+            if (this.isFirstBoost())
+            {
+                this.body.velocity.setTo(0, -270);
+                this.setFirstBoost(false); // unset forst boost
+                return;
+            }
+
+            this.body.velocity.setTo(0, velocity);
+        }
 
         update()
         {

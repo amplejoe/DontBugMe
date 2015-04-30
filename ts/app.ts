@@ -57,16 +57,16 @@ class BugsAndFeatures {
     create() {
 
         // title screen
-        this.game.state.add("TitleScreenState", TitleScreenState, true);
+        this.game.state.add("TitleScreenState", States.TitleScreenState, true);
 
         // game screen
-        this.game.state.add("GameScreenState", GameScreenState, false);
+        this.game.state.add("GameScreenState", States.GameScreenState, false);
 
         // game over screen
-        this.game.state.add("GameOverScreenState", GameOverScreenState, false);
+        this.game.state.add("GameOverScreenState", States.GameOverScreenState, false);
 
         // menu state
-        this.game.state.add("MenuState", MenuState, false);
+        this.game.state.add("MenuState", States.MenuState, false);
 
     }
 
