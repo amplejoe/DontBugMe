@@ -10,7 +10,7 @@ module Utils
         {
             super(game);
             this.setInterval(interval);
-            this.setIntervalCheckPoint(this.game.time.time);
+            this.setIntervalCheckPoint(this.startTime);
         }
 
         setInterval(interval: number){this.interval = interval;}
@@ -22,9 +22,14 @@ module Utils
             this.intervalCheckPoint = checkPoint;
         }
 
+        getIntervalCheckPoint():number
+        {
+            return this.intervalCheckPoint;
+        }
+
         checkInterval(): boolean
         {
-            var elapsed: number =  this.getCurrentTimeSeconds();
+            var elapsed: number = this.game.time.elapsedSecondsSince(this.intervalCheckPoint);
 
             if (elapsed >= this.interval)
             {

@@ -27,7 +27,7 @@ module States
         // bug related vars
         bugs: Array<Sprites.Bug>;
         bugsTexts: Array<Phaser.Text>;
-        //bugsInited: boolean;
+        initKeysPressed: Array<boolean>;
         bugsIngame: number;
         bugNames: Array<string>;
 
@@ -227,6 +227,7 @@ module States
             //console.log("bugs in game"+this.bugsIngame);
 
             this.bugsTexts = Array(this.bugsIngame);
+            this.initKeysPressed = Array(this.bugsIngame);
             this.currentlySetKeys = Array(this.bugsIngame);
 
             // add bugs and physics and animations
@@ -249,7 +250,7 @@ module States
 
 
                 this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', { font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
-
+                this.initKeysPressed[i] = false;
             }
 
             this.assignAndRemoveLetters();
@@ -373,17 +374,52 @@ module States
                 var key: Phaser.Key;
                 key = this.bugs[i].getCurrentKey();
                 //console.log(""+this.keyValToString(key.keyCode)+" ")
-                if (key != null) this.bugsTexts[i].setText(""+this.keyValToString(key.keyCode));
+                this.setKeyButtonText(i, key);
                 if(key != null && key.isDown)
                 {
-                    buttonsPressed++;
+                    this.initKeysPressed[i] = true;
+                    // removed exact button press (with 5 bugs its annoying when keyboard is limited)
+                    //buttonsPressed++;
                 }
+            }
+
+            for (var i=0;i<this.initKeysPressed.length; i++)
+            {
+                if (this.initKeysPressed[i] == true) buttonsPressed++;
             }
 
             //console.log("buttonpressed: "+buttonsPressed);
 
+            // removed exact button press (with 5 bugs its annoying when keyboard is limited)
             if (buttonsPressed == this.bugs.length) this.startRunning();
 
+            // switch keys after predefined interval (prevents game from hanging)
+            if (this.buttonReassignTimer.checkInterval()) this.assignAndRemoveLetters();
+
+
+        }
+
+        setKeyButtonText(index: number, key: Phaser.Key)
+        {
+
+            if (key == null) return;
+
+            // color text according to keypress
+            if (key.isDown)
+            {
+                this.bugsTexts[index].setStyle({ font: "80px Swanky and Moo Moo", fill: "#00ee00", align: "center"});
+            }
+            else
+            {
+                // in initial phase let buttons remain green when pressed once
+                if (this.gameStage > GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT)
+                {
+                    this.bugsTexts[index].setStyle({ font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
+                }
+
+            }
+
+            this.bugsTexts[index].setText(this.keyValToString(key.keyCode));
         }
 
         update() {
@@ -406,23 +442,6 @@ module States
                 default: return;
             }
 
-            /*
-             if (!this.fadedGo) {
-             this.game.time.events.add(2000, function() {
-             //this.game.add.tween(this.cdText).to({x: 4000}, 100, Phaser.Easing.Linear.None, true);
-             //this.game.add.tween(this.cdText).to({scale: 5.0}, 800, Phaser.Easing.Linear.None, true);
-             this.game.add.tween(this.cdText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
-             }, this);
-             this.fadedGo = true;
-             }
-
-
-             if (this.gameStage == GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT) {
-
-             return;
-             }
-             */
-
             this.bgTile0.tilePosition.y += this.tileSpeed;
 
             // check deaths and key presses
@@ -430,7 +449,7 @@ module States
             {
                 this.handleBugDeath(i);
 
-                this.handleButtons(i);
+                this.handleButtons(i); // boost bugs if right keys pressed
             }
 
             // checks game finish conditions
@@ -488,7 +507,6 @@ module States
 
         checkMusic()
         {
-
             if (this.currentMusicPlaying == null) return;
 
             var musicPlaying = this.getCurrentMusicPlaying();
@@ -550,17 +568,20 @@ module States
         handleButtons(bugindex: number)
         {
             if (this.bugs[bugindex] == null) {
+                this.bugsTexts[bugindex].setStyle({ font: "80px Swanky and Moo Moo", fill: "#ff0000", align: "center"});
                 this.bugsTexts[bugindex].setText(":(");
                 return;
             }
 
             var key: Phaser.Key;
             key = this.bugs[bugindex].getCurrentKey();
-            if (key != null) this.bugsTexts[bugindex].setText(""+this.keyValToString(key.keyCode));
-            if(key != null && key.isDown)
-            {
-                this.boostBug(bugindex);
-            }
+
+            this.setKeyButtonText(bugindex, key);
+
+            //if(key != null && key.isDown)
+            //{
+                this.bugs[bugindex].boost(this.boostVelocity);
+            //}
 
         }
 
@@ -591,23 +612,6 @@ module States
             this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
             this.game.state.states['GameOverScreenState'].setWinner(winnerString);
             this.game.state.start("GameOverScreenState");
-        }
-
-        boostBug(index: number)
-        {
-            //console.log(bugIndex);
-
-            this.bugs[index].boost(this.boostVelocity);
-            /*
-             if (this.bugs[index].isFirstBoost())
-             {
-             this.bugs[index].body.velocity.setTo(0, -270);
-             this.bugs[index].setFirstBoost(false); // unset forst boost
-             return;
-             }
-
-             this.bugs[index].body.velocity.setTo(0, this.boostVelocity);
-             */
         }
 
         doCountDown()

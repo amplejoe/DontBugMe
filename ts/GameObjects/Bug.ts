@@ -9,7 +9,7 @@ module Sprites // very important - not even constructor gets called without this
 
         animName: string;
 
-        firstBoost: Boolean;
+        firstBoost: boolean;
 
         constructor(game: Phaser.Game, animName: string, x:number,y:number)
         {
@@ -34,12 +34,12 @@ module Sprites // very important - not even constructor gets called without this
             this.animName = name;
         }
 
-        isFirstBoost(): Boolean
+        isFirstBoost(): boolean
         {
             return this.firstBoost;
         }
 
-        setFirstBoost(val: Boolean)
+        setFirstBoost(val: boolean)
         {
             this.firstBoost = val;
         }
@@ -56,6 +56,9 @@ module Sprites // very important - not even constructor gets called without this
 
         boost(velocity: number)
         {
+
+            if (this.currentKey == null) return;
+
             // initial boost
             if (this.isFirstBoost())
             {
@@ -64,7 +67,7 @@ module Sprites // very important - not even constructor gets called without this
                 return;
             }
 
-            this.body.velocity.setTo(0, velocity);
+            if (this.currentKey.isDown) this.body.velocity.setTo(0, velocity);
         }
 
         update()
