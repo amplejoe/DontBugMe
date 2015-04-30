@@ -21,15 +21,14 @@ class GameScreenState extends Phaser.State {
     preGameCountDownMax: number;
     cdStartTime: number;
     cdText: Phaser.Text;
-    //fadedGo: boolean;
 
     // bug related vars
-    bugs: Array<Bug>;
+    bugs: Array<Sprites.Bug>;
     bugsTexts: Array<Phaser.Text>;
-    bugsInited: boolean;
+    //bugsInited: boolean;
     bugsIngame: number;
     bugNames: Array<string>;
-    //bugsAreRunning: boolean;
+
 
     // game timing & difficulty
     gameStartTime: number;
@@ -48,7 +47,6 @@ class GameScreenState extends Phaser.State {
     tileSpeed: number;
     gravity: number;
     boostVelocity: number;
-    isFirstBoost: boolean;
 
     // audio
     music: Array<Phaser.Sound>;
@@ -76,10 +74,6 @@ class GameScreenState extends Phaser.State {
         // game settings
         this.setGameStage(GameSettings.GameStages.STAGE_INIT);
         this.setGameMode(GameSettings.GameModes.MODE_LAST_BUG_CRAWLING); //TODO: implement other modes
-
-        this.bugsInited = false;
-        //this.fadedGo = false;
-        this.isFirstBoost = true;
 
         this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
 
@@ -237,7 +231,7 @@ class GameScreenState extends Phaser.State {
         var startX = 0.08;
         for (var i=0;i<this.bugs.length;i++)
         {
-            this.bugs[i] = new Bug(this.game,this.bugNames[i], this.game.width * startX, this.game.height * 0.52);
+            this.bugs[i] = new Sprites.Bug(this.game,this.bugNames[i], this.game.width * startX, this.game.height * 0.52);
             startX += 0.18;
 
             // add bug
@@ -258,7 +252,7 @@ class GameScreenState extends Phaser.State {
 
         this.assignAndRemoveLetters();
 
-        this.bugsInited = true;
+        //this.bugsInited = true;
         //this.bugsAreRunning = false;
 
     }
@@ -449,9 +443,6 @@ class GameScreenState extends Phaser.State {
         // checks whether flag is set for music change and handles transition
         this.checkMusic();
 
-        // first boost for bugs is higher, reset this here
-        if (this.isFirstBoost) this.isFirstBoost = false;
-
         // rnd button change
         this.UpdateRndBtns();
 
@@ -603,11 +594,13 @@ class GameScreenState extends Phaser.State {
     boostBug(index: number)
     {
         //console.log(bugIndex);
-        if (this.isFirstBoost)
+        if (this.bugs[index].isFirstBoost())
         {
             this.bugs[index].body.velocity.setTo(0, -270);
+            this.bugs[index].setFirstBoost(false); // unset forst boost
             return;
         }
+
         this.bugs[index].body.velocity.setTo(0, this.boostVelocity);
     }
 

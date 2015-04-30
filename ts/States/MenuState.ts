@@ -10,7 +10,7 @@ class MenuState extends Phaser.State {
 
     bg:Phaser.TileSprite;
 
-    bugs:Array<Bug>;
+    bugs:Array<Sprites.Bug>;
     choosen:Array <boolean>;
 
     s1:Phaser.Sound;
@@ -37,11 +37,11 @@ class MenuState extends Phaser.State {
         this.START_BUTTON2.onDown.add(MenuState.prototype.buttonPressed, this);
 
         this.bugs = [
-            new Bug(this.game, "BUG1_MOVING", this.game.width*.2, this.game.height  *0.4),
-            new Bug(this.game, "BUG2_MOVING", this.game.width*.5, this.game.height *0.4),
-            new Bug(this.game, "BUG3_MOVING", this.game.width*.8, this.game.height *0.4),
-            new Bug(this.game, "BUG4_MOVING", this.game.width*.35, this.game.height *0.65),
-            new Bug(this.game, "BUG5_MOVING", this.game.width*.65, this.game.height *0.65)
+            new Sprites.Bug(this.game, "BUG1_MOVING", this.game.width*.2, this.game.height  *0.4),
+            new Sprites.Bug(this.game, "BUG2_MOVING", this.game.width*.5, this.game.height *0.4),
+            new Sprites.Bug(this.game, "BUG3_MOVING", this.game.width*.8, this.game.height *0.4),
+            new Sprites.Bug(this.game, "BUG4_MOVING", this.game.width*.35, this.game.height *0.65),
+            new Sprites.Bug(this.game, "BUG5_MOVING", this.game.width*.65, this.game.height *0.65)
         ];
 
         var style2 = {font: "40px Swanky and Moo Moo", fill: "#ff0000", textAlign: "left"};
