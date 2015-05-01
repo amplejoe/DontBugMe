@@ -41,7 +41,7 @@ for /f "tokens=*" %%a in (index.html) do (
 		)
 )
 
-echo ################## Minifying js files #####################
+echo ################## Minifying js files ####################
 :: Packs and minifies all js files into dist\js\game.min.js 
 mkdir dist\js
 java -jar "tools\closure\compiler.jar" ^
