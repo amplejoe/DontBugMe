@@ -144,7 +144,7 @@ module States
         {
             //countdown text
             this.cdText = this.game.add.text(this.game.world.centerX-20, this.game.world.centerY-130, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
-            this.userInfo = this.game.add.text(this.game.world.centerX-260, this.game.world.centerY-200, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
+            this.userInfo = this.game.add.text(this.game.world.centerX-400, this.game.world.centerY-200, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
             this.userInfo.alpha = 0;
         }
 
@@ -232,16 +232,23 @@ module States
             this.currentlySetKeys = Array(this.bugsIngame);
 
             // add bugs and physics and animations
-            var startX = 0.08;
+            var minBugX: number = 0.08; // min x for bugs
+            var interval: number = 0.18; // interval between bugs
+            var maxBugX: number = minBugX + 4*interval; // 0.8 -> for max 5 bugs
+            var middleBugX: number = minBugX + (maxBugX - minBugX)/2; // center x between min and max
+            var halfBugsDist: number = ((this.bugs.length-1) * interval) / 2; // half distance between bugs
+            // calc start pos for bugs by centering the middle of the bugsdistance on middleBugX
+            var startX: number = middleBugX - halfBugsDist;
+            startX = Math.max(minBugX, startX); // make sure startX is NOT below minBugX
             for (var i=0;i<this.bugs.length;i++)
             {
-                this.bugs[i] = new Sprites.Bug(this.game,this.bugNames[i], this.game.width * startX, this.game.height * 0.52);
-                startX += 0.18;
+                this.bugs[i] = new Sprites.Bug(this.game,i, this.bugNames[i], this.game.width * startX, this.game.height * 0.52);
+                startX += interval;
 
-                // add bug
+                // add bug to scene
                 this.bugs[i].scale.x = 0.3;
                 this.bugs[i].scale.y = 0.3;
-                this.game.add.existing(this.bugs[i]); // add bird to scene
+                this.game.add.existing(this.bugs[i]);
 
 
                 // physics
@@ -582,10 +589,7 @@ module States
 
             this.setKeyButtonText(bugindex, key);
 
-            //if(key != null && key.isDown)
-            //{
-                this.bugs[bugindex].boost(this.boostVelocity);
-            //}
+            this.bugs[bugindex].boost(this.boostVelocity);
 
         }
 
@@ -597,7 +601,8 @@ module States
 
             var winnerString: string;
 
-            winnerString = "";
+            var winnerString: string = "";
+            var winnerId:number = -1;
             if (this.bugsIngame == 1)
             {
 
@@ -614,7 +619,7 @@ module States
             var timePlayed: string = this.gameTimer.getFormattedTime();
             this.stopMusic();
             this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
-            this.game.state.states['GameOverScreenState'].setWinner(winnerString);
+            this.game.state.states['GameOverScreenState'].setWinner(winnerId,winnerString);
             this.game.state.start("GameOverScreenState");
         }
 
@@ -631,7 +636,7 @@ module States
                 // adding tweens MUST only happen once
                 this.cdText.setText("GO!");
                 // user info
-                this.userInfo.setText("Touch all keys!");
+                this.userInfo.setText("Press all keys to start!");
 
                 this.game.add.tween(this.userInfo).to({alpha: 1}, 600, Phaser.Easing.Linear.None, true, 0, 300, true);
                 //this.game.add.tween(this.userInfo).to({alpha: 0}, 800, Phaser.Easing.Linear.None, true).loop(true);

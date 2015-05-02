@@ -23,5 +23,7 @@ module Utils
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        static toInt(value) { return ~~value; }
+
     }
 }

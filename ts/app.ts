@@ -3,6 +3,7 @@
 /// <reference path="States/GameScreenState.ts"/>
 /// <reference path="States/GameOverScreenState.ts"/>
 /// <reference path="States/MenuState.ts"/>
+/// <reference path="Utils/GameSettings.ts"/>
 class BugsAndFeatures {
     constructor() {
         this.game = new Phaser.Game(1280, 650, Phaser.AUTO, 'content', {create: this.create, preload: this.preload});
@@ -13,7 +14,7 @@ class BugsAndFeatures {
     preload() {
 
         var line1 = "Loading...";
-        var style = {font: "60px Swanky and Moo Moo", fill: "#ff0000"};
+        var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
         this.game.add.text(this.game.width * 0.40, this.game.height *0.43, line1, style);
 
         // background & ambience sprites
@@ -25,11 +26,11 @@ class BugsAndFeatures {
         this.game.load.image('enter', 'assets/gfx/enter_green.png');
 
         // loading spritesheets
-        this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");
-        this.game.load.atlasJSONHash("BUG2_MOVING", "assets/gfx/final_bugs/hirschi.png", "assets/gfx/final_bugs/hirischi_moving.json");
-        this.game.load.atlasJSONHash("BUG3_MOVING", "assets/gfx/final_bugs/schoeni_animation.png", "assets/gfx/final_bugs/schoeni_animation.json");
-        this.game.load.atlasJSONHash("BUG4_MOVING", "assets/gfx/final_bugs/raini.png", "assets/gfx/final_bugs/raini.json");
-        this.game.load.atlasJSONHash("BUG5_MOVING", "assets/gfx/final_bugs/flachi.png", "assets/gfx/final_bugs/flachi.json");
+        this.game.load.atlasJSONHash("BUG0_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");
+        this.game.load.atlasJSONHash("BUG1_MOVING", "assets/gfx/final_bugs/hirschi.png", "assets/gfx/final_bugs/hirischi_moving.json");
+        this.game.load.atlasJSONHash("BUG2_MOVING", "assets/gfx/final_bugs/schoeni_animation.png", "assets/gfx/final_bugs/schoeni_animation.json");
+        this.game.load.atlasJSONHash("BUG3_MOVING", "assets/gfx/final_bugs/raini.png", "assets/gfx/final_bugs/raini.json");
+        this.game.load.atlasJSONHash("BUG4_MOVING", "assets/gfx/final_bugs/flachi.png", "assets/gfx/final_bugs/flachi.json");
         this.game.load.atlasJSONHash("TITLE_ANIM", "assets/gfx/title_animation.png", "assets/gfx/title_animation.json");
 
         //music

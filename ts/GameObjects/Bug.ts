@@ -1,4 +1,5 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
+/// <reference path="../Utils/GameSettings.ts"/>
 module Sprites // very important - not even constructor gets called without this...
 {
     export class Bug extends Phaser.Sprite
@@ -7,11 +8,13 @@ module Sprites // very important - not even constructor gets called without this
 
         currentKey: Phaser.Key;
 
+        id: number;
         animName: string;
+        name: string;
 
         firstBoost: boolean;
 
-        constructor(game: Phaser.Game, animName: string, x:number,y:number)
+        constructor(game: Phaser.Game,id:number, animName: string, x:number,y:number)
         {
             super(game,x,y, animName);
 
@@ -19,9 +22,19 @@ module Sprites // very important - not even constructor gets called without this
 
             this.currentKey = null;
             this.setFirstBoost(true);
-
+            this.id = id;
+            this.setName(this.id);
             //this.anchor.set(0.5, 0.5);
+        }
 
+        setName(id:number)
+        {
+            this.name = GameSettings.getBugName(id);
+        }
+
+        getName():string
+        {
+            return this.name;
         }
 
         setCurrentKey(key: Phaser.Key)

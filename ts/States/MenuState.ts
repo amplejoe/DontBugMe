@@ -1,6 +1,7 @@
 /// <reference path="../../phaserLib/phaser.d.ts"/>
 /// <reference path="../GameObjects/Bug.ts"/>
 /// <reference path="../Utils/GameSettings.ts"/>
+/// <reference path="../Utils/UtilFunctions.ts"/>
 module States
 {
     export class MenuState extends Phaser.State {
@@ -36,51 +37,51 @@ module States
             this.START_BUTTON1.onDown.add(MenuState.prototype.buttonPressed, this);
             this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             this.START_BUTTON2.onDown.add(MenuState.prototype.buttonPressed, this);
+            this.bugs = new Array<Sprites.Bug>(GameSettings.getBugNamesArray().length);
 
+            // for now easier to hard code than to calculate right
             this.bugs = [
-                new Sprites.Bug(this.game, "BUG1_MOVING", this.game.width*.2, this.game.height  *0.4),
-                new Sprites.Bug(this.game, "BUG2_MOVING", this.game.width*.5, this.game.height *0.4),
-                new Sprites.Bug(this.game, "BUG3_MOVING", this.game.width*.8, this.game.height *0.4),
-                new Sprites.Bug(this.game, "BUG4_MOVING", this.game.width*.35, this.game.height *0.65),
-                new Sprites.Bug(this.game, "BUG5_MOVING", this.game.width*.65, this.game.height *0.65)
+                new Sprites.Bug(this.game,0, "BUG0_MOVING", this.game.width*0.2, this.game.height  *0.4),
+                new Sprites.Bug(this.game,1, "BUG1_MOVING", this.game.width*0.35, this.game.height *0.65),
+                new Sprites.Bug(this.game,2, "BUG2_MOVING", this.game.width*0.5, this.game.height *0.4),
+                new Sprites.Bug(this.game,3, "BUG3_MOVING", this.game.width*0.65, this.game.height *0.65),
+                new Sprites.Bug(this.game,4, "BUG4_MOVING", this.game.width*0.8, this.game.height *0.4)
             ];
 
-            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,40);
-            var nam1 = "Andi Goldi";
-            this.game.add.text(this.game.width*.15, this.game.height  *0.50, nam1, style2);
-            var nam2= "Marcel Hirschi";
-            this.game.add.text(this.game.width*.41, this.game.height  *0.50, nam2, style2);
-            var nam3 = "Raini Schöni";
-            this.game.add.text(this.game.width*.72, this.game.height  *0.50, nam3, style2);
-            var nam4 = "Marlies Schildi";
-            this.game.add.text(this.game.width*.25, this.game.height  *0.75, nam4, style2);
-            var nam5 = "Mario Scheibi";
-            this.game.add.text(this.game.width*.58, this.game.height  *0.75, nam5, style2);
-
-
-            //first two bugs are choosen
-            this.choosen = [false, false, false, false];
-
-
-            for (var i = 0; i < this.bugs.length; i++) {
-
-                // add bug
-                this.bugs[i].scale.x = 0.3;
-                this.bugs[i].scale.y = 0.3;
-                this.bugs[i].anchor.setTo(.5,.5);          this.game.add.existing(this.bugs[i]); // add bug to scene
-                this.bugs[i].inputEnabled = true;
-
-            }
-
-
+            //TODO look for more elegant way to do this
             this.bugs[0].events.onInputDown.add(function () {this.BugClick(0)},this);
             this.bugs[1].events.onInputDown.add(function () {this.BugClick(1)},this);
             this.bugs[2].events.onInputDown.add(function () {this.BugClick(2)},this);
             this.bugs[3].events.onInputDown.add(function () {this.BugClick(3)},this);
             this.bugs[4].events.onInputDown.add(function () {this.BugClick(4)},this);
 
-        }
+            // add bug names below bugs
+            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,40);
+            var name1 = this.bugs[0].getName();
+            this.game.add.text(this.game.width*0.15, this.game.height  *0.50, name1, style2);
+            var name2 = this.bugs[1].getName();
+            this.game.add.text(this.game.width*0.26, this.game.height  *0.75, name2, style2);
+            var name3 = this.bugs[2].getName();
+            this.game.add.text(this.game.width*0.43, this.game.height  *0.50, name3, style2);
+            var name4 = this.bugs[3].getName();
+            this.game.add.text(this.game.width*0.56, this.game.height  *0.75, name4, style2);
+            var name5 = this.bugs[4].getName();
+            this.game.add.text(this.game.width*0.73, this.game.height  *0.50, name5, style2);
 
+            // chosen bugs
+            this.choosen = [false, false, false, false];
+
+            // add bugs to game
+            for (var i = 0; i < this.bugs.length; i++)
+            {
+                this.bugs[i].scale.x = 0.3;
+                this.bugs[i].scale.y = 0.3;
+                this.bugs[i].anchor.setTo(.5,.5);
+                this.game.add.existing(this.bugs[i]); // add bug to scene
+                this.bugs[i].inputEnabled = true;
+            }
+
+        }
 
         BugClick(index) {
             if (!this.choosen[index]) {
@@ -92,43 +93,10 @@ module States
             this.choosen[index] = !this.choosen[index];
         }
 
-        /*
-         Bug1Click() {
-         if (!this.choosen[1]) {
-         this.bugs[1].Animate();
-         }
-         else {
-         this.bugs[1].animations.stop(null, true);
-         }
-         this.choosen[1] = !this.choosen[1];
-         }
-
-         Bug2Click() {
-         if (!this.choosen[2]) {
-         this.bugs[2].Animate();
-         }
-         else {
-         this.bugs[2].animations.stop(null, true);
-         }
-         this.choosen[2] = !this.choosen[2];
-         }
-
-         Bug3Click() {
-         if (!this.choosen[3]) {
-         this.bugs[3].Animate();
-         }
-         else {
-         this.bugs[3].animations.stop(null, true);
-         }
-         this.choosen[3] = !this.choosen[3];
-         }
-         */
-
         update()
         {
 
         }
-
 
         buttonPressed() {
 

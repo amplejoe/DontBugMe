@@ -25,7 +25,7 @@ module Utils
             var elapsed: number = this.getCurrentTimeSeconds();
 
 
-            return  this.toInt(this.countdown-elapsed);
+            return  UtilFunctions.toInt(this.countdown-elapsed);
         }
 
         isRunning(): boolean

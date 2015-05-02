@@ -13,16 +13,18 @@ module States
 
         winnerBug: Sprites.Bug;
 
-        winner: string;
+        winnerId: number;
+        winnerString: string;
 
         START_BUTTON1:Phaser.Key;
         START_BUTTON2:Phaser.Key;
 
         sEnd: Phaser.Sound;
 
-        setWinner(winner: string)
+        setWinner(winnerId:number, winnerString: string)
         {
-            this.winner = winner;
+            this.winnerId = winnerId;
+            this.winnerString = winnerString;
         }
 
         setTimePlayed(time: string)
@@ -49,7 +51,7 @@ module States
             var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
             this.game.add.text(this.game.width/2- 450, 70, line1, style);
 
-            if (this.winner == "")
+            if (this.winnerString == "")
             {
                 var line2 = "Nobody!";
                 var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80);
@@ -58,7 +60,7 @@ module States
             }
             else
             {
-                this.winnerBug = new Sprites.Bug(this.game, this.winner, this.game.width * 0.5, this.game.height * 0.5);
+                this.winnerBug = new Sprites.Bug(this.game, this.winnerId, this.winnerString, this.game.width * 0.5, this.game.height * 0.5);
 
                 this.winnerBug.x -= this.winnerBug.width/2;
                 this.winnerBug.y -= this.winnerBug.height/2;
