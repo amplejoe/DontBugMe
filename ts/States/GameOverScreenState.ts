@@ -65,7 +65,7 @@ module States
                 this.winnerBug.x -= this.winnerBug.width/2;
                 this.winnerBug.y -= this.winnerBug.height/2;
                 this.game.add.existing(this.winnerBug);
-                this.winnerBug.Animate();
+                this.winnerBug.animate();
             }
 
             var line3 = "Time played: "+this.timePlayed;

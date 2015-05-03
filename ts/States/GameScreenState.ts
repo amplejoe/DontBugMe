@@ -97,7 +97,7 @@ module States
                 for (var i=0;i<this.bugs.length;i++)
                 {
                     // animations
-                    this.bugs[i].Animate();
+                    this.bugs[i].animate();
                 }
 
                 this.gravity = 150;

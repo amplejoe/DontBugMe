@@ -13,7 +13,7 @@ module States
         bg:Phaser.TileSprite;
 
         bugs:Array<Sprites.Bug>;
-        choosen:Array <boolean>;
+        chosen:Array <boolean>;
 
         s1:Phaser.Sound;
         squeaks:Array<Phaser.Sound>;
@@ -48,13 +48,6 @@ module States
                 new Sprites.Bug(this.game,4, "BUG4_MOVING", this.game.width*0.8, this.game.height *0.4)
             ];
 
-            //TODO look for more elegant way to do this
-            this.bugs[0].events.onInputDown.add(function () {this.BugClick(0)},this);
-            this.bugs[1].events.onInputDown.add(function () {this.BugClick(1)},this);
-            this.bugs[2].events.onInputDown.add(function () {this.BugClick(2)},this);
-            this.bugs[3].events.onInputDown.add(function () {this.BugClick(3)},this);
-            this.bugs[4].events.onInputDown.add(function () {this.BugClick(4)},this);
-
             // add bug names below bugs
             var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,40);
             var name1 = this.bugs[0].getName();
@@ -69,7 +62,7 @@ module States
             this.game.add.text(this.game.width*0.73, this.game.height  *0.50, name5, style2);
 
             // chosen bugs
-            this.choosen = [false, false, false, false];
+            this.chosen = [false, false, false, false];
 
             // add bugs to game
             for (var i = 0; i < this.bugs.length; i++)
@@ -83,18 +76,15 @@ module States
 
         }
 
-        BugClick(index) {
-            if (!this.choosen[index]) {
-                this.bugs[index].Animate();
-            }
-            else {
-                this.bugs[index].animations.stop(null, true);
-            }
-            this.choosen[index] = !this.choosen[index];
-        }
-
         update()
         {
+            // check if bugs are clicked
+            for (var i=0;i<this.bugs.length;i++)
+            {
+                if (this.bugs[i].isSelected()) this.bugs[i].animate();
+                else this.bugs[i].stopAnimation();
+                this.chosen[i] = this.bugs[i].isSelected();
+            }
 
         }
 
@@ -103,8 +93,8 @@ module States
             var bugsSelected =0 ;
             var chosenAnimName = Array();
             this.squeaks[Math.floor(Math.random() * 2)].play();
-            for (var i = 0; i < this.choosen.length; i++) {
-                if (this.choosen[i]) {
+            for (var i = 0; i < this.chosen.length; i++) {
+                if (this.chosen[i]) {
                     chosenAnimName.push(this.bugs[i].getAnimName());
                     bugsSelected++;
                 }

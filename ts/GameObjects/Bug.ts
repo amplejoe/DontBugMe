@@ -12,6 +12,8 @@ module Sprites // very important - not even constructor gets called without this
         animName: string;
         name: string;
 
+        selected: boolean;
+
         firstBoost: boolean;
 
         constructor(game: Phaser.Game,id:number, animName: string, x:number,y:number)
@@ -25,6 +27,20 @@ module Sprites // very important - not even constructor gets called without this
             this.id = id;
             this.setName(this.id);
             //this.anchor.set(0.5, 0.5);
+            // click functions
+            this.selected = false;
+            this.events.onInputDown.add(function () {this.toggleSelected(true)},this);
+            //this.events.onInputUp.add(function () {this.setClicked(false)},this);
+        }
+
+        toggleSelected(val:boolean)
+        {
+            this.selected = !this.selected;
+        }
+
+        isSelected(): boolean
+        {
+            return this.selected;
         }
 
         setName(id:number)
@@ -88,13 +104,23 @@ module Sprites // very important - not even constructor gets called without this
 
         }
 
-        Animate()
+        animate()
         {
-            //console.log("animate called");
+            var anim = this.animations.getAnimation("move");
+            if (anim !== null && anim.isPlaying) return;
+
             this.loadTexture(this.animName,0);
             this.animations.add("move"); // whole sheet = move animation
             this.animations.play("move", 10, true); // true -> loop forever
             this.animations.currentAnim.speed = 10;
+        }
+
+        stopAnimation()
+        {
+            var anim = this.animations.getAnimation("move");
+            if (anim === null) return;
+            else if (!anim.isPlaying) return;
+            this.animations.stop("move", true);
         }
 
     }
