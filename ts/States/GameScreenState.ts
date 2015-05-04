@@ -16,6 +16,7 @@ module States
         bgTile0: Phaser.TileSprite;
 
         // rnd keys
+        rndGen: Phaser.RandomDataGenerator;
         allKeys: Array<number>;
         currentlySetKeys: Array<number>;
 
@@ -43,7 +44,6 @@ module States
 
         // audio
         music: Array<Phaser.Sound>;
-        currentMusicPlaying: Phaser.Sound;
         squeaks: Array<Phaser.Sound>;
         sEnd: Array<Phaser.Sound>;
         sStart: Phaser.Sound;
@@ -67,6 +67,9 @@ module States
             // game settings
             this.setGameStage(GameSettings.GameStages.STAGE_INIT);
             this.setGameMode(GameSettings.GameModes.MODE_LAST_BUG_CRAWLING); //TODO: implement other modes
+
+            var seed: number = this.game.time.time;
+            this.rndGen = new Phaser.RandomDataGenerator([seed]);
 
             // scrolling background
             this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
@@ -103,11 +106,9 @@ module States
                 this.gravity = 150;
 
                 this.game.physics.arcade.gravity.y = this.gravity;
-                // play initial music
-                this.playRndLoops();
 
-                // fadeout go!
-                //this.prevAdjustmentTime = this.game.time.time;
+                // start music
+                this.randomizeMusic(0);
 
                 this.tweenSpriteDown(this.twig);
 
@@ -173,11 +174,13 @@ module States
         initSounds()
         {
             this.music = [
-                this.game.add.audio('loopwbeat',1,true),
-                this.game.add.audio('loopwdoing',1,true),
-                this.game.add.audio('loopwdoingalowpass',1,true),
-                this.game.add.audio('loopwdoingaresonance',1,true)
+                this.game.add.audio('loopwbeat',0.7,false),
+                this.game.add.audio('loopwdoing',0.7,false),
+                this.game.add.audio('loopwdoingalowpass',0.7,false),
+                this.game.add.audio('loopwdoingaresonance',0.7,false)
             ];
+
+            this.addMusicStopFunctions(true);
 
             this.squeaks = [
                 this.game.add.audio('squeak',1,false),
@@ -190,7 +193,36 @@ module States
             ];
             this.sStart = this.game.add.audio('startrace', 1, false);
             this.sBeep = this.game.add.audio('beep', 1, false);
-            this.currentMusicPlaying = null;
+
+        }
+
+        // adds onStop functions to call when a music sample is finished playing
+        addMusicStopFunctions(val: boolean)
+        {
+            if (val)
+            {
+                // cannot be done in a loop - number will be 4 for all (=loop vars last value)
+                this.music[0].onStop.add(function () {this.randomizeMusic(0)}, this );
+                this.music[1].onStop.add(function () {this.randomizeMusic(1)}, this );
+                this.music[2].onStop.add(function () {this.randomizeMusic(2)}, this );
+                this.music[3].onStop.add(function () {this.randomizeMusic(3)}, this );
+            }
+            else
+            {
+                this.music[0].onStop.removeAll();
+                this.music[1].onStop.removeAll();
+                this.music[2].onStop.removeAll();
+                this.music[3].onStop.removeAll();
+            }
+        }
+
+        // randomly choose music out of all loop samples
+        randomizeMusic(index:number)
+        {
+            //console.log("randomize called! index: " +index);
+            var nextLoop:number = this.rndGen.integerInRange(0, this.music.length-1);
+            //console.log("next: "+nextLoop);
+            this.music[nextLoop].play();
         }
 
 
@@ -274,65 +306,13 @@ module States
 
         }
 
-        playRndLoops()
-        {
-            var music = this.music[Math.floor(Math.random()* 2)];
-            this.switchMusic(music);
-        }
-
-        playRndFilters()
-        {
-            var music = this.music[Math.floor(Math.random()* 3-2+1)+2];
-            this.switchMusic(music);
-        }
-
-        stopMusic()
-        {
-            var musicPlaying = this.getCurrentMusicPlaying();
-
-            if (musicPlaying == null) return;
-
-            musicPlaying.stop();
-        }
-
-        switchMusic(music: Phaser.Sound)
-        {
-            for (var i=0;i<this.music.length;i++)
-            {
-                if (this.music[i].isPlaying)
-                {
-                    if (music.name !== this.music[i].name)
-                    {
-
-                        this.currentMusicPlaying = music;
-                    }
-                    return;
-                }
-            }
-
-            // no music playing -> just start music
-            this.currentMusicPlaying = music;
-            music.loop = true;
-            music.play();
-        }
-
-        getCurrentMusicPlaying()
-        {
-            for (var i=0;i<this.music.length;i++) {
-                if (this.music[i].isPlaying) return this.music[i];
-            }
-
-            return null;
-
-        }
-
         createShrubberyLeft()
         {
             var elapsedSecs = this.game.time.elapsedSecondsSince(this.shrubTimerCreateTime);
 
             if (elapsedSecs >= this.shrubSpawnTimer)
             {
-                var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
+                var shrubName = this.shrubbery[this.rndGen.integerInRange(0, this.shrubbery.length-1)];
                 var shrub = this.game.add.sprite(0, 0-700, shrubName);
                 shrub.scale.x = 0.4;
                 shrub.scale.y = 0.4;
@@ -342,7 +322,7 @@ module States
 
                 this.shrubTimerCreateTime = this.game.time.time;
 
-                this.shrubSpawnTimer = Math.round(Math.random()*(this.shrubTimerMax-this.shrubTimerMin)) + this.shrubTimerMin;
+                this.shrubSpawnTimer = this.rndGen.realInRange(this.shrubTimerMin, this.shrubTimerMax);
             }
 
 
@@ -354,7 +334,7 @@ module States
 
             if (elapsedSecs >= this.shrubSpawnTimer)
             {
-                var shrubName = this.shrubbery[Math.floor(Math.random()* 3)];
+                var shrubName = this.shrubbery[this.rndGen.integerInRange(0, this.shrubbery.length-1)];
                 var shrub = this.game.add.sprite(this.game.width, 0-700, shrubName);
                 shrub.anchor.setTo(.5, 1); //so it flips around its middle
                 shrub.scale.x = -0.4;
@@ -366,7 +346,7 @@ module States
 
                 this.shrubTimerCreateTime = this.game.time.time;
 
-                this.shrubSpawnTimer = Math.round(Math.random()*(this.shrubTimerMax-this.shrubTimerMin)) + this.shrubTimerMin;
+                this.shrubSpawnTimer = this.rndGen.realInRange(this.shrubTimerMin, this.shrubTimerMax);
             }
 
 
@@ -474,7 +454,7 @@ module States
             this.adjustGameDifficulty();
 
             // checks whether flag is set for music change and handles transition
-            this.checkMusic();
+            //this.checkMusic();
 
             // rnd button change
             this.UpdateRndBtns();
@@ -510,33 +490,10 @@ module States
 
         createRndShrubbery()
         {
-            var coin = Math.floor(Math.random()* 2);
+            var coin = this.rndGen.integerInRange(0, 1);
 
             if (coin > 0)  this.createShrubberyLeft();
             else this.createShrubberyRight();
-        }
-
-
-        checkMusic()
-        {
-            if (this.currentMusicPlaying == null) return;
-
-            var musicPlaying = this.getCurrentMusicPlaying();
-
-            if (musicPlaying == null) return;
-
-            if (this.currentMusicPlaying.name != musicPlaying.name)
-            {
-                var duration = Math.floor(musicPlaying.durationMS);
-
-                //console.log("should switch - dur: "+duration+" pos: "+musicPlaying.currentTime);
-
-                if (musicPlaying.currentTime > (duration-100))
-                {
-                    this.currentMusicPlaying.play();
-                    musicPlaying.stop();
-                }
-            }
         }
 
         adjustGameDifficulty()
@@ -560,17 +517,6 @@ module States
                 var rndAssignmentMax: number  = this.rndButtonAssignTimer.getMax();
                 if (rndAssignmentMax > this.rndButtonAssignTimer.getMin()) this.rndButtonAssignTimer.setMax(rndAssignmentMax-1);
                 //if (this.buttonDurationTimeMax > this.buttonDurationTimeMin) this.buttonDurationTimeMax--;
-
-                // change music
-                var rnd = Math.floor(Math.random()* 2); // rnd number 0 or 1
-                if (rnd == 0)
-                {
-                    this.playRndFilters();
-                }
-                else
-                {
-                    this.playRndLoops();
-                }
 
             }
 
@@ -596,7 +542,6 @@ module States
 
         handleWin()
         {
-
             if (this.bugsIngame > 1) return;
 
             var winnerString: string;
@@ -615,9 +560,10 @@ module States
                 }
 
             }
+            this.addMusicStopFunctions(false);
+            this.sound.stopAll();
             this.sEnd[1].play();
             var timePlayed: string = this.gameTimer.getFormattedTime();
-            this.stopMusic();
             this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
             this.game.state.states['GameOverScreenState'].setWinner(winnerId,winnerString);
             this.game.state.start("GameOverScreenState");
@@ -666,9 +612,7 @@ module States
         }
 
         getRandomLetter(){
-            var tempo = this.allKeys[Math.floor(Math.random()*this.allKeys.length)]; //this.alphabet.indexOf(,Math.round(Math.random()*this.alphabet.length));
-            //console.log("Random letter: "+ tempo);
-            return tempo;
+            return this.allKeys[this.rndGen.integerInRange(0, this.allKeys.length-1)];
         }
 
         UpdateRndBtns()
@@ -720,30 +664,6 @@ module States
             var value = String.fromCharCode(key);
             return value;
         }
-
-        getFormattedTimeSince(time: number)
-        {
-            var elapsedSeconds = this.toInt(this.game.time.elapsedSecondsSince(time));
-
-            var elapsedHours = this.toInt(elapsedSeconds / (60 * 60));
-            if (elapsedHours > 0)
-            {
-                elapsedSeconds -= elapsedHours * 60 * 60;
-            }
-            var elapsedMinutes =  this.toInt(elapsedSeconds / 60);
-            if (elapsedMinutes > 0)
-            {
-                elapsedSeconds -= elapsedMinutes * 60;
-            }
-
-            // add 0s for non double digit values
-            var retTime = (elapsedHours > 9? "" : "0") + elapsedHours + ":" +
-                (elapsedMinutes > 9? "" : "0") + elapsedMinutes + ":" +
-                (elapsedSeconds > 9? "" : "0") + elapsedSeconds;
-
-            return retTime;
-        }
-
 
     } // class
 } // module
