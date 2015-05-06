@@ -29,11 +29,11 @@ module Sprites // very important - not even constructor gets called without this
             //this.anchor.set(0.5, 0.5);
             // click functions
             this.selected = false;
-            this.events.onInputDown.add(function () {this.toggleSelected(true)},this);
+            this.events.onInputDown.add(function () {this.toggleSelected()},this);
             //this.events.onInputUp.add(function () {this.setClicked(false)},this);
         }
 
-        toggleSelected(val:boolean)
+        toggleSelected()
         {
             this.selected = !this.selected;
         }

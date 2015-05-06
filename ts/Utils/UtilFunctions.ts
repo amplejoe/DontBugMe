@@ -23,6 +23,14 @@ module Utils
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        /**
+         * For umlauts etc.
+         */
+        static getSpecialCharString(specialCharacter: string): string
+        {
+            return decodeURIComponent(encodeURIComponent(specialCharacter)).toString();
+        }
+
         static toInt(value) { return ~~value; }
 
     }

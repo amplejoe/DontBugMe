@@ -473,6 +473,7 @@ module States
                     {
                         var keyCode = this.bugs[bugNr].getCurrentKey().keyCode;
                         this.game.input.keyboard.removeKey(keyCode);
+                        this.currentlySetKeys[bugNr] = -1;
                     }
                     if (this.bugsIngame > 2) this.sEnd[0].play();
                     this.bugs[bugNr] = null;
@@ -655,9 +656,6 @@ module States
                 this.sBeep.play();
             }
         }
-
-
-        toInt(value) { return ~~value; }
 
         keyValToString(key: number)
         {
