@@ -62,7 +62,11 @@ module States
             this.game.add.text(this.game.width*0.73, this.game.height  *0.50, name5, style2);
 
             // chosen bugs
-            this.chosen = [false, false, false, false];
+            this.chosen = Array<boolean>(this.bugs.length);
+            for (var i =0; i<this.chosen.length;i++)
+            {
+                this.chosen[i] = false;
+            }
 
             // add bugs to game
             for (var i = 0; i < this.bugs.length; i++)
