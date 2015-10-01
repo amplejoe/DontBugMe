@@ -6,6 +6,8 @@ module Sprites // very important - not even constructor gets called without this
     {
         public static MAX_SPEED: number = 30; // 30 fps
 
+        selectButton: Phaser.Key;
+
         currentKey: Phaser.Key;
 
         id: number;
@@ -27,13 +29,35 @@ module Sprites // very important - not even constructor gets called without this
             this.id = id;
             this.setName(this.id);
             //this.anchor.set(0.5, 0.5);
-            // click functions
+            // click/key select functions
             this.selected = false;
             this.events.onInputDown.add(function () {this.toggleSelected()},this);
+            this.selectButton = this.game.input.keyboard.addKey(this.getSelectButton());
+            this.selectButton.onDown.add(function () {this.toggleSelected()},this);
+            //this.events.on
             //this.events.onInputUp.add(function () {this.setClicked(false)},this);
         }
 
-        toggleSelected()
+        // returns the Phaser keycode corresponding to bug ID
+        getSelectButton(): number
+        {
+           switch (this.id)
+           {
+               case 0: return Phaser.Keyboard.ONE;
+               case 1: return Phaser.Keyboard.TWO;
+               case 2: return Phaser.Keyboard.THREE;
+               case 3: return Phaser.Keyboard.FOUR;
+               case 4: return Phaser.Keyboard.FIVE;
+               case 5: return Phaser.Keyboard.SIX;
+               case 6: return Phaser.Keyboard.SEVEN;
+               case 7: return Phaser.Keyboard.EIGHT;
+               case 8: return Phaser.Keyboard.NINE;
+               case 9: return Phaser.Keyboard.ZERO;
+               default: return null;
+           }
+        }
+
+        toggleSelected(): void
         {
             this.selected = !this.selected;
         }

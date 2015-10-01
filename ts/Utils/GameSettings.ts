@@ -2,7 +2,7 @@
 module GameSettings
 {
 
-    var bugNames: Array<string> = ["Andi Goldi", "Marcel Hirschi", "Raini Sch"+decodeURIComponent('%C3%B6')+"ni", "Marlies Schildi", "Mario Scheibi"];
+    var bugNames: Array<string> = ["1 - Andi Goldi", "2 - Marcel Hirschi", "3 - Raini Sch"+decodeURIComponent('%C3%B6')+"ni", "4 - Marlies Schildi", "5 - Mario Scheibi"];
 
     export enum GameStages
     {
