@@ -29,7 +29,6 @@ module States
             this.enter.alpha = 0;
             this.game.add.tween(this.enter).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-
             this.s1 = this.game.add.audio('bg_old', 1, true);
             this.s1.play();
 

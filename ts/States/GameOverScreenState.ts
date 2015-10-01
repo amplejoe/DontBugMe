@@ -11,6 +11,8 @@ module States
 
         bg: Phaser.TileSprite;
 
+        enter: Phaser.Sprite;
+
         winnerBug: Sprites.Bug;
 
         winnerId: number;
@@ -46,6 +48,14 @@ module States
 
             this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
+            // blinking enter
+            this.enter = this.game.add.sprite(this.game.width * 0.92, this.game.height * 0.86, "enter");
+            this.enter.anchor.setTo(0.5,0.5);
+            this.enter.scale.x = 0.40;
+            this.enter.scale.y = 0.40;
+            this.enter.alpha = 0;
+            this.game.add.tween(this.enter).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+
             var line1 = "Game Over - The Winner:";
 
             var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
@@ -80,6 +90,7 @@ module States
         buttonPressed()
         {
             this.sound.stopAll();
+            this.game.tweens.removeFrom(this.enter); // remove enter tween
             this.game.state.start("TitleScreenState");
         }
 
