@@ -31,6 +31,10 @@ module Utils
             return decodeURIComponent(encodeURIComponent(specialCharacter)).toString();
         }
 
+        /**
+         * Returns Highscores as table.
+         * @returns {string}
+         */
         static getHighScoresTable(): string
         {
             var highScoreSize =  parseInt(localStorage["dontbugme.highscore.count"]);
@@ -53,6 +57,12 @@ module Utils
         }
 
 
+        /**
+         * Adds new highscore entry (sorted).
+         * @param score
+         * @param time
+         * @returns {number}
+         */
         static addHighscoreEntrySorted(score: number, time:string ): number
         {
             var highscoreEntryCountString = localStorage["dontbugme.highscore.count"];
@@ -64,7 +74,7 @@ module Utils
             }
             else
             {
-                var id = parseInt(highscoreEntryCountString);
+                id = parseInt(highscoreEntryCountString);
             }
 
             var currentHighscoreCount = parseInt(localStorage["dontbugme.highscore.count"]);

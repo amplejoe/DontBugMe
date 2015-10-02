@@ -524,6 +524,8 @@ declare module Phaser {
 
         key: string;
         url: string;
+        width: number;
+        height: number;
         data: HTMLImageElement;
         base: PIXI.BaseTexture;
         frame: Phaser.Frame;

@@ -72,7 +72,8 @@ module States
             this.rndGen = new Phaser.RandomDataGenerator([seed]);
 
             // scrolling background
-            this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, this.game.cache.getImage('bg_neu').height, 'bg_neu');
+            var height = this.game.cache.getImage("bg_neu").height;
+            this.bgTile0 = this.game.add.tileSprite(0, 0, this.game.stage.width, height, 'bg_neu');
 
             this.initRndLetters();
 
@@ -564,9 +565,12 @@ module States
             this.addMusicStopFunctions(false);
             this.sound.stopAll();
             this.sEnd[1].play();
+            var timePlayedNumber: number = this.gameTimer.getCurrentTimeSeconds();
             var timePlayed: string = this.gameTimer.getFormattedTime();
             this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
             this.game.state.states['GameOverScreenState'].setWinner(winnerId,winnerString);
+            var rank: number = Utils.UtilFunctions.addHighscoreEntrySorted(timePlayedNumber, timePlayed);
+            this.game.state.states['GameOverScreenState'].setRank(rank);
             this.game.state.start("GameOverScreenState");
         }
 

@@ -17,6 +17,7 @@ module States
 
         winnerId: number;
         winnerString: string;
+        winnerRank: number;
 
         START_BUTTON1:Phaser.Key;
         START_BUTTON2:Phaser.Key;
@@ -56,10 +57,10 @@ module States
             this.enter.alpha = 0;
             this.game.add.tween(this.enter).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-            var line1 = "Game Over - The Winner:";
+            var line1 = "Game Over - The Winner (Rank "+this.winnerRank+"):";
 
             var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
-            this.game.add.text(this.game.width/2- 450, 70, line1, style);
+            this.game.add.text(this.game.width/2- 400, 70, line1, style);
 
             if (this.winnerString == "")
             {
@@ -85,6 +86,11 @@ module States
         update()
         {
 
+        }
+
+        setRank(rank: number): void
+        {
+            this.winnerRank = rank;
         }
 
         buttonPressed()
