@@ -5,6 +5,7 @@ echo ################## Cleaning up... #######################
 if exist dist rd /s /q dist 
 mkdir dist
 mkdir dist\phaserLib
+mkdir dist\js
 echo ################## Copying files... #####################
 :: copy assts/css/needed files
 xcopy assets dist\assets\ /s /e /Y
@@ -45,7 +46,6 @@ for /f "tokens=*" %%a in (index.html) do (
 
 echo ################## Minifying js files ####################
 :: Packs and minifies all js files into dist\js\game.min.js 
-mkdir dist\js
 java -jar "tools\closure\compiler.jar" ^
        --js js\Utils\GameSettings.js ^
 	   --js js\Utils\UtilFunctions.js  ^

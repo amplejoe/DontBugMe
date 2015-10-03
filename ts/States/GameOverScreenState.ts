@@ -372,19 +372,19 @@ module States
 
         }
 
-        keyPress(char): void
+        keyPress(inputChar): void
         {
             //console.log(char.charCodeAt(0) + " == " + Phaser.Keyboard.BACKSPACE);
 
-            char = char.toLowerCase();
+            inputChar = inputChar.toLowerCase();
 
             // Skip it unless it's a-z.
-            if( char.charCodeAt(0) < "a".charCodeAt(0) || char.charCodeAt(0) > "z".charCodeAt(0) ) return;
+            if( inputChar.charCodeAt(0) < "a".charCodeAt(0) || inputChar.charCodeAt(0) > "z".charCodeAt(0) ) return;
 
             if (this.nameInput.text.length < this.MAX_NAME_LENGTH)
             {
-                if (this.nameInput.text.length < 1) char = char.toUpperCase();
-                this.nameInput.setText(this.nameInput.text + char);
+                if (this.nameInput.text.length < 1) inputChar = inputChar.toUpperCase();
+                this.nameInput.setText(this.nameInput.text + inputChar);
             }
 
         }
