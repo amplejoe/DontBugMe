@@ -7,6 +7,7 @@ module States
 
         START_BUTTON1:Phaser.Key;
         START_BUTTON2:Phaser.Key;
+        INFO_BUTTON: Phaser.Key;
         bg: Phaser.TileSprite;
         enter: Phaser.Sprite;
 
@@ -39,10 +40,13 @@ module States
 
             this.showInfo();
 
+            // buttons
             this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
             this.START_BUTTON1.onDown.add(TitleScreenState.prototype.buttonPressed, this);
             this.START_BUTTON2 = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             this.START_BUTTON2.onDown.add(TitleScreenState.prototype.buttonPressed, this);
+            this.INFO_BUTTON = this.game.input.keyboard.addKey(Phaser.Keyboard.I);
+            this.INFO_BUTTON.onDown.add(TitleScreenState.prototype.openInfoPage, this);
 
             this.titleAni = this.game.add.sprite(this.game.width/2, this.game.height/2, 'TITLE_ANIM');
             this.titleAni.anchor.set(0.5,0.5);
@@ -68,7 +72,14 @@ module States
             this.hideInfo();
             this.squeaks[Math.floor(Math.random()* 2)].play();
             this.game.tweens.removeFrom(this.enter); // remove enter tween
+            this.INFO_BUTTON.onDown.remove(TitleScreenState.prototype.openInfoPage, this); // clear Infobutton
+            this.game.input.keyboard.removeKey(Phaser.Keyboard.I);
             this.game.state.start("MenuState");
+        }
+
+        openInfoPage()
+        {
+            window.open("info.html",'_blank');
         }
 
     }

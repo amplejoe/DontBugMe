@@ -24,6 +24,14 @@ class BugsAndFeatures {
         this.game.load.image('leaves3', 'assets/gfx/leave3.png');
         this.game.load.image('twig', 'assets/gfx/twig.png');
         this.game.load.image('enter', 'assets/gfx/enter_green.png');
+        // highscore
+        this.game.load.image('check_green', 'assets/gfx/highscore/check_green.png');
+        this.game.load.image('cloud_1', 'assets/gfx/highscore/cloud_1.png');
+        this.game.load.image('cloud_2', 'assets/gfx/highscore/cloud_2.png');
+        this.game.load.image('cloud_3', 'assets/gfx/highscore/cloud_3.png');
+        this.game.load.image('cloud_no_dots', 'assets/gfx/highscore/cloud_no_dots.png');
+        this.game.load.image('name_box', 'assets/gfx/highscore/name_box_2.png');
+        this.game.load.image('x_red', 'assets/gfx/highscore/x_red.png');
 
         // loading spritesheets
         this.game.load.atlasJSONHash("BUG0_MOVING", "assets/gfx/final_bugs/goldie_animation.png", "assets/gfx/final_bugs/goldie_animation.json");

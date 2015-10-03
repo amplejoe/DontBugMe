@@ -72,6 +72,11 @@ module Sprites // very important - not even constructor gets called without this
             this.name = GameSettings.getBugName(id);
         }
 
+        getID(): number
+        {
+            return this.id;
+        }
+
         getName():string
         {
             return this.name;

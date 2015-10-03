@@ -546,22 +546,29 @@ module States
         {
             if (this.bugsIngame > 1) return;
 
-            var winnerString: string;
-
             var winnerString: string = "";
             var winnerId:number = -1;
             if (this.bugsIngame == 1)
             {
-
                 for (var i=0;i<this.bugs.length;i++)
                 {
                     if (this.bugs[i] != null) {
                         winnerString = this.bugNames[i];
+                        winnerId =  this.bugs[i].getID();
+                        // remove winner key (important for highscore name input)
+                        if (this.bugs[i].getCurrentKey() != null)
+                        {
+                            var keyCode = this.bugs[i].getCurrentKey().keyCode;
+                            this.game.input.keyboard.removeKey(keyCode);
+                            this.currentlySetKeys[i] = -1;
+                        }
+
                         break;
                     }
                 }
 
             }
+            this.setGameStage(GameSettings.GameStages.STAGE_GAME_OVER);
             this.addMusicStopFunctions(false);
             this.sound.stopAll();
             this.sEnd[1].play();
@@ -569,8 +576,14 @@ module States
             var timePlayed: string = this.gameTimer.getFormattedTime();
             this.game.state.states['GameOverScreenState'].setTimePlayed(timePlayed);
             this.game.state.states['GameOverScreenState'].setWinner(winnerId,winnerString);
-            var rank: number = Utils.UtilFunctions.addHighscoreEntrySorted(timePlayedNumber, timePlayed);
-            this.game.state.states['GameOverScreenState'].setRank(rank);
+            // create highscore entry if theres a winner
+            if (winnerString != "")
+            {
+                var bugNr: number = parseInt(winnerString.charAt(3));
+                var bugName:string = GameSettings.getBugName(bugNr);
+                var rank: number = Utils.UtilFunctions.addHighscoreEntrySorted(timePlayedNumber,"_unknown_", bugName, timePlayed);
+                this.game.state.states['GameOverScreenState'].setRank(rank);
+            }
             this.game.state.start("GameOverScreenState");
         }
 

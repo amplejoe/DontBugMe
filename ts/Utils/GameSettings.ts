@@ -2,7 +2,7 @@
 module GameSettings
 {
 
-    var bugNames: Array<string> = ["1 - Andi Goldi", "2 - Marcel Hirschi", "3 - Raini Sch"+decodeURIComponent('%C3%B6')+"ni", "4 - Marlies Schildi", "5 - Mario Scheibi"];
+    var bugNames: Array<string> = ["Andi Goldi", "Marcel Hirschi", "Raini Sch"+decodeURIComponent('%C3%B6')+"ni", "Marlies Schildi", "Mario Scheibi"];
 
     export enum GameStages
     {
@@ -20,6 +20,14 @@ module GameSettings
         MODE_NONE = 0,
         MODE_LAST_BUG_CRAWLING = 1,
         MODE_TIME_TRIAL = 2
+    };
+
+    export enum GameOverStages
+    {
+        STAGE_NONE = 0,
+        STAGE_INIT = 1,
+        STAGE_HIGHSCORE_ENTRY = 2,
+        STAGE_FINAL = 3
     };
 
     export enum TextStyles
