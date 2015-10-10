@@ -27,8 +27,8 @@ module States
             // blinking enter
             this.enter = this.game.add.sprite(this.game.width * 0.92, this.game.height * 0.86, "enter");
             this.enter.anchor.setTo(0.5,0.5);
-            this.enter.scale.x = 0.40;
-            this.enter.scale.y = 0.40;
+            this.enter.scale.x = 0.50;
+            this.enter.scale.y = 0.50;
             this.enter.alpha = 0;
             this.game.add.tween(this.enter).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
@@ -40,7 +40,7 @@ module States
             ];
 
             var line1 = "Pick at least 2 Bugs!";
-            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,60);
             this.game.add.text(this.game.width * 0.3, 60, line1, style);
 
             this.START_BUTTON1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -59,7 +59,7 @@ module States
             ];
 
             // add bug names below bugs
-            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,40);
+            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,40);
             var currentKey = this.bugs[0].getID()+1;
             var name1 = currentKey++ +" - "+this.bugs[0].getName();
             this.game.add.text(this.game.width*0.15, this.game.height  *0.50, name1, style2);

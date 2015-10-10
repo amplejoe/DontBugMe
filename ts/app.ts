@@ -14,7 +14,7 @@ class BugsAndFeatures {
     preload() {
 
         var line1 = "Loading...";
-        var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
+        var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,60);
         this.game.add.text(this.game.width * 0.40, this.game.height *0.43, line1, style);
 
         // background & ambience sprites
@@ -23,13 +23,12 @@ class BugsAndFeatures {
         this.game.load.image('leaves2', 'assets/gfx/leave2.png');
         this.game.load.image('leaves3', 'assets/gfx/leave3.png');
         this.game.load.image('twig', 'assets/gfx/twig.png');
-        this.game.load.image('enter', 'assets/gfx/enter_green.png');
+        this.game.load.image('enter', 'assets/gfx/enter.png');
         // highscore
         this.game.load.image('check_green', 'assets/gfx/highscore/check_green.png');
-        this.game.load.image('cloud_1', 'assets/gfx/highscore/cloud_1.png');
-        this.game.load.image('cloud_2', 'assets/gfx/highscore/cloud_2.png');
-        this.game.load.image('cloud_3', 'assets/gfx/highscore/cloud_3.png');
-        this.game.load.image('cloud_no_dots', 'assets/gfx/highscore/cloud_no_dots.png');
+        this.game.load.image('cloud_1', 'assets/gfx/highscore/bubble_1.png');
+        this.game.load.image('cloud_2', 'assets/gfx/highscore/bubble_2.png');
+        this.game.load.image('cloud_no_dots', 'assets/gfx/highscore/bubble_3.png');
         this.game.load.image('name_box', 'assets/gfx/highscore/name_box_2.png');
         this.game.load.image('x_red', 'assets/gfx/highscore/x_red.png');
 

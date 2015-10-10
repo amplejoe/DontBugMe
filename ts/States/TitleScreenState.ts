@@ -23,10 +23,10 @@ module States
             this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
             // blinking enter
-            this.enter = this.game.add.sprite(this.game.width * 0.92, this.game.height * 0.86, "enter");
+            this.enter = this.game.add.sprite(this.game.width * 0.82, this.game.height * 0.82, "enter");
             this.enter.anchor.setTo(0.5,0.5);
-            this.enter.scale.x = 0.40;
-            this.enter.scale.y = 0.40;
+            this.enter.scale.x = 0.50;
+            this.enter.scale.y = 0.50;
             this.enter.alpha = 0;
             this.game.add.tween(this.enter).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
@@ -50,8 +50,8 @@ module States
 
             this.titleAni = this.game.add.sprite(this.game.width/2, this.game.height/2, 'TITLE_ANIM');
             this.titleAni.anchor.set(0.5,0.5);
-            this.titleAni.scale.x = 0.3;
-            this.titleAni.scale.y = 0.3;
+            this.titleAni.scale.x = 0.27;
+            this.titleAni.scale.y = 0.27;
             this.titleAni.animations.add("TITLE_ANIM"); // whole sheet = move animation
             this.titleAni.animations.play("TITLE_ANIM", 8, true); // true -> loop forever
 

@@ -145,8 +145,8 @@ module States
         initTexts()
         {
             //countdown text
-            this.cdText = this.game.add.text(this.game.world.centerX-20, this.game.world.centerY-130, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
-            this.userInfo = this.game.add.text(this.game.world.centerX-400, this.game.world.centerY-200, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
+            this.cdText = this.game.add.text(this.game.world.centerX-20, this.game.world.centerY-130, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_NEON_RED, 80));
+            this.userInfo = this.game.add.text(this.game.world.centerX-400, this.game.world.centerY-200, '', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN, 80));
             this.userInfo.alpha = 0;
         }
 
@@ -265,7 +265,7 @@ module States
             this.currentlySetKeys = Array(this.bugsIngame);
 
             // add bugs and physics and animations
-            var minBugX: number = 0.08; // min x for bugs
+            var minBugX: number = 0.07; // min x for bugs
             var interval: number = 0.18; // interval between bugs
             var maxBugX: number = minBugX + 4*interval; // 0.8 -> for max 5 bugs
             var middleBugX: number = minBugX + (maxBugX - minBugX)/2; // center x between min and max
@@ -290,7 +290,7 @@ module States
                 this.bugs[i].body.bounce.set(0.4);
 
 
-                this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80));
+                this.bugsTexts[i] = this.game.add.text(this.bugs[i].x+40, 40,'', GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_NEON_RED,80));
                 this.initKeysPressed[i] = false;
             }
 
@@ -400,14 +400,14 @@ module States
             // color text according to keypress
             if (key.isDown)
             {
-                this.bugsTexts[index].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN, 80));
+                this.bugsTexts[index].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_NEON_GREEN, 80));
             }
             else
             {
                 // in initial phase let buttons remain green when pressed once
                 if ((this.gameStage > GameSettings.GameStages.STAGE_INITIAL_KEY_WAIT) || !this.initKeysPressed[index])
                 {
-                    this.bugsTexts[index].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED, 80));
+                    this.bugsTexts[index].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_NEON_RED, 80));
                 }
 
             }
@@ -527,7 +527,7 @@ module States
         handleButtons(bugindex: number)
         {
             if (this.bugs[bugindex] == null) {
-                this.bugsTexts[bugindex].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80));
+                this.bugsTexts[bugindex].setStyle(GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_NEON_RED,80));
                 this.bugsTexts[bugindex].setText(":(");
                 return;
             }

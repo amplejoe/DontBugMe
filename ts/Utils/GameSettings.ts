@@ -33,8 +33,9 @@ module GameSettings
     export enum TextStyles
     {
         STYLE_NONE = 0,
-        STYLE_RED = 1,
-        STYLE_GREEN = 2
+        STYLE_NEON_RED = 1,
+        STYLE_NEON_GREEN = 2,
+        STYLE_GREEN = 3
     };
 
     export function getBugNamesArray():Array<string>
@@ -53,10 +54,12 @@ module GameSettings
     {
         switch(style)
         {
-            case TextStyles.STYLE_RED:
-                return {font: size+"px Swanky and Moo Moo", fill: "#ff0000", align: "center" };
+            case TextStyles.STYLE_NEON_RED:
+                return {font: size+"px Love Ya Like A Sister", fill: "#ff0000", align: "center" }; // #2a6a2a
+                case TextStyles.STYLE_NEON_GREEN:
+                return {font: size+"px Love Ya Like A Sister", fill: "#00ee00", align: "center" };
                 case TextStyles.STYLE_GREEN:
-                return {font: size+"px Swanky and Moo Moo", fill: "#00ee00", align: "center" };
+                return {font: size+"px Love Ya Like A Sister", fill: "#2a6a2a", align: "center" };
             case TextStyles.STYLE_NONE:
             default: return null;
         }

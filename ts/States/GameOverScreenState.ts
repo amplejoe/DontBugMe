@@ -31,7 +31,7 @@ module States
         // constants
         MAX_NAME_LENGTH: number = 8;
         FADE_IN_INTERVAL: number = 100;
-        SELECTED_SCALE = 0.35;
+        SELECTED_SCALE = 0.4;
         NOT_SELECTED_SCALE = 0.15;
 
         backspaceTime: number = 0;
@@ -96,7 +96,7 @@ module States
 
             var line1 = "Game Over - The Winner";
             var line1Pos: number = 300;
-            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,60);
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,60);
 
             var line3 = "Time played: "+this.timePlayed;
             this.game.add.text(this.game.width/2 - 100, this.game.height * 0.80, line3, style);
@@ -104,7 +104,7 @@ module States
             if (this.winnerString == "")
             {
                 var line2 = "Nobody!";
-                var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,80);
+                var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,80);
                 this.game.add.text(this.game.width/2 - 100, 250, line2, style2);
                 this.setGameOverStage(GameSettings.GameOverStages.STAGE_FINAL);
 
@@ -143,51 +143,47 @@ module States
             this.cloudSprites = Array(4);
             this.cloudSprites[0] = this.game.add.sprite(800, 200, "cloud_1"); // container
             this.cloudSprites[0].alpha = 0;
-            this.cloudSprites[0].scale.x = 0.9;
-            this.cloudSprites[0].scale.y = 0.9;
+            this.cloudSprites[0].scale.x = 0.75;
+            this.cloudSprites[0].scale.y = 0.75;
             this.cloudSprites[1] = this.game.add.sprite(0, 0, "cloud_2");
             this.cloudSprites[1].alpha = 0;
-            this.cloudSprites[2] = this.game.add.sprite(0, 0, "cloud_3");
+            this.cloudSprites[2] = this.game.add.sprite(0, 0, "cloud_no_dots");
             this.cloudSprites[2].alpha = 0;
-            this.cloudSprites[3] = this.game.add.sprite(0, 0, "cloud_no_dots");
-            this.cloudSprites[3].alpha = 0;
 
             // add to container (first bubble sprite
             this.cloudSprites[0].addChild(this.cloudSprites[1]);
             this.cloudSprites[0].addChild(this.cloudSprites[2]);
-            this.cloudSprites[0].addChild(this.cloudSprites[3]);
 
             // fade in sprites (attributes, time, easing function, autostart, delay, repeat, yoyo)
             this.game.add.tween(this.cloudSprites[0]).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, this.fadeInTime+=this.FADE_IN_INTERVAL, 0, false);
             this.game.add.tween(this.cloudSprites[1]).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, this.fadeInTime+=this.FADE_IN_INTERVAL, 0, false);
             this.game.add.tween(this.cloudSprites[2]).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, this.fadeInTime+=this.FADE_IN_INTERVAL, 0, false);
-            this.game.add.tween(this.cloudSprites[3]).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, this.fadeInTime+=this.FADE_IN_INTERVAL, 0, false);
 
         }
 
         showHighscoreInput(): void
         {
             var line = "Enter name:";
-            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,50);
-            this.highscoreUserMessage = this.game.add.text(145, 80, line, style);
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,50);
+            this.highscoreUserMessage = this.game.add.text(155, 85, line, style);
             this.highscoreUserMessage.alpha = 0;
 
-            this.nameInputBox = this.game.add.sprite(130, 130, "name_box");
+            this.nameInputBox = this.game.add.sprite(140, 145, "name_box");
             this.nameInputBox.alpha = 0;
-            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,50);
-            this.nameInput = this.game.add.text(145, 143, "", style);
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,50);
+            this.nameInput = this.game.add.text(147, 158, "", style);
             this.nameInput.alpha = 0;
             //this.nameInputBox.scale.x = 1.0;
             //this.nameInputBox.scale.y = 1.0;
 
             var scale = this.SELECTED_SCALE;
-            this.check = this.game.add.sprite(195, 240, "check_green");
+            this.check = this.game.add.sprite(255, 265, "check_green");
             this.check.anchor.setTo(0.5, 0.5);
             this.check.alpha = 0;
             this.check.scale.x = scale;
             this.check.scale.y = scale;
             scale = this.NOT_SELECTED_SCALE;
-            this.cancel = this.game.add.sprite(270, 240, "x_red");
+            this.cancel = this.game.add.sprite(330, 265, "x_red");
             this.cancel.anchor.setTo(0.5, 0.5);
             this.cancel.alpha = 0;
             this.cancel.scale.x = scale;
@@ -268,13 +264,13 @@ module States
         showFinalSelection(): void
         {
             var line1 = "[New Game]";
-            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,50);
-            this.newGame = this.game.add.text(150, 100, line1, style);
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,55);
+            this.newGame = this.game.add.text(140, 110, line1, style);
             this.newGame.alpha = 0;
 
             var line2 = "Show Highscore";
-            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_RED,50);
-            this.showHighscore = this.game.add.text(130, 163, line2, style);
+            var style = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,55);
+            this.showHighscore = this.game.add.text(120, 178, line2, style);
             this.showHighscore.alpha = 0;
 
             this.cloudSprites[0].addChild(this.newGame);
