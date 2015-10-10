@@ -23,7 +23,7 @@ module States
             this.bg = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "bg_neu");
 
             // blinking enter
-            this.enter = this.game.add.sprite(this.game.width * 0.82, this.game.height * 0.82, "enter");
+            this.enter = this.game.add.sprite(this.game.width * 0.88, this.game.height * 0.82, "enter");
             this.enter.anchor.setTo(0.5,0.5);
             this.enter.scale.x = 0.50;
             this.enter.scale.y = 0.50;

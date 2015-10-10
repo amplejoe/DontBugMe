@@ -59,18 +59,18 @@ module States
             ];
 
             // add bug names below bugs
-            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,40);
+            var style2 = GameSettings.getTextStyle(GameSettings.TextStyles.STYLE_GREEN,30);
             var currentKey = this.bugs[0].getID()+1;
             var name1 = currentKey++ +" - "+this.bugs[0].getName();
-            this.game.add.text(this.game.width*0.15, this.game.height  *0.50, name1, style2);
+            this.game.add.text(this.game.width*0.14, this.game.height  *0.50, name1, style2);
             var name2 = currentKey++ +" - "+this.bugs[1].getName();
-            this.game.add.text(this.game.width*0.26, this.game.height  *0.75, name2, style2);
+            this.game.add.text(this.game.width*0.25, this.game.height  *0.75, name2, style2);
             var name3 = currentKey++ +" - "+this.bugs[2].getName();
-            this.game.add.text(this.game.width*0.43, this.game.height  *0.50, name3, style2);
+            this.game.add.text(this.game.width*0.42, this.game.height  *0.50, name3, style2);
             var name4 = currentKey++ +" - "+this.bugs[3].getName();
-            this.game.add.text(this.game.width*0.56, this.game.height  *0.75, name4, style2);
+            this.game.add.text(this.game.width*0.55, this.game.height  *0.75, name4, style2);
             var name5 = currentKey++ +" - "+this.bugs[4].getName();
-            this.game.add.text(this.game.width*0.73, this.game.height  *0.50, name5, style2);
+            this.game.add.text(this.game.width*0.72, this.game.height  *0.50, name5, style2);
 
             // chosen bugs
             this.chosen = Array<boolean>(this.bugs.length);
