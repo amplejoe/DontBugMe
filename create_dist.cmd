@@ -10,6 +10,7 @@ echo ################## Copying files... #####################
 :: copy assts/css/needed files
 xcopy assets dist\assets\ /s /e /Y
 xcopy css dist\css\ /s /e /Y
+xcopy fonts dist\fonts\ /s /e /Y
 copy info.html dist
 copy phaserLib\phaser.min.js dist\phaserLib
 copy phaserLib\phaser.map dist\phaserLib
