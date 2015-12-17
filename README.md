@@ -21,7 +21,7 @@ The Game was written in Phaser, a HTML 5 media framework based on JavaScript. ID
 
 ## How to compile and run
 
-Clone it from the github repo (or fork, download ZIP, whatever you prefer). Then make sure you've got [node.js](https://nodejs.org/en/) and [typescript](http://www.typescriptlang.org/) installed. Btw. it's much easier to install node.js first ;) From there it's easy if you are a Mindows user:
+Clone it from the github repo (or fork, download ZIP, whatever you prefer). Then make sure you've got [node.js](https://nodejs.org/en/) and [typescript](http://www.typescriptlang.org/) installed. Btw. it's much easier to install node.js first ;) From there it's easy if you are a Windows user:
 
 1. Run compile_ts.cmd
 2. Run create_dist.cmd
