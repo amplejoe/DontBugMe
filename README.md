@@ -31,5 +31,5 @@ If you are not on Windows, then follow the commands in these files (it's mostly 
 
 ## Known Issues
 
-Before the race sometimes not all keys pressed are recognized simultaneously (only individually). This is due to the fact that many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting - you can check your keyboards limitations at [Microsoft's Ghosting Demo](http://www.microsoft.com/appliedsciences/KeyboardGhostingDemo.mspx). Just release some of the keys and input the key combination sequentially to start racing or wait for the game to switch to a different combination.
+Sometimes key combinations cannot be recognized simultaneously, only individually. This is due to the fact that many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting - you can check your keyboards limitations at [Microsoft's Ghosting Demo](http://www.microsoft.com/appliedsciences/KeyboardGhostingDemo.mspx). If this happens at the start of the race, just release some of the keys and input the key combination sequentially or wait for the game to switch to a different combination.
 Firefox and Opera encounter sound problems.
