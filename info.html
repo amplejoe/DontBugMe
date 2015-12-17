@@ -51,17 +51,36 @@
     <a target="_blank" href="http://www.typescriptlang.org/">TypeScript</a>, which is a free open source programming language developed
     and maintained by Microsoft. Typescript is a superset of JavaScript and aims at making JavaScript programming
     more object-oriented.
+
+
+    <h1>How to compile and run</h1>
+
+    <p>
+    Clone it from the github repo (or fork, download ZIP, whatever you prefer). Then make sure you've got node.js
+    and typescript installed. Btw. it's much easier to install node.js first ;) From there it's easy if you are
+    a Windows user:
     </p>
+
+    <ol>
+        <li>Run compile_ts.cmd</li>
+        <li>Run create_dist.cmd</li>
+        <li>Use the files from the dist directory.</li>
+    </ol>
+
+    If you are not on Windows, then follow the commands in these files (it's mostly copying around files,
+    changing a particular link in the index.html file and you can leave out the minifying command).
 
     <h1>Known Issues</h1>
     <ul>
         <li>
-            Before the race sometimes not all keys pressed are recognized simultaneously (only individually).
-            This is due to the fact that apparently, as pointed out in the
+            Sometimes key combinations cannot be recognized simultaneously, only individually.
+            This is due to the fact that many keyboards are unable to process certain combinations of keys due to
+            hardware limitations known as ghosting, as also pointed out in the
             <a target="_blank" href="http://phaser.io/docs/Phaser.Keyboard.html/Phaser.Keyboard.html">
-            Phaser documentation</a>, many keyboards are unable to process certain combinations of keys
-            due to hardware limitations known as ghosting.
-            Please restart the game in this case (Refresh Browser with F5).
+            Phaser documentation</a>. You can check your keyboards limitations at
+            <a target="_blank" href="http://www.microsoft.com/appliedsciences/KeyboardGhostingDemo.mspx">Microsoft's
+            Ghosting Demo</a>.  If this happens at the start of the race, just release some of the keys and input the
+            key combination sequentially or wait for the game to switch to a different combination.
         </li>
         <li>
             Firefox and Opera encounter sound problems.
