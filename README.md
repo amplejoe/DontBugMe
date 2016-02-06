@@ -4,7 +4,7 @@ This game is the result of the 2nd Klagenfurt Game Jam 2015 (#klujam). It's a 1 
 
 The game was initially developed by Andreas Leibetseder, Daniel Leustik, Natascha Rauscher, Anna Prem und Christian Stoenescu (alphabetic order).
 
-This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License. 
+This work is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
 
 ## Controls
 
