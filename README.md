@@ -8,8 +8,6 @@ This game is the result of the 2nd Klagenfurt Game Jam 2015 (#klujam). It's a 1 
 
 Play the game online on [github.io](https://amplejoe.github.io/DontBugMe/).
 
-This work is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
-
 ## Team
 
 The game was initially developed by (alphabetic order):
@@ -47,3 +45,7 @@ If you are not on Windows, then follow the commands in these files (it's mostly 
 
 Sometimes key combinations cannot be recognized simultaneously, only individually. This is due to the fact that many keyboards are unable to process certain combinations of keys due to hardware limitations known as ghosting - you can check your keyboards limitations at [Microsoft's Ghosting Demo](http://www.microsoft.com/appliedsciences/KeyboardGhostingDemo.mspx). If this happens at the start of the race, just release some of the keys and input the key combination sequentially or wait for the game to switch to a different combination.
 Firefox and Opera encounter sound problems.
+
+## License
+
+This work is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
