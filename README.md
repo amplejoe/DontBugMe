@@ -10,7 +10,7 @@ Play the game online on [github.io](https://amplejoe.github.io/DontBugMe/).
 
 ## Gameplay Video
 
-[![Don't Bug Me Demo](https://i.ibb.co/wzwKdNK/https-i-ytimg-com-vi-g0u-W6-Gu02-GU-hqdefault.jpg)](https://youtu.be/g0uW6Gu02GU "Don't Bug Me Demo")
+[![Don't Bug Me Demo](screenshots/bug_race.gif)](https://youtu.be/g0uW6Gu02GU "Don't Bug Me Demo")
 
 ## Team
 
