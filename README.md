@@ -8,6 +8,10 @@ This game is the result of the 2nd Klagenfurt Game Jam 2015 (#klujam). It's a 1 
 
 Play the game online on [github.io](https://amplejoe.github.io/DontBugMe/).
 
+## Gameplay Video
+
+[![Don't Bug Me Demo](https://i.ibb.co/wzwKdNK/https-i-ytimg-com-vi-g0u-W6-Gu02-GU-hqdefault.jpg)](https://youtu.be/g0uW6Gu02GU "Don't Bug Me Demo")
+
 ## Team
 
 The game was initially developed by (alphabetic order):
