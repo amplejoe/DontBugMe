@@ -1,5 +1,9 @@
 # DontBugMe
 
+![Screenshot](screenshots/title.jpg)
+
+---
+
 This game is the result of the 2nd Klagenfurt Game Jam 2015 (#klujam). It's a 1 Keyboard Multiplayer Game that features energetic bugs, racing each other on a single screen. The Bugs are named and modelled after Austrian skiing athletes - Andi Goldi, Marcel Hirschi, Raini Schöni, Mario Scheibi & Marlies Schildi. They are controlled by up to 5 players with a single key for each. These keys are randomly changing all the time so the players have to be quick to find their currently assigned one on the keyboard - Don't bug your opponents! Pressing the right keys gives the bugs an energy boost, failing to do so results in the bug falling behind and eventually below the screen, which means the game is lost for that player. The last bug on the screen wins.
 
 Play the game online on [github.io](https://amplejoe.github.io/DontBugMe/).
