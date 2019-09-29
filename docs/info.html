@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+    <h1>Description</h1>
+    <p>
+    This game is the result of the <a target="_blank" href="http://itec.aau.at/gamejam/">2nd Klagenfurt Game Jam 2015 </a>
+    (<a target="_blank" href="https://twitter.com/hashtag/klujam?src=hash/">#klujam</a>). It's a 1 Keyboard Multiplayer
+    Game that features energetic bugs, that race each other on a single screen. The Bugs are named and modelled after
+    Austrian skiing athletes - Andi Goldi, Marcel Hirschi, Raini Schöni & Marlies Schildi. They are controlled by up to
+    4 players with a single key for each. These keys are randomized constantly so the players have to be quick
+    to find their currently assigned one on the keyboard - Don't bug your opponents!
+    Pressing the right keys gives the bugs an energy boost, failing to do so results in the bug falling
+    behind and eventually below the screen, which means the game is lost for that player. The last
+    bug on the screen wins.
+    </p>
+
+    <h1>Controls</h1>
+    <ul>
+        <li>
+            ENTER/SPACEBAR advances between title & menu screens.
+        </li>
+        <li>
+            Clicking on 'Info' or pressing 'I' on the Title Screen opens this Information page.
+        </li>
+        <li>
+            Use 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' to control your bug.
+        </li>
+        <li>
+            Before the race starts (after go) all players MUST at least once have pressed their corresponding keys.
+            In this phase the keys change after a certain interval - so be quick to find your button!
+        </li>
+        <li>
+            On the Game Over Screen you can navigate with the arrow keys (LEFT, RIGHT, UP, DOWN). You can add
+            your name to the high score (note: currently local browser storage only!) by typing in several characters (at least 3),
+            selecting the green check mark with the LEFT/RIGHT arrow button and press ENTER/SPACEBAR to confirm. An entry
+            will be cancelled by selecting the X mark respectively. After you have made your choice you can choose to display
+            the current high score in a new tab by selecting 'Show Highscore' using the UP/DOWN arrows or select a 'New Game'
+            once again pressing ENTER/SPACEBAR.
+        </li>
+    </ul>
+
+    <h1>Technology</h1>
+    <p>
+    The Game was written in <a target="_blank" href="https://phaser.io/">Phaser</a>, a HTML 5 media framework based on JavaScript.
+    IDEAs <a target="_blank" href="https://www.jetbrains.com/webstorm/">WebStorm</a> was used as an IDE and all Classes were written in
+    <a target="_blank" href="http://www.typescriptlang.org/">TypeScript</a>, which is a free open source programming language developed
+    and maintained by Microsoft. Typescript is a superset of JavaScript and aims at making JavaScript programming
+    more object-oriented.
+
+
+    <h1>How to compile and run</h1>
+
+    <p>
+    Clone it from the github repo (or fork, download ZIP, whatever you prefer). Then make sure you've got node.js
+    and typescript installed. Btw. it's much easier to install node.js first ;) From there it's easy if you are
+    a Windows user:
+    </p>
+
+    <ol>
+        <li>Run compile_ts.cmd</li>
+        <li>Run create_dist.cmd</li>
+        <li>Use the files from the dist directory.</li>
+    </ol>
+
+    If you are not on Windows, then follow the commands in these files (it's mostly copying around files,
+    changing a particular link in the index.html file and you can leave out the minifying command).
+
+    <h1>Known Issues</h1>
+    <ul>
+        <li>
+            Sometimes key combinations cannot be recognized simultaneously, only individually.
+            This is due to the fact that many keyboards are unable to process certain combinations of keys due to
+            hardware limitations known as ghosting, as also pointed out in the
+            <a target="_blank" href="http://phaser.io/docs/Phaser.Keyboard.html/Phaser.Keyboard.html">
+            Phaser documentation</a>. You can check your keyboards limitations at
+            <a target="_blank" href="http://www.microsoft.com/appliedsciences/KeyboardGhostingDemo.mspx">Microsoft's
+            Ghosting Demo</a>.  If this happens at the start of the race, just release some of the keys and input the
+            key combination sequentially or wait for the game to switch to a different combination.
+        </li>
+        <li>
+            Firefox and Opera encounter sound problems.
+        </li>
+    </ul>
+
+    <h1>Offline Version</h1>
+    <p>
+        <a target="_blank" href="http://tantriccycle.com/dontbugme/DontBugMe.zip">DontBugMe.zip</a>
+    </p>
+
+    <h1>Source</h1>
+        <p>
+        <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+        The Sourcecode can be found here:
+        </p>
+
+        <p>
+            <a target="_blank" href="https://github.com/amplejoe/BugsAndFeatures"> GitHub Project </a>
+        </p>
+
+        <p>
+            <a target="_blank" href="http://tantriccycle.com/dontbugme/DontBugMe_V1.zip">WebStorm Project</a>
+            <br>
+            (Please note: you need a TypeScript transcoder to create JavaScript js files out of the TypeScript ts files to run the game.)
+        </p>
+
+        <p>
+        Typescript Instructions on Windows:
+        <ol>
+            <li>
+            Download <a target="_blank" href="https://nodejs.org/download/">NodeJs</a>
+            </li>
+            <li>
+            Open console (cmd): npm install –g typescript
+            </li>
+            <li>
+            Follow instrucions on <a target="_blank" href="http://www.gamefromscratch.com/post/2014/06/02/TypeScript-in-WebStorm.aspx">GameFromScratch</a>
+            to enable TypeScript transcoding in IDEA WebStorm.
+            </li>
+        </ol>
+        </p>
+</body>
+</html>
