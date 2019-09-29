@@ -14,10 +14,10 @@ This work is licensed under the [Creative Commons Attribution-NonCommercial 4.0 
 
 The game was initially developed by (alphabetic order):
 
-* Andreas Leibetseder ([github.com/amplejoe](https://github.com/amplejoe))
+* [Andreas Leibetseder](https://github.com/amplejoe)
 * Daniel Leustik
 * Natascha Rauscher
-* Anna Prem ([www.annaprem.at](http://www.annaprem.at))
+* [Anna Prem](http://www.annaprem.at)
 * Christian Stoenescu
 
 ## Controls
