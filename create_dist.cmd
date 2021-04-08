@@ -15,6 +15,7 @@ copy info.html dist
 copy phaserLib\phaser.min.js dist\phaserLib
 copy phaserLib\phaser.map dist\phaserLib
 copy highscore.html dist
+copy tools\crypto-js\crypto-js.js dist\js
 
 echo ################## Modifying index.html ##################
 :: modify index.html (replace js files by game.min.js) 

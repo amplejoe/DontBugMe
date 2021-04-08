@@ -1,3 +1,4 @@
 :: install typescript with node.js: npm install -g typescript
 :: then compile/translate with tsc:
-tsc ts\app.ts -outDir js
+call tsc ts\app.ts -outDir js
+copy tools\crypto-js\crypto-js.js js
